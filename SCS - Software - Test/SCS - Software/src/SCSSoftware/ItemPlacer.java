@@ -2,10 +2,10 @@ package SCSSoftware;
 
 import java.util.Timer;
 
+import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
-import org.lsmr.selfcheckout.devices.SimulationException;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.ElectronicScaleObserver;
 
@@ -43,7 +43,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 
 	//if weight is changed then something was placed on the scale, we expect it to be the item most recently added to the cart.
 	@Override
-	public void weightChanged(ElectronicScale scale, double weightInGrams) throws SimulationException{
+	public void weightChanged(ElectronicScale scale, double weightInGrams) throws InvalidArgumentSimulationException {
 		beforePlacing();
 		expectedWeight = pcart.getCart().get((pcart.getCart().size())-1).getExpectedWeight();//this gets the weight of the item most recently added to the cart.
 		if(ownbag.checkOwnBag() == false)
@@ -57,7 +57,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 			this.NotInBags = false;
 		}
 		else {
-			throw new SimulationException("Wrong item placed on scale!");
+			throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
 		}
 	}
 
