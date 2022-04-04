@@ -17,7 +17,6 @@ import org.lsmr.selfcheckout.devices.CoinTray;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.EmptyException;
 import org.lsmr.selfcheckout.devices.OverloadException;
-import org.lsmr.selfcheckout.devices.SimulationException;
 
 public class PaysWithCash {
 	
@@ -60,7 +59,7 @@ public class PaysWithCash {
 		return totalValue; 
 	}
 	
-	public BigDecimal emitChange() throws SimulationException, OverloadException, DisabledException
+	public BigDecimal emitChange() throws OverloadException, DisabledException
 	{
 		BigDecimal changeReturned = BigDecimal.ZERO;
 		List<Banknote> listOfNotes = new ArrayList<Banknote>();
@@ -139,9 +138,9 @@ public class PaysWithCash {
 					try {
 						banknotedispenser.get(100).emit();
 //						banknotedispenser.get(100).
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						banknoteOutputSlot.emit(new Banknote(Currency.getInstance("CAD"), 100));
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						changeReturned = changeReturned.add(BigDecimal.valueOf(100));
 						
 					} catch (EmptyException e) {
@@ -151,9 +150,9 @@ public class PaysWithCash {
 				while(count < 2) {
 					try {
 						banknotedispenser.get(50).emit();
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						banknoteOutputSlot.emit(new Banknote(Currency.getInstance("CAD"), 50));
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						changeReturned = changeReturned.add(BigDecimal.valueOf(50));
 					} catch (EmptyException e) {
 						count++;
@@ -162,9 +161,9 @@ public class PaysWithCash {
 				while(count < 3) {
 					try {
 						banknotedispenser.get(20).emit();
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						banknoteOutputSlot.emit(new Banknote(Currency.getInstance("CAD"), 20));
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						changeReturned = changeReturned.add(BigDecimal.valueOf(20));
 					} catch (EmptyException e) {
 						count++;
@@ -173,9 +172,9 @@ public class PaysWithCash {
 				while(count < 4) {
 					try {
 						banknotedispenser.get(10).emit();
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						banknoteOutputSlot.emit(new Banknote(Currency.getInstance("CAD"), 10));
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						changeReturned = changeReturned.add(BigDecimal.valueOf(10));
 					} catch (EmptyException e) {
 						count++;
@@ -184,9 +183,9 @@ public class PaysWithCash {
 				while(count < 5) {
 					try {
 						banknotedispenser.get(5).emit();
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						banknoteOutputSlot.emit(new Banknote(Currency.getInstance("CAD"), 5));
-						banknoteOutputSlot.removeDanglingBanknote();
+						banknoteOutputSlot.removeDanglingBanknotes();
 						changeReturned = changeReturned.add(BigDecimal.valueOf(5));
 					} catch (EmptyException e) {
 						count++;

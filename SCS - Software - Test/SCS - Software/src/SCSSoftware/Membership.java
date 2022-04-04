@@ -3,6 +3,8 @@ package SCSSoftware;
 import java.util.HashMap;
 
 import org.lsmr.selfcheckout.Card.CardData;
+import org.lsmr.selfcheckout.IllegalNormalPhaseSimulationException;
+import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.CardReader;
 import org.lsmr.selfcheckout.devices.SimulationException;
@@ -22,12 +24,12 @@ public class Membership implements CardReaderObserver{
 	@Override
 	public void cardDataRead(CardReader reader, CardData data) {
 		if (data.getType() != "Member") {
-			throw new SimulationException("Please scan a membership card.");
+			throw new IllegalNormalPhaseSimulationException();
 		}
 		else {
 			this.memberCard = members.get(data.getNumber());
 			if (memberCard == null){
-				throw new SimulationException("Something went wrong with scanning your card."); //this would be the case where a valid membership card is scanned but it isnt in our database.
+				throw new NullPointerException("Something went wrong with scanning your card."); //this would be the case where a valid membership card is scanned but it isnt in our database.
 			}
 			//maybe tell customer their card was entered and move to next stage, which is probably adding their own bags.
 		}
@@ -40,7 +42,7 @@ public class Membership implements CardReaderObserver{
 	public void manualEntry(String number) {
 		this.memberCard = members.get(number);//returns null if no card with that number exists.
 		if (memberCard == null){
-			throw new SimulationException("There is no member with that membership number.");
+			throw new NullPointerException("There is no member with that membership number.");
 		}
 		//maybe tell customer their card was entered and move to next stage, which is probably adding their own bags.
 	}
