@@ -7,11 +7,14 @@ import org.lsmr.selfcheckout.Card.CardSwipeData;
 public class PaysWithGiftCard implements CardReaderObserver
 {
 	
-	private GiftCardDatabase giftcarddatabase;
+	private GiftCardDatabase giftcardDatabase;
 	private String getnumber;
-	private String getpin;
-	private Checkout checkout;
+	private Checkout checkOut;
+	private GiftCard typegiftCard;
+	private Boolean isActivated;
+	private BigDecimal checkoutTotal;
 	private BigDecimal transactionAmount;
+	private Card giftCard;
 	
 	public void cardInserted(CardReader reader) {
 		// IGNORE
@@ -31,16 +34,37 @@ public class PaysWithGiftCard implements CardReaderObserver
 	
 	/* This method gathers customer information from the card reader and assigns it to local attributes*/
 
-	public void cardDataRead(CardReader reader, CardData data) {
+	public void cardDataRead(GiftCard card) throws InvalidArgumentSimulationException {
+		
+		if(this.checkout.getState()) {
+			this.typegiftCard = card;
+			getnumber = typegiftCard.getCardNumString();
+			giftCard = typegiftCard.getCard();
+		}
+		try
+		{
+			
+		}
+
+		// add if condition to make payment later
 		
 	}
 	
-	
-	public PaysWithCard(GiftCardDatabase giftcardDatabase, Checkout checkout)
+	public PaysWithGiftCard(GiftCardDatabase giftcardDatabase, Checkout checkOut)
 	{
-		this.giftcarddatabase = giftcardDatabase;
+		this.giftcardDatabase = giftcardDatabase;
+		this.checkOut = checkOut;
+	}
+	
+	public void makePayment() 
+	{
+		
+		GiftCardDatabase giftcardResponse = new GiftCardDatabase();
+		transactionAmount = giftcardResponse.transactionCanHappen(String number);
 		
 	}
+	
+	
 	
 	
 }
