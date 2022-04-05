@@ -2,7 +2,10 @@ package SCSSoftware;
 
 import org.lsmr.selfcheckout.devices.CardReader;
 import org.lsmr.selfcheckout.Card.CardData;
+import org.lsmr.selfcheckout.Card;
 import org.lsmr.selfcheckout.Card.CardSwipeData;
+import org.lsmr.selfcheckout.devices.observers.CardReaderObserver;
+import java.math.BigDecimal;
 
 public class PaysWithGiftCard implements CardReaderObserver
 {
@@ -34,9 +37,10 @@ public class PaysWithGiftCard implements CardReaderObserver
 	
 	/* This method gathers customer information from the card reader and assigns it to local attributes*/
 
-	public void cardDataRead(GiftCard card) throws InvalidArgumentSimulationException {
+	public void cardDataRead(GiftCard card, Checkout checkOut) throws InvalidArgumentSimulationException {
 		
-		if(this.checkout.getState()) {
+		this.checkOut = checkOut;
+		if(this.checkOut.getState()) {
 			this.typegiftCard = card;
 			getnumber = typegiftCard.getCardNumString();
 			giftCard = typegiftCard.getCard();
