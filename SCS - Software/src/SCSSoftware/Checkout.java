@@ -3,7 +3,7 @@ package SCSSoftware;
 import java.math.BigDecimal;
 
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
-import org.lsmr.selfcheckout.devices.SimulationException;
+import org.lsmr.selfcheckout.SimulationException;
 
 //represents a "pay now" button that transitions the customer from "scanning mode" to "payment mode"
 public class Checkout {
