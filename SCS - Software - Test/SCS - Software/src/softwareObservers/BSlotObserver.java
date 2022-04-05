@@ -33,13 +33,13 @@ public class BSlotObserver implements BanknoteSlotObserver {
 	}
 
 	@Override
-	public void banknoteEjected(BanknoteSlot slot) {
+	public void banknoteRemoved(BanknoteSlot slot) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void banknoteRemoved(BanknoteSlot slot) {
+	public void banknotesEjected(BanknoteSlot slot) {
 		// TODO Auto-generated method stub
 		
 	}
