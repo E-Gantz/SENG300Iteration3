@@ -2,7 +2,7 @@ package SCSSoftwareTest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.lsmr.selfcheckout.devices.SimulationException;
+import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 
 import SCSSoftware.CustomerOwnBag;
 import junit.framework.Assert;
@@ -15,7 +15,7 @@ public class CustomerOwnBagTest {
 	private CustomerOwnBag ownbag3;
 	
 
-	@Test(expected = SimulationException.class)
+	@Test(expected = InvalidArgumentSimulationException.class)
 	public void NoBagWeight() {
 		ownbag = new CustomerOwnBag(1.0, -10.0);
 		ownbag2 = new CustomerOwnBag(1.0, -0.1);

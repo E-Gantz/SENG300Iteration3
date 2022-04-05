@@ -25,6 +25,7 @@ public class PaysWithCard implements CardReaderObserver {
 
 
 	private HashMap<String,HashMap<String,String>>paymentResult; 
+	private String lastResponse;
 
 	public void cardInserted(CardReader reader) {
 		// IGNORE
@@ -60,12 +61,13 @@ public class PaysWithCard implements CardReaderObserver {
 			}
 				
 			getnumber = data.getNumber();
-			try {
+			/*try {
 				makePayment();
 			} catch (BankDeclinedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				//e.printStackTrace();
+			}*/
+			makePayment();
 		}
 		
 	}
@@ -87,25 +89,27 @@ public class PaysWithCard implements CardReaderObserver {
 	
 	/* This method passes customer information gathered from the observer to the bank simulator class and awaits for a response 
 	 * if a successful transaction occurs, selected information is then saved into a HashMap to generate receipt information
+	 * The whole exception bit of this is a real conundrum, settled on saving the last response instead, see card declined test
+	 * in the test file for usage.
 	 */
-	public void makePayment() throws BankDeclinedException {
+	public void makePayment() /*throws BankDeclinedException*/ {
 		/*
 		 * response is the UUID of the transaction 
 		 * (like if we were making a request to an api)
 		 * */
-		String response = bank.transactionCanHappen(getcardholder, getnumber, getcvv, gettype, transactionAmount, cvvrequired);
+		lastResponse = bank.transactionCanHappen(getcardholder, getnumber, getcvv, gettype, transactionAmount, cvvrequired);
 
-		if(response != "NULL")
+		if(lastResponse != "NULL")
 		{
 			paymentResult = new HashMap<String,HashMap<String,String>>();
 			HashMap<String, String> data = new HashMap<String, String>();  
 			data.put("cardType", gettype); 
 			data.put("amountPaid", transactionAmount.toString());
-			paymentResult.put(response,data);  
+			paymentResult.put(lastResponse,data);  
 			
-		} else {
+		}/* else {
 			  throw new BankDeclinedException("Card Declined");
-		}
+		}*/
 	}
 	
 	/* This method replaces every digit after the first four on a customers credit card with an X for receipt printing */
@@ -130,6 +134,10 @@ public class PaysWithCard implements CardReaderObserver {
 	public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String getLastResponse() {
+		return this.lastResponse;
 	}
 
 }

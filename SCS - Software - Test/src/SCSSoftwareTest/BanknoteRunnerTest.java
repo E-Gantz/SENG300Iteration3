@@ -20,6 +20,7 @@ import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.BidirectionalChannel;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.devices.UnidirectionalChannel;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
@@ -46,37 +47,26 @@ public class BanknoteRunnerTest {
 	private int[] banknoteDenom = {5, 10, 20, 50, 100};
 	private Currency currency = Currency.getInstance("CAD");
 	private BidirectionalChannel<Banknote> validatorSource;
+	public SelfCheckoutStation station;
+	public Currency c;
 	
 	@Before
 	public void setup() {
-		scanner = new BarcodeScanner();
-		scanner.endConfigurationPhase();
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		scanner = station.mainScanner;
 		pcart = new ProductCart();
 		checkout = new Checkout(scanner, pcart);
-		bSlot = new BanknoteSlot(false);
-		bStorage = new BanknoteStorageUnit(1000);
-		bValidator = new BanknoteValidator(currency, banknoteDenom);
-		
-		interconnect(bSlot, bValidator);
-		interconnect(bValidator, bStorage);
-		
-		bSlot.endConfigurationPhase();
-		bStorage.endConfigurationPhase();
-		bValidator.endConfigurationPhase();
-		
+		bSlot = station.banknoteInput;
+		bStorage = station.banknoteStorage;
+		bValidator = station.banknoteValidator;
 		banknoteRunner = new BanknoteRunner(checkout.getTotalPrice(), bSlot, bStorage, bValidator);
 	}
 	
-	private void interconnect(BanknoteSlot slot, BanknoteValidator validator) {
-		validatorSource = new BidirectionalChannel<Banknote>(slot, validator);
-		slot.connect(validatorSource);
-	}
-
-	private void interconnect(BanknoteValidator validator, BanknoteStorageUnit storage) {
-		UnidirectionalChannel<Banknote> bc = new UnidirectionalChannel<Banknote>(storage);
-		validator.connect(validatorSource, bc);
-	}
-
+	
 	@Test
 	public void testGetCheckoutTotal() {
 		scanner.scan(item1);

@@ -2,17 +2,18 @@ package SCSSoftwareTest;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.BarcodedItem;
+import org.lsmr.selfcheckout.NullPointerSimulationException;
 import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
-import org.lsmr.selfcheckout.devices.SimulationException;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
-
 import SCSSoftware.Checkout;
 import SCSSoftware.ProductCart;
 
@@ -28,11 +29,18 @@ public class CheckoutTest {
 	public BarcodedItem item2 = new BarcodedItem(bc2, 4);
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
 	public BarcodedProduct prod2 = new BarcodedProduct(bc2, "Milk", new BigDecimal(10), 4);
+	public SelfCheckoutStation station;
+	public Currency c;
 
 	@Before
 	public void setUp() {
-		scanner = new BarcodeScanner();
-		scanner.endConfigurationPhase();
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		scanner = station.mainScanner;
 		pcart = new ProductCart();
 		checkout = new Checkout(scanner, pcart);
 	}
@@ -42,15 +50,17 @@ public class CheckoutTest {
 		scanner = null;
 		pcart = null;
 		checkout = null;
+		c = null;
+		station = null;
 	}
 
-	@Test(expected = SimulationException.class)
+	@Test(expected = NullPointerSimulationException.class)
 	public void noCheckoutWhenDisabled() {
 		scanner.disable();
 		checkout.enable();
 	}
 	
-	@Test(expected = SimulationException.class)
+	@Test(expected = NullPointerSimulationException.class)
 	public void noCheckoutWithEmptyCart() {
 		checkout.enable();
 	}
@@ -78,14 +88,14 @@ public class CheckoutTest {
 		assertTrue(checkout.getState());
 	}
 	
-	@Test(expected = SimulationException.class)
+	@Test(expected = NullPointerSimulationException.class)
 	public void testScannerDissabled() {
 		scanner.scan(item1);
 		scanner.disable();
 		checkout.enable();
 	}
 	
-	@Test(expected = SimulationException.class)
+	@Test(expected = NullPointerSimulationException.class)
 	public void testEmptyCart() {
 		scanner.enable();
 		checkout.enable();

@@ -3,11 +3,12 @@ import static org.junit.Assert.*;
 import org.junit.*;
 import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.BarcodedItem;
+import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
 import org.lsmr.selfcheckout.devices.OverloadException;
-import org.lsmr.selfcheckout.devices.SimulationException;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.CustomerOwnBag;
@@ -17,6 +18,7 @@ import SCSSoftware.ProductCart;
 import SCSSoftware.ProductInventory;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 
 
 
@@ -37,21 +39,27 @@ public class ItemPlacerTest {
 	public ItemPlacer placer;
 	public ElectronicScale scale;
 	public int cartSize;
+	public SelfCheckoutStation station;
+	public Currency c;
 
 	@Before
 	public void setUp() {
-		scanner = new BarcodeScanner();
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 100, 1);
+		scanner = station.mainScanner;
 		inventory = new ProductInventory();
 		inventory.addInventory(bc1, prod1);
 		inventory.addInventory(bc2, prod2);
 		cart = new ProductCart();
 		placer = new ItemPlacer(scanner, cart);
-		scale = new ElectronicScale(50,1);
+		scale = station.baggingArea;
 		scale.attach(placer);
-		scale.endConfigurationPhase();
 		adder = new ItemAdder(inventory, cart, placer);
 		scanner.attach(adder);
-		scanner.endConfigurationPhase();
 		cartSize = cart.getItemNames().size();
 	}
 
@@ -66,6 +74,8 @@ public class ItemPlacerTest {
 		cart = null;
 		inventory = null;
 		cartSize = 0;
+		c = null;
+		station = null;
 	}
 
 	@Test
@@ -76,14 +86,13 @@ public class ItemPlacerTest {
 		assertEquals(24.99, placer.getBagWeight(), 0.1);
 	}
 	
-	@Test (expected = SimulationException.class)
+	@Test (expected = InvalidArgumentSimulationException.class)
 	public void testCheckAdd1() {
-		ElectronicScale scale1 = new ElectronicScale(15, 3);
-		scale1.attach(placer);
-		scale1.add(item1);
+		BarcodedItem item3 = new BarcodedItem(bc1, 500);
+		scale.add(item3);
 	}
 	
-	@Test (expected = SimulationException.class) 
+	@Test (expected = InvalidArgumentSimulationException.class) 
 	public void testCheckAdd2() {
 		cart.addToCart(prod2);
 		scale.add(item1);
