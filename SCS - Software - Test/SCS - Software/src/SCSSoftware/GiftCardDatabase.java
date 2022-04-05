@@ -35,22 +35,19 @@ public class GiftCardDatabase {
 		}
 	}
 	
-	public String transactionCanHappen() {
-		if (db.containsKey(customer)) {
-
-			if (cvvrequired) {
-				if (verifyCardData(customer, number, cardtype) && verifyCVV(customer, CVV))
-					return verifyCustomerTransaction(customer, txnAmount);
-
-			} else {
-				if (verifyCardData(customer, number, cardtype))
-					return verifyCustomerTransaction(customer, txnAmount);
+	public String transactionCanHappen(String gcnumber, String activationStatus, BigDecimal txtAmount) {
+		if(db.containsKey(gcnumber))
+		{
+			if(activationStatus == "true")
+			{
+				if(verifyCardData(gcnumber))
+				{
+					return verifyCustomerTransaction(gcnumber,txtAmount);
+				}
 			}
 		}
-		return "NULL"; // unsuccessful / declined
+		return "NULL";
 	}
-	
-
 	
 	public double getBalance(String cardnumber)
 	{
