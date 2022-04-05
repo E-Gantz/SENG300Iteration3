@@ -30,3 +30,4 @@ outputs/
 
 *.xlsx
 /bin/
+.classpath
