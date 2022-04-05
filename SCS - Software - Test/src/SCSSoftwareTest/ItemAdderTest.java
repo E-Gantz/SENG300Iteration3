@@ -7,6 +7,7 @@ import org.lsmr.selfcheckout.BarcodedItem;
 import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.ItemAdder;
@@ -15,6 +16,7 @@ import SCSSoftware.ProductCart;
 import SCSSoftware.ProductInventory;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 
 
 
@@ -34,21 +36,27 @@ public class ItemAdderTest {
 	public ItemPlacer placer;
 	public ElectronicScale scale;
 	public int cartSize;
+	public SelfCheckoutStation station;
+	public Currency c;
 
 	@Before
 	public void setUp() {
-		scanner = new BarcodeScanner();
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		scanner = station.mainScanner;
 		inventory = new ProductInventory();
 		inventory.addInventory(bc1, prod1);
 		inventory.addInventory(bc2, prod2);
 		cart = new ProductCart();
 		placer = new ItemPlacer(scanner, cart);
-		scale = new ElectronicScale(50,1);
+		scale = station.baggingArea;
 		scale.attach(placer);
-		scale.endConfigurationPhase();
 		adder = new ItemAdder(inventory, cart, placer);
 		scanner.attach(adder);
-		scanner.endConfigurationPhase();
 		cartSize = cart.getItemNames().size();
 	}
 
@@ -63,6 +71,8 @@ public class ItemAdderTest {
 		cart = null;
 		inventory = null;
 		cartSize = 0;
+		c = null; //yes i know i dont have to do this one every time
+		station = null;
 	}
 
 	@Test

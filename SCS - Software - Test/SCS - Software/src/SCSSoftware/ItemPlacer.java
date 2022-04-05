@@ -65,6 +65,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	public void overload(ElectronicScale scale) {
 		//Auto-generated method stub
 		//put "too heavy!" message on screen or something
+		throw new InvalidArgumentSimulationException("Too Heavy!");
 	}
 
 	@Override

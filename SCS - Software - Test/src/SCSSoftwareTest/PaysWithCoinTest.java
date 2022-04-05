@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.lsmr.selfcheckout.Coin;
@@ -22,6 +23,7 @@ import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.CoinTray;
 import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
+import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.devices.UnidirectionalChannel;
 
@@ -37,100 +39,50 @@ public class PaysWithCoinTest {
 	private PaysWithCoin pwc;
     
 	private CoinSlot slot;
-	private Currency cad = Currency.getInstance("CAD");
-	private ArrayList<BigDecimal> coinDenominations;
 	private CoinValidator cValidator;
-	
-	private UnidirectionalChannel<Coin> reject;
-	private Map<BigDecimal,UnidirectionalChannel<Coin>> standard;
-	private UnidirectionalChannel<Coin> overflow;
-	private UnidirectionalChannel<Coin> slotsink;
-	
 	private CoinStorageUnit storage;
 	private CoinTray tray;
-	private CoinDispenser coinDispenser;
 	
-	private Acceptor<Coin> rejAcceptor;
-	private Acceptor<Coin> stanAcceptor;
-	private Acceptor<Coin> overAcceptor;
-	private Acceptor<Coin> sinkAcceptor;
-	
-	public Map<BigDecimal, CoinDispenser> coinDispensers;
+	private SelfCheckoutStation station;
+	private Currency c;
 	
 	@Before
 	public void setup()
 	{
-		Coin.DEFAULT_CURRENCY = cad;
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		Coin.DEFAULT_CURRENCY = c;
 		nickel = new Coin(BigDecimal.valueOf(0.05));
 		dime = new Coin(BigDecimal.valueOf(0.10));
 		quarter = new Coin(BigDecimal.valueOf(0.25));
 		loonie = new Coin(BigDecimal.valueOf(1.00));
 		toonie = new Coin(BigDecimal.valueOf(2.00));
 		
-		slot = new CoinSlot();
-		coinDenominations = new ArrayList<BigDecimal>( Arrays.asList(nickel.getValue(), dime.getValue(), quarter.getValue(), loonie.getValue(), toonie.getValue()));
-		cValidator = new CoinValidator(cad, coinDenominations);
+		slot = station.coinSlot;
+		cValidator = station.coinValidator;
 		pwc = new PaysWithCoin(slot, cValidator);
-		
-		storage = new CoinStorageUnit(10000);
-		tray = new CoinTray(100);
-		storage.endConfigurationPhase();
-		tray.endConfigurationPhase();
-		
-		coinDispensers = new HashMap<>();
-
-        for(int i = 0; i < coinDenominations.size(); i++)
-        {
-            coinDispensers.put(coinDenominations.get(i), new CoinDispenser(10000));
-		}
-        
-        for(CoinDispenser cd : coinDispensers.values())
-            cd.endConfigurationPhase();
-//		reject = new UnidirectionalChannel<Coin>(rejAcceptor);
-//		standard = new HashMap<BigDecimal,UnidirectionalChannel<Coin>>();
-//		overflow = new UnidirectionalChannel<Coin>(overAcceptor);
-//		slotsink = new UnidirectionalChannel<Coin>(sinkAcceptor);
-//	
-//		slot.connect(slotsink);
-//		for (BigDecimal denom : coinDenominations) {
-//			Acceptor<Coin> acceptor = null;
-//			standard.put(denom, new UnidirectionalChannel<Coin>(acceptor));
-//		}
-//		
-//		cValidator.connect(reject, standard, overflow);
-		
-		
-		interconnect(slot,cValidator);
-		interconnect(cValidator, tray, coinDispensers, storage);
-		
 		cValidator.attach(pwc);
-		cValidator.endConfigurationPhase();
-
-	}
-	
-	private void interconnect(CoinValidator validator, CoinTray tray, Map<BigDecimal, CoinDispenser> dispensers,
-	        CoinStorageUnit storage) {
-	        UnidirectionalChannel<Coin> rejectChannel = new UnidirectionalChannel<Coin>(tray);
-	        Map<BigDecimal, UnidirectionalChannel<Coin>> dispenserChannels = new HashMap<BigDecimal, UnidirectionalChannel<Coin>>();
-
-	        for(BigDecimal denomination : dispensers.keySet()) {
-	            CoinDispenser dispenser = dispensers.get(denomination);
-	            dispenserChannels.put(denomination, new UnidirectionalChannel<Coin>(dispenser));
-	        }
-
-	        UnidirectionalChannel<Coin> overflowChannel = new UnidirectionalChannel<Coin>(storage);
-
-	        validator.connect(rejectChannel, dispenserChannels, overflowChannel);
-	    }
-	
-	private void interconnect(CoinSlot slot, CoinValidator validator) {
-        UnidirectionalChannel<Coin> cc = new UnidirectionalChannel<Coin>(validator);
-        slot.connect(cc);
-        slot.endConfigurationPhase();
+		
+		storage = station.coinStorage;
+		tray = station.coinTray;
     }
 	
+	@After
+	public void tearDown() {
+		cValidator = null;
+		c = null;
+		slot = null;
+		pwc = null;
+		storage = null;
+		tray = null;
+		station = null;
+	}
+	
     @Test
-    public void insertCoinTest() throws DisabledException
+    public void insertCoinTest() throws DisabledException, OverloadException
     {
     	slot.accept(quarter);
     	assertEquals(quarter.getValue(), pwc.getCoinArray().get(0));
@@ -139,7 +91,6 @@ public class PaysWithCoinTest {
     @Test
     public void sumTotalTest()
     {
-    	PaysWithCoin pwc = new PaysWithCoin(slot, cValidator);
     	pwc.getCoinArray().add(nickel.getValue());
     	pwc.getCoinArray().add(dime.getValue());
     	pwc.getCoinArray().add(quarter.getValue());

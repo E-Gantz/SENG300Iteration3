@@ -3,14 +3,17 @@ package SCSSoftwareTest;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.HashMap;
 
 import org.junit.*;
 import org.lsmr.selfcheckout.Card;
+import org.lsmr.selfcheckout.IllegalNormalPhaseSimulationException;
 import org.lsmr.selfcheckout.MagneticStripeFailureException;
 import org.lsmr.selfcheckout.Card.CardData;
 import org.lsmr.selfcheckout.devices.CardReader;
-import org.lsmr.selfcheckout.devices.SimulationException;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 
 import SCSSoftware.MemberCard;
 import SCSSoftware.Membership;
@@ -23,16 +26,23 @@ public class MemberCardTest {
 	private Card card2;
 	private MemberCard mcard2;
 	private boolean scanned = false;
+	private SelfCheckoutStation station;
+	private Currency c;
 	
 	@Before
 	public void setUp() {
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
 		card1 = new MemberCard("00001", "jim bob");
 		members = new HashMap<String, MemberCard>();
 		members.put("00001", card1);
 		membership = new Membership(members);
-		reader = new CardReader();
+		reader = station.cardReader;
 		reader.attach(membership);
-		reader.endConfigurationPhase();
 	}
 	
 	@After
@@ -43,6 +53,8 @@ public class MemberCardTest {
 		card1 = null;
 		card2 = null;
 		scanned = false;
+		c = null;
+		station = null;
 	}
 	
 	//passes if the card scanned is the one Membership has 'saved'
@@ -79,12 +91,12 @@ public class MemberCardTest {
 		assertEquals(membership.getMemberCard().getCardNumString(), "00001");
 	}
 	
-	@Test(expected = SimulationException.class)
+	@Test(expected = NullPointerException.class)
 	public void wrongNumberEntered(){
 		membership.manualEntry("00002");
 	}
 	
-	@Test(expected = SimulationException.class)
+	@Test(expected = IllegalNormalPhaseSimulationException.class)
 	public void wrongCardTypeScanned() throws IOException{
 		card2 = new Card("Visa", "4111111111111111", "jim bob", "222", "2222", true, true);
 		while(!scanned) {
@@ -96,7 +108,7 @@ public class MemberCardTest {
 		}
 	}
 	
-	@Test(expected = SimulationException.class)
+	@Test(expected = NullPointerException.class)
 	public void unkownMemberCardScanned() throws IOException{
 		mcard2 = new MemberCard("00002", "Jimothy");
 		while(!scanned) {

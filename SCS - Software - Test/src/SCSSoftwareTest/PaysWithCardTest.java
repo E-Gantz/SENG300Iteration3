@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.HashMap;
 
 import org.junit.Before;
@@ -15,7 +16,7 @@ import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.TapFailureException;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.CardReader;
-import org.lsmr.selfcheckout.devices.SimulationException;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.BankDeclinedException;
@@ -49,6 +50,8 @@ public class PaysWithCardTest {
 	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
 	public Barcode bc1 = new Barcode(code1); 
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
+	private SelfCheckoutStation station;
+	private Currency c;
 
 	@Before
 	public void setup()
@@ -62,6 +65,13 @@ public class PaysWithCardTest {
 		name2 = "Elon Musk";
 		name3 = "Dick McDickface";
 		
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		
 		BigDecimal currentbalance = new BigDecimal("500");
 		tapandchip = new Card(carddebit, cardnumber, name, CVV, pin, true, true);
 		notapchip = new Card(carddebit, cardnumber, name, CVV, pin, false, true);
@@ -73,23 +83,19 @@ public class PaysWithCardTest {
 		banksimulator.addToDatabase(name, cardnumber, CVV, carddebit, currentbalance);
 		banksimulator.addToDatabase(name3, cardnumber, CVV, cardcredit, BigDecimal.valueOf(0));
 		
-		barcodescanner = new BarcodeScanner();
+		barcodescanner = station.handheldScanner;
 		productcart = new ProductCart();
 		checkout = new Checkout(barcodescanner, productcart);
 		payswithcard = new PaysWithCard(banksimulator, checkout);
-		cardreader = new CardReader();
+		cardreader = station.cardReader;
 		
 		cardreader.attach(payswithcard);
-		cardreader.endConfigurationPhase();
 		productcart.addToCart(prod1);
-		cardreader.endConfigurationPhase();
-		barcodescanner.endConfigurationPhase();
 		checkout.enable();
-		
 	}
 	
 	 @Test 
-	 public void cardInsertDataTest() throws IOException, SimulationException 
+	 public void cardInsertDataTest() throws IOException
 	 { 
 		 Boolean inserted = false;
 		 while(!inserted)
@@ -104,7 +110,7 @@ public class PaysWithCardTest {
 	 }
 	 
 	 @Test 
-	  public void cardTappedDataTest() throws IOException, SimulationException 
+	  public void cardTappedDataTest() throws IOException
 	 { 
 		 Boolean inserted = false;
 		 while(!inserted)
@@ -119,7 +125,7 @@ public class PaysWithCardTest {
 	 }
 	 
 	@Test
-	public void swipeDataTest() throws IOException, SimulationException
+	public void swipeDataTest() throws IOException
 	{
 		 Boolean inserted = false;
 		 while(!inserted)
@@ -135,7 +141,7 @@ public class PaysWithCardTest {
 	}
 	
 	@Test
-	public void transactionIDTest() throws IOException, SimulationException
+	public void transactionIDTest() throws IOException
 	{
 		cardreader.insert(notapchip, pin);
 		String id = payswithcard.receiptCardNum();
@@ -144,24 +150,24 @@ public class PaysWithCardTest {
 	}
 	
 	@Test 
-	public void bankDeclinedTest() throws IOException, SimulationException
+	public void bankDeclinedTest() throws IOException
 	{
 		cardreader.insert(tapandchip, pin);
 		assertTrue(banksimulator.transactionCanHappen(name3, cardnumber, CVV, cardcredit, BigDecimal.valueOf(1), true) == "NULL"); 
 	}
 	
 	@Test 
-	public void customerNotInDatabaseTest() throws IOException, SimulationException
+	public void customerNotInDatabaseTest() throws IOException
 	{
 		cardreader.insert(tapandchip, pin);
 		assertTrue(banksimulator.transactionCanHappen(name2, cardnumber, CVV, cardcredit, BigDecimal.valueOf(1), true) == "NULL"); 
 	}
 	
 	@Test
-	public void cardDeclinedTest() throws IOException, SimulationException
+	public void cardDeclinedTest() throws IOException
 	{
 		cardreader.insert(fakeCard, pin);
-		
+		assertTrue(payswithcard.getLastResponse() == "NULL");
 	}
 	
 }

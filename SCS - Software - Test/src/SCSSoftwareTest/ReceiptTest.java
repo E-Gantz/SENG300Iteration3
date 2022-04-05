@@ -7,7 +7,10 @@ import org.lsmr.selfcheckout.BarcodedItem;
 import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
+import org.lsmr.selfcheckout.devices.EmptyException;
+import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.ReceiptPrinter;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.ItemAdder;
@@ -20,6 +23,7 @@ import SCSSoftware.ProductCart;
 import SCSSoftware.ProductInventory;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.HashMap;
 
 public class ReceiptTest {
@@ -44,16 +48,23 @@ public class ReceiptTest {
 	ReceiptPrinter printer;
 	PrintReceipts receiptPrintout;
 	PrinterMaintenance printmaint;
+	public SelfCheckoutStation station;
+	public Currency c;
 	
 	@Before
-	public void setUp() {
-		printer = new ReceiptPrinter();
+	public void setUp() throws OverloadException {
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		printer = station.printer;
 		cart = new ProductCart();
 		printmaint = new PrinterMaintenance();
 		printer.attach(printmaint);
 		printer.addInk(1);
 		printer.addPaper(1);
-		printer.endConfigurationPhase();
 		card1 = new MemberCard("00001", "jim bob");
 		members = new HashMap<String, MemberCard>();
 		members.put("00001", card1);
@@ -70,10 +81,12 @@ public class ReceiptTest {
 		members = null;
 		membership = null;
 		receiptPrintout = null;
+		c = null;
+		station = null;
 	}
 	
 	@Test
-	public void OneItemReceipt() {
+	public void OneItemReceipt() throws EmptyException, OverloadException {
 		cart.addToCart(prod1);
 		receiptPrintout.printReceipt();
 		String returnedReceipt = printer.removeReceipt();
@@ -81,7 +94,7 @@ public class ReceiptTest {
 	}
 	
 	@Test
-	public void TwoItemReceipt() {
+	public void TwoItemReceipt() throws EmptyException, OverloadException {
 		cart.addToCart(prod1);
 		cart.addToCart(prod2);
 		receiptPrintout.printReceipt();

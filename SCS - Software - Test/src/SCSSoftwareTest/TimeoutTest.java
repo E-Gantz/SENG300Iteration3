@@ -3,6 +3,7 @@ package SCSSoftwareTest;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.*;
@@ -12,46 +13,53 @@ import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
 import org.lsmr.selfcheckout.devices.OverloadException;
-import org.lsmr.selfcheckout.devices.SimulationException;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
+import org.lsmr.selfcheckout.SimulationException;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
-
+import org.lsmr.selfcheckout.devices.AbstractDevice;
 import SCSSoftware.ItemAdder;
 import SCSSoftware.ItemPlacer;
 import SCSSoftware.ProductCart;
 import SCSSoftware.ProductInventory;
 
 public class TimeoutTest {
-	public BarcodeScanner scanner;
-	public ItemAdder adder;
-	public ProductInventory inventory;
-	public ProductCart cart;
-	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
-	public Numeral[] code2 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.two};
-	public Barcode bc1 = new Barcode(code1); //001
-	public Barcode bc2 = new Barcode(code2); //002
-	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
-	public BarcodedItem item2 = new BarcodedItem(bc2, 4);
-	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
-	public BarcodedProduct prod2 = new BarcodedProduct(bc2, "Milk", new BigDecimal(10), 4);
-	public int cartSize;
-	public ItemPlacer placer;
-	public ElectronicScale scale;
-	public double expectedWeight;
+	private BarcodeScanner scanner;
+	private ItemAdder adder;
+	private ProductInventory inventory;
+	private ProductCart cart;
+	private Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
+	private Numeral[] code2 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.two};
+	private Barcode bc1 = new Barcode(code1); //001
+	private Barcode bc2 = new Barcode(code2); //002
+	private BarcodedItem item1 = new BarcodedItem(bc1, 3);
+	private BarcodedItem item2 = new BarcodedItem(bc2, 4);
+	private BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
+	private BarcodedProduct prod2 = new BarcodedProduct(bc2, "Milk", new BigDecimal(10), 4);
+	private int cartSize;
+	private ItemPlacer placer;
+	private ElectronicScale scale;
+	private double expectedWeight;
+	private SelfCheckoutStation station;
+	private Currency c;
 
 	@Before
 	public void setUp() {
-		scanner = new BarcodeScanner();
+		c = Currency.getInstance("CAD");
+		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
+		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		
+		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		scanner = station.mainScanner;
 		inventory = new ProductInventory();
 		inventory.addInventory(bc1, prod1);
 		inventory.addInventory(bc2, prod2);
 		cart = new ProductCart();
 		placer = new ItemPlacer(scanner, cart);
-		scale = new ElectronicScale(50,1);
+		scale = station.baggingArea;
 		scale.attach(placer);
-		scale.endConfigurationPhase();
 		adder = new ItemAdder(inventory, cart, placer);
 		scanner.attach(adder);
-		scanner.endConfigurationPhase();
 		cartSize = cart.getItemNames().size();
 		expectedWeight = 0;
 	}
@@ -68,6 +76,8 @@ public class TimeoutTest {
 		inventory = null;
 		cartSize = 0;
 		expectedWeight = 0;
+		c = null;
+		station = null;
 	}
 	
 	@Test (timeout = 10000)
