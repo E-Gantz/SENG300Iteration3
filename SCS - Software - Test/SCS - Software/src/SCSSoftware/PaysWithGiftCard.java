@@ -1,5 +1,6 @@
 package SCSSoftware;
 
+<<<<<<< HEAD
 import org.lsmr.selfcheckout.devices.CardReader;
 import org.lsmr.selfcheckout.Card.CardData;
 import org.lsmr.selfcheckout.Card;
@@ -71,4 +72,9 @@ public class PaysWithGiftCard implements CardReaderObserver
 	
 	
 	
+=======
+public class PaysWithGiftCard 
+{
+	
+>>>>>>> parent of 8234812 (Created new classes)
 }
