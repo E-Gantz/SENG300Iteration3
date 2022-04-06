@@ -1,11 +1,11 @@
 package SCSSoftware;
-
+@SuppressWarnings("serial")
 public class BankDeclinedException extends Exception{
 
 	/**
 	 * Create an exception without an error message.
 	 */
-	public BankDeclinedException() {}
+	public BankDeclinedException() {super("Card Declined");}
 
 	/**
 	 * Create an exception with an error message.

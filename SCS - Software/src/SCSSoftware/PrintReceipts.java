@@ -2,6 +2,8 @@ package SCSSoftware;
 
 import java.util.ArrayList;
 
+import org.lsmr.selfcheckout.devices.EmptyException;
+import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 
 public class PrintReceipts {
@@ -17,7 +19,7 @@ public class PrintReceipts {
 	}
 	
 	//if input is products "Milk" and "Bread" with prices 10 and 5, output should be: "Milk $10\nBread $5\n"
-	public void printReceipt() {
+	public void printReceipt() throws EmptyException, OverloadException {
 		String workingOn;
 		String memberNum = member.getMemberCard().getCardNumString();
 		items = prodCart.getItemNames();

@@ -1,8 +1,8 @@
 package SCSSoftware;
 
+import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 import org.lsmr.selfcheckout.Item;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
-import org.lsmr.selfcheckout.devices.SimulationException;
 
 public class CustomerOwnBag extends Item{
 	
@@ -13,7 +13,7 @@ public class CustomerOwnBag extends Item{
 		super(weightInGrams);
 		// TODO Auto-generated constructor stub
 		if(bagWeight < 0.0) {
-			throw new SimulationException("Error with the scale");
+			throw new InvalidArgumentSimulationException("Error with the scale");
 		} else if(bagWeight == 0.0) {
 			this.broughtBag = false;
 		} else {
