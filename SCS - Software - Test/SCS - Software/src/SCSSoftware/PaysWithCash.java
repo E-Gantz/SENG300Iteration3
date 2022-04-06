@@ -70,7 +70,6 @@ public class PaysWithCash {
 		{
 			double totalValueDouble = totalValue.doubleValue();
 			while(totalValueDouble != 0) {
-			
 				
 				if(totalValueDouble - 100 >= 0) {
 					totalValueDouble -= 100;
