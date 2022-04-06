@@ -11,12 +11,14 @@ import org.junit.Test;
 import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.Card;
 import org.lsmr.selfcheckout.ChipFailureException;
+import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 import org.lsmr.selfcheckout.MagneticStripeFailureException;
 import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.TapFailureException;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.CardReader;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
+import org.lsmr.selfcheckout.external.CardIssuer;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.BankDeclinedException;
@@ -24,25 +26,12 @@ import SCSSoftware.BankSimulator;
 import SCSSoftware.Checkout;
 import SCSSoftware.PaysWithCard;
 import SCSSoftware.ProductCart;
-
+import java.util.Calendar;
 public class PaysWithCardTest {
 	
-	private BankSimulator banksimulator;
 	private PaysWithCard payswithcard;
 	private CardReader cardreader;
-	private Card tapandchip;
-	private Card notapchip;
-	private Card tapnochip;
-	private Card notapnochip;
-	private Card fakeCard;
-	private String pin;
-	private String name;
-	private String cardnumber;
-	private String CVV;
-	private String carddebit;
-	private String cardcredit;
-	private String name2;
-	private String name3;
+
 	private Checkout checkout;
 	private BarcodeScanner barcodescanner;
 	private ProductCart productcart;
@@ -52,46 +41,76 @@ public class PaysWithCardTest {
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
 	private SelfCheckoutStation station;
 	private Currency c;
+	
+	private Card tapandchip;
+	private Card notapchip;
+	private Card tapnochip;
+	private Card notapnochip;
+	private Card fakeCard;
+	
+	private String pin; 
+	
+	private CardIssuer issuer1; 
+	private CardIssuer issuer2; 
 
 	@Before
 	public void setup()
 	{
-		name = "Jason Bourne";
-		cardnumber = "1234-0000-0000";
-		CVV = "000";
-		carddebit = "DEBIT";
-		cardcredit = "CREDIT";
-		pin = "0000";
-		name2 = "Elon Musk";
-		name3 = "Dick McDickface";
 		
+		String issuerName1 = "McCreamyBank";
+		String issuer1DigitId = "1234";
+		
+		String issuerName2 = "CumpsterBank"; 
+		String issuer2DigitId = "0987";
+		
+		
+		issuer1 = new CardIssuer(issuerName1);
+		issuer2 = new CardIssuer(issuerName2);
+		
+		pin = "6969";
+		String cardnumber1 = "001430001020";
+		String cardnumberfull1 = issuer1DigitId + cardnumber1;
+		String cardHolder1 = "Barry McKockinner"; 
+		Calendar cardExpiry1 = Calendar.getInstance();
+		cardExpiry1.set(2023, 10, 12);
+		String cvv = "420"; 
+		
+		BigDecimal amount1 = new BigDecimal("10000");
+		
+		String credit = "credit"; 
+		String debit = "debit";
+		
+		tapandchip = new Card(debit, cardnumberfull1, cardHolder1, cvv, pin, true, true);
+		notapchip = new Card(debit, cardnumberfull1, cardHolder1, cvv, pin, false, true);
+		tapnochip = new Card(debit, cardnumberfull1, cardHolder1, cvv, pin, true, false);
+		notapnochip = new Card(debit, cardnumberfull1, cardHolder1, "", pin, false, false);
+		fakeCard = new Card(credit, "0987" + "000193830101", cardHolder1, cvv, pin, true, true);
+		
+		
+		issuer1.addCardData(cardnumber1, cardHolder1, cardExpiry1, cvv,amount1);
+		
+		
+		
+
 		c = Currency.getInstance("CAD");
 		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
 						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
 		int [] bankNoteDenom = {5, 10, 20, 50, 100};
 		
 		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
-		
-		BigDecimal currentbalance = new BigDecimal("500");
-		tapandchip = new Card(carddebit, cardnumber, name, CVV, pin, true, true);
-		notapchip = new Card(carddebit, cardnumber, name, CVV, pin, false, true);
-		tapnochip = new Card(carddebit, cardnumber, name, CVV, pin, true, false);
-		notapnochip = new Card(carddebit, cardnumber, name, "", pin, false, false);
-		fakeCard = new Card(cardcredit, cardnumber, name2, CVV, pin, true, true);
-		
-		banksimulator = new BankSimulator();
-		banksimulator.addToDatabase(name, cardnumber, CVV, carddebit, currentbalance);
-		banksimulator.addToDatabase(name3, cardnumber, CVV, cardcredit, BigDecimal.valueOf(0));
-		
+
+//		
 		barcodescanner = station.handheldScanner;
 		productcart = new ProductCart();
 		checkout = new Checkout(barcodescanner, productcart);
-		payswithcard = new PaysWithCard(banksimulator, checkout);
 		cardreader = station.cardReader;
-		
+		payswithcard = new PaysWithCard(checkout);
 		cardreader.attach(payswithcard);
 		productcart.addToCart(prod1);
 		checkout.enable();
+		
+		payswithcard.addAcceptedCardIssuer(issuer1, issuer1DigitId);
+		payswithcard.addAcceptedCardIssuer(issuer2, issuer2DigitId);
 	}
 	
 	 @Test 
@@ -149,25 +168,12 @@ public class PaysWithCardTest {
 		
 	}
 	
-	@Test 
-	public void bankDeclinedTest() throws IOException
-	{
-		cardreader.insert(tapandchip, pin);
-		assertTrue(banksimulator.transactionCanHappen(name3, cardnumber, CVV, cardcredit, BigDecimal.valueOf(1), true) == "NULL"); 
-	}
 	
-	@Test 
-	public void customerNotInDatabaseTest() throws IOException
-	{
-		cardreader.insert(tapandchip, pin);
-		assertTrue(banksimulator.transactionCanHappen(name2, cardnumber, CVV, cardcredit, BigDecimal.valueOf(1), true) == "NULL"); 
-	}
-	
-	@Test
-	public void cardDeclinedTest() throws IOException
+	@Test(expected=InvalidArgumentSimulationException.class)
+	public void customerNotInBankDB() throws IOException
 	{
 		cardreader.insert(fakeCard, pin);
-		assertTrue(payswithcard.getLastResponse() == "NULL");
+//		assertTrue(payswithcard.getLastResponse() == "NULL");
 	}
 	
 }
