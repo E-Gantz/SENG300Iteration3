@@ -332,7 +332,7 @@ public class TimeoutTest {
 		TimeUnit.SECONDS.sleep(3);
 		expectedWeight = 7;
 		
-		assertEquals(placer.getBagWeight(), expectedWeight, 0.5);
+		assertEquals(placer.getBagWeight(), expectedWeight, 1);
 	}
 	
 	@Test (timeout = 10000)
