@@ -90,6 +90,7 @@ public class PaysWithCashTest {
 		quarter = new Coin(BigDecimal.valueOf(0.25));
 		loonie = new Coin(BigDecimal.valueOf(1.00));
 		toonie = new Coin(BigDecimal.valueOf(2.00));
+<<<<<<< Updated upstream
 		
 		slot = station.coinSlot;
 		cValidator = station.coinValidator;
@@ -127,6 +128,36 @@ public class PaysWithCashTest {
 		banknoteRunner = null;
 		paysWithCash = null;
 	}
+=======
+						
+		Coin.DEFAULT_CURRENCY = Currency.getInstance("CAD");
+		nickel = new Coin(BigDecimal.valueOf(0.05));
+		dime = new Coin(BigDecimal.valueOf(0.10));
+		quarter = new Coin(BigDecimal.valueOf(0.25));
+		loonie = new Coin(BigDecimal.valueOf(1.00));
+		toonie = new Coin(BigDecimal.valueOf(2.00));
+		pcart = new ProductCart();
+		SelfCheckoutStation station = new SelfCheckoutStation(currency, banknoteDenom, coinDenom, 1000, 1);
+		this.scanner = station.mainScanner;
+		this.bOutput = station.banknoteOutput;
+		this.bSlot = station.banknoteInput;
+		this.cSlot = station.coinSlot;
+		this.cTray = station.coinTray;
+		this.cValidator = station.coinValidator;
+		this.cStorage = station.coinStorage;
+		pwc = new PaysWithCoin(cSlot, cValidator);
+		this.bStorage = station.banknoteStorage;
+		this.bValidator = station.banknoteValidator;
+		this.coinDispensers = station.coinDispensers;
+		
+		checkout = new Checkout(scanner, pcart);
+		
+		coinRunner = new PaysWithCoin(cSlot, cValidator);
+		banknoteRunner = new BanknoteRunner(checkout.getTotalPrice(), bSlot, bStorage, bValidator);
+			
+		paysWithCash = new PaysWithCash(pwc, banknoteRunner, station.banknoteDispensers, station.coinDispensers, bOutput, cTray);
+	}
+>>>>>>> Stashed changes
 
 	@Test
 	public void testSumCoinBanknote() throws DisabledException, OverloadException {
@@ -179,14 +210,30 @@ public class PaysWithCashTest {
 		slot.accept(coin4);
 		slot.accept(coin5);
 		
+<<<<<<< Updated upstream
 		BigDecimal expectedChange = BigDecimal.valueOf(183.4);
 		
 		BigDecimal testSet = new BigDecimal(3.4);
     	pwc.setTotal(testSet);
+=======
+		BigDecimal expectedChange = BigDecimal.valueOf(2.0);
+		
+		BigDecimal coinsInserted = new BigDecimal(2.0);
+		//banknoteRunner.setInsertedBanknotes(BigDecimal.valueOf(5.0)); //SETTER ADDED HERE
+    	pwc.setTotal(coinsInserted);
+    	
+>>>>>>> Stashed changes
     	banknoteRunner.setCheckoutTotal(BigDecimal.valueOf(5));
 		paysWithCash.sumCoinBanknote();
 		paysWithCash.getChange();
 		BigDecimal change = paysWithCash.emitChange();
+<<<<<<< Updated upstream
 		assertTrue(expectedChange.doubleValue() == change.doubleValue());
 	}*/
 }
+=======
+			
+		assert(expectedChange.doubleValue() == change.doubleValue());
+	}
+}
+>>>>>>> Stashed changes
