@@ -13,6 +13,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	private double expectedWeight;
 	private double previousWeight;
 	private double currentWeight;
+	private double scaleLimit;
 	private ProductCart pcart;
 	private BarcodeScanner scanner;
 	private Boolean NotInBags;
@@ -48,8 +49,10 @@ public class ItemPlacer implements ElectronicScaleObserver {
 		expectedWeight = pcart.getCart().get((pcart.getCart().size())-1).getExpectedWeight();//this gets the weight of the item most recently added to the cart.
 		if(ownbag.checkOwnBag() == false)
 			currentWeight = weightInGrams;
-		else
+		else if(ownbag.getBagWeight() > scale.getSensitivity())
 			currentWeight = weightInGrams  - ownbag.getBagWeight();
+		else 
+			currentWeight = weightInGrams;
 		if(currentWeight == previousWeight + expectedWeight) {
 			this.previousWeight = currentWeight;
 			this.expectedWeight = 0.0;
