@@ -28,6 +28,7 @@ public class PaysWithCash {
 	private BigDecimal totalValue;
 	private BanknoteSlot banknoteOutputSlot;
 	private CoinTray coinTray;
+	private BanknoteDispenser banknoteDispener;
 	
 	
 	public PaysWithCash(PaysWithCoin payswithCoin, BanknoteRunner banknoteRunner, Map<Integer, BanknoteDispenser> banknoteDispenser, 
@@ -39,6 +40,7 @@ public class PaysWithCash {
 		this.banknotedispenser = banknoteDispenser;
 		this.banknoteOutputSlot = banknoteOutputSlot;
 		this.coinTray = coinTray;
+		
 	}
 
 	public BigDecimal sumCoinBanknote()
@@ -69,6 +71,7 @@ public class PaysWithCash {
 			double totalValueDouble = totalValue.doubleValue();
 			while(totalValueDouble != 0) {
 			
+				
 				if(totalValueDouble - 100 >= 0) {
 					totalValueDouble -= 100;
 					listOfNotes.add(new Banknote(Currency.getInstance("CAD"), 100));
