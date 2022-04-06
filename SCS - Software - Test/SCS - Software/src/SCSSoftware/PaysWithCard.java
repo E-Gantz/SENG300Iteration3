@@ -120,7 +120,7 @@ public class PaysWithCard implements CardReaderObserver {
 	
 	
 	/* The constructor initializes the banking simulator classes and retrieves what is being charged to the customer from checkout */
-	public PaysWithCard(BankSimulator bank, Checkout checkout)
+	public PaysWithCard(Checkout checkout)
 	{	
 		//Remember to get transaction amount somewhere
 		this.acceptedCardIssuers = new HashMap<String,CardIssuer>();
@@ -129,28 +129,7 @@ public class PaysWithCard implements CardReaderObserver {
 		this.paymentResult = new HashMap<String,HashMap<String,String>>();
 	}
 	
-	/* This method passes customer information gathered from the observer to the bank simulator class and awaits for a response 
-	 * if a successful transaction occurs, selected information is then saved into a HashMap to generate receipt information
-	 */
-//	public void makePayment() throws BankDeclinedException {
-//		/*
-//		 * response is the UUID of the transaction 
-//		 * (like if we were making a request to an api)
-//		 * */
-//		String response = bank.transactionCanHappen(getcardholder, getnumber, getcvv, gettype, transactionAmount, cvvrequired);
-//
-//		if(response != "NULL")
-//		{
-//			paymentResult = new HashMap<String,HashMap<String,String>>();
-//			HashMap<String, String> data = new HashMap<String, String>();  
-//			data.put("cardType", gettype); 
-//			data.put("amountPaid", transactionAmount.toString());
-//			paymentResult.put(response,data);  
-//			
-//		} else {
-//			  throw new BankDeclinedException("Card Declined");
-//		}
-//	}
+
 	
 	/* This method replaces every digit after the first four on a customers credit card with an X for receipt printing */
 
