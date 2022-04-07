@@ -2,8 +2,8 @@ package SCSSoftware;
 
 import java.math.BigDecimal;
 
+import org.lsmr.selfcheckout.NullPointerSimulationException;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
-import org.lsmr.selfcheckout.devices.SimulationException;
 
 //represents a "pay now" button that transitions the customer from "scanning mode" to "payment mode"
 public class Checkout {
@@ -27,11 +27,11 @@ public class Checkout {
 	 */
 	public void enable() {
 		if(scanner.isDisabled()) {
-			throw new SimulationException("Need to place all items in bagging area before proceeding to checkout.");
+			throw new NullPointerSimulationException("Need to place all items in bagging area before proceeding to checkout.");
 		}
 		
 		if(pcart.getCart().isEmpty()) {
-			throw new SimulationException("Cart must contain items in order to proceed to checkout.");
+			throw new NullPointerSimulationException("Cart must contain items in order to proceed to checkout.");
 		}
 		
 		scanner.disable(); //disable scanner during payment

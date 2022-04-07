@@ -154,7 +154,7 @@ public class SelfCheckoutStation {
 		if(coinDenominations.length == 0)
 			throw new InvalidArgumentSimulationException(
 				"There must be at least one allowable coin denomination defined.");
-
+		
 		// Create the devices.
 		baggingArea = new ElectronicScale(scaleMaximumWeight, scaleSensitivity);
 		scanningArea = new ElectronicScale(scaleMaximumWeight / 10 + 1, scaleSensitivity);

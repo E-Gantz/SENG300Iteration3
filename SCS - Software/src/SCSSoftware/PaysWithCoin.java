@@ -8,6 +8,7 @@ import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.CoinSlot;
 import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
+import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.CoinSlotObserver;
 import org.lsmr.selfcheckout.devices.observers.CoinValidatorObserver;
@@ -28,7 +29,13 @@ public class PaysWithCoin implements CoinValidatorObserver{
 	}
 	
 	public void acceptCoin(Coin insertedCoin) throws DisabledException {
-		slot.accept(insertedCoin);
+		try {
+			slot.accept(insertedCoin);
+		} catch (DisabledException e) {
+			e.printStackTrace();
+		} catch (OverloadException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
