@@ -160,32 +160,31 @@ public class PaysWithCashTest {
 	@Test 
 	public void testEmitChange() throws DisabledException, OverloadException {
 		scanner.scan(item1);
-//		Banknote note = new Banknote(Currency.getInstance("CAD"), 100);
-//		Banknote note1 = new Banknote(Currency.getInstance("CAD"), 50);
-//		Banknote note2 = new Banknote(Currency.getInstance("CAD"), 20);
-//		Banknote note3 = new Banknote(Currency.getInstance("CAD"), 10);
+		Banknote note = new Banknote(Currency.getInstance("CAD"), 100);
+		Banknote note1 = new Banknote(Currency.getInstance("CAD"), 50);
+		Banknote note2 = new Banknote(Currency.getInstance("CAD"), 20);
+		Banknote note3 = new Banknote(Currency.getInstance("CAD"), 10);
 		Banknote note4 = new Banknote(Currency.getInstance("CAD"), 5);
-//		bSlot.accept(note);
-//		bSlot.accept(note1);
-//		bSlot.accept(note2);
-//		bSlot.accept(note3);
+		bSlot.accept(note);
+		bSlot.accept(note1);
+		bSlot.accept(note2);
+		bSlot.accept(note3);
 		bSlot.accept(note4);
 		
 		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
-//		Coin coin2 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(1.00));
-//		Coin coin3 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.25));
-//		Coin coin4 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.10));
-//		Coin coin5 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.05));
+		Coin coin2 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(1.00));
+		Coin coin3 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.25));
+		Coin coin4 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.10));
+		Coin coin5 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.05));
 		cSlot.accept(coin);
-//		cSlot.accept(coin2);
-//		cSlot.accept(coin3);
-//		cSlot.accept(coin4);
-//		cSlot.accept(coin5);
+		cSlot.accept(coin2);
+		cSlot.accept(coin3);
+		cSlot.accept(coin4);
+		cSlot.accept(coin5);
 		
-		BigDecimal expectedChange = BigDecimal.valueOf(2.0);
+		BigDecimal expectedChange = BigDecimal.valueOf(183.4);
 		
-		BigDecimal coinsInserted = new BigDecimal(2.0);
-		//banknoteRunner.setInsertedBanknotes(BigDecimal.valueOf(5.0)); //SETTER ADDED HERE
+		BigDecimal coinsInserted = new BigDecimal(3.4);
     	pwc.setTotal(coinsInserted);
     	
     	banknoteRunner.setCheckoutTotal(BigDecimal.valueOf(5));
