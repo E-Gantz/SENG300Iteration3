@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 public class StartScreen extends JFrame {
 	private JPanel contentPane;
 	public JButton btnStartButton;
-	public ScanningItems scanScreen;
+	public ScanningScreen scanScreen;
 	/**
 	 * Launch the application.
 	 */
@@ -53,8 +53,7 @@ public class StartScreen extends JFrame {
 		btnStartButton = new JButton("Start");
 		btnStartButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// This is for the testing checking if it's been incremented, when the button is pushed, the thing gets closed
-					scanScreen = new ScanningItems(dataPass);
+					scanScreen = new ScanningScreen(dataPass);
 					scanScreen.setVisible(true);
 					setVisible(false);
 			}

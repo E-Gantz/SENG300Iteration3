@@ -194,7 +194,7 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4BlockStation);
 
 		
-		
+// Logout Sends you back to login screen		
 		JPanel Logout = new JPanel();
 		tabbedPane.addTab("Logout", null, Logout, null);
 		Logout.setLayout(new BorderLayout(0, 0));
