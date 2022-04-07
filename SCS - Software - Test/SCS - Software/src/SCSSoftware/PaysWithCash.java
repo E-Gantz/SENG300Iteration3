@@ -138,8 +138,12 @@ public class PaysWithCash {
 				while(count < 1) {
 					try {
 						banknotedispenser.get(100).emit();
+<<<<<<< Updated upstream
 //						banknotedispenser.get(100).
 						banknoteOutputSlot.removeDanglingBanknote();
+=======
+						banknoteOutputSlot.removeDanglingBanknotes();
+>>>>>>> Stashed changes
 						banknoteOutputSlot.emit(new Banknote(Currency.getInstance("CAD"), 100));
 						banknoteOutputSlot.removeDanglingBanknote();
 						changeReturned = changeReturned.add(BigDecimal.valueOf(100));
