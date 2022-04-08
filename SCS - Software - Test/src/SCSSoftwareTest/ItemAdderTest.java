@@ -52,11 +52,12 @@ public class ItemAdderTest {
 		inventory.addInventory(bc1, prod1);
 		inventory.addInventory(bc2, prod2);
 		cart = new ProductCart();
-		placer = new ItemPlacer(scanner, cart);
+		placer = new ItemPlacer(scanner, cart, station.handheldScanner);
 		scale = station.baggingArea;
 		scale.attach(placer);
-		adder = new ItemAdder(inventory, cart, placer);
+		adder = new ItemAdder(inventory, cart, placer, station.mainScanner, station.handheldScanner);
 		scanner.attach(adder);
+		station.handheldScanner.attach(adder);
 		cartSize = cart.getItemNames().size();
 	}
 
@@ -125,6 +126,62 @@ public class ItemAdderTest {
 		}
 		if (cart.getItemNames().size() == cartSize) {
 			scanner.scan(item1);
+		}
+		cart.removeFromCart(prod1);
+		assertEquals(cart.getTotalExpectedWeight(), 0, 0.1);
+	}
+	
+	@Test
+	public void handScannerDisabledAfterScan() {
+		scanner.scan(item1);
+		//next two if statements simulate someone retrying to scan a couple times if the first scan doesn't work
+		if (cart.getItemNames().size() == cartSize) {
+			scanner.scan(item1);
+		}
+		if (cart.getItemNames().size() == cartSize) {
+			scanner.scan(item1);
+		}
+		assertTrue(station.handheldScanner.isDisabled());
+	}
+	
+	@Test
+	public void itemPriceAddedToCartHandheld() {
+		station.handheldScanner.scan(item1);
+		//next two if statements simulate someone retrying to scan a couple times if the first scan doesn't work
+		if (cart.getItemNames().size() == cartSize) {
+			station.handheldScanner.scan(item1);
+		}
+		if (cart.getItemNames().size() == cartSize) {
+			station.handheldScanner.scan(item1);
+		}
+		scale.add(item1);
+		assertTrue(prod1.getPrice().equals(cart.getTotalPrice()));
+	}
+	
+	@Test
+	public void itemNameAddedToCartHandheld() {
+		station.handheldScanner.scan(item1);
+		//next two if statements simulate someone retrying to scan a couple times if the first scan doesn't work
+		if (cart.getItemNames().size() == cartSize) {
+			station.handheldScanner.scan(item1);
+		}
+		if (cart.getItemNames().size() == cartSize) {
+			station.handheldScanner.scan(item1);
+		}
+		scale.add(item1);
+		assertTrue(cart.getItemNames().contains(prod1.getDescription() + " " + "$" + (prod1.getPrice().toPlainString())));
+	}
+	
+	
+	@Test
+	public void itemRemovedHandheld() {
+		station.handheldScanner.scan(item1);
+		//next two if statements simulate someone retrying to scan a couple times if the first scan doesn't work
+		if (cart.getItemNames().size() == cartSize) {
+			station.handheldScanner.scan(item1);
+		}
+		if (cart.getItemNames().size() == cartSize) {
+			station.handheldScanner.scan(item1);
 		}
 		cart.removeFromCart(prod1);
 		assertEquals(cart.getTotalExpectedWeight(), 0, 0.1);
