@@ -41,8 +41,7 @@ public final class Card {
 	 * @throws SimulationException
 	 *             If hasChip is true but pin is null.
 	 */
-	public Card(String type, String number, String cardholder, String cvv, String pin, boolean isTapEnabled,
-		boolean hasChip) {
+	public Card(String type, String number, String cardholder, String cvv, String pin, boolean isTapEnabled, boolean hasChip) {
 		if(type == null)
 			throw new NullPointerSimulationException("type");
 

@@ -2,7 +2,7 @@ package SCSSoftware;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.UUID;
+
 
 public class GiftCardDatabase {
 
@@ -10,8 +10,7 @@ public class GiftCardDatabase {
 
 	private HashMap<String, HashMap<String, String>> db;
 
-	public GiftCardDatabase(GiftCard giftcard) {
-		gcnumber = giftcard.getCardNumString();
+	public GiftCardDatabase() {
 		db = new HashMap<String, HashMap<String, String>>();
 	}
 	
@@ -21,51 +20,38 @@ public class GiftCardDatabase {
 				db.get(cardnumber).get("activationStatus") == "true";
 	}
 	
-	private String verifyCustomerTransaction(String gcnumber, BigDecimal txnAmount) {
-		double chargedAmount = txnAmount.doubleValue();
-		double currentBalance = getBalance(gcnumber);
-		if (currentBalance >= chargedAmount) {
-			currentBalance -= chargedAmount;
-			updateBalance(currentBalance, gcnumber);
-			UUID txId = UUID.randomUUID();
-			return txId.toString();
-		} else {
-			System.out.println("Insufficient Balance");
-			return "NULL";
-		}
-	}
 	
-	public String transactionCanHappen(String gcnumber, String activationStatus, BigDecimal txtAmount) {
+	public boolean canRedeem(String gcnumber) {
 		if(db.containsKey(gcnumber))
 		{
-			if(activationStatus == "true")
-			{
-				if(verifyCardData(gcnumber))
-				{
-					return verifyCustomerTransaction(gcnumber,txtAmount);
-				}
-			}
+			if(verifyCardData(gcnumber))
+					return true; 	
 		}
-		return "NULL";
+		return false;
 	}
 	
-	public double getBalance(String cardnumber)
+	public BigDecimal getBalance(String cardnumber)
 	{
 		String currentBalance = db.get(cardnumber).get("balance"); 
-		return Double.parseDouble(currentBalance);
+//		return Double.parseDouble(currentBalance);
+		BigDecimal bal = new BigDecimal(currentBalance);
+		return bal;
 	}
 	
-	public void updateBalance(double remainingBalance, String customer)
+	public void changeStatusToRedeemed(String gcnumber)
 	{
-		db.get(customer).replace("balance",Double.toString(remainingBalance));
+		db.get(gcnumber).replace("status","false");
+	}
+	
+	public void changeBalanceRemaining(String gcnumber, BigDecimal updatedBalance) {
+		db.get(gcnumber).replace("balance", updatedBalance.toString());
 	}
 	
 	// just for testing
-	public void addToDatabase(String gcnumber, String isActivated, String Balance) {
+	public void addToDatabase(String gcnumber, BigDecimal Balance) {
 		HashMap<String, String> data = new HashMap<String,String>(); 
-		data.put("cardNumber", gcnumber);
-		data.put("activationStatus", isActivated);
-		data.put("balance", Balance);
+		data.put("status", "true");
+		data.put("balance", Balance.toString());
 		db.put(gcnumber, data);
 	}
 

@@ -19,13 +19,16 @@ public class PaysWithCard implements CardReaderObserver {
 	private String gettype;
 	private String getnumber;
 	private String getcardholder;
-	private String getcvv; 
+	private String getccv; 
 	private Checkout checkout;
 	
-	// String key is first 4 digits for the bank identifier 
-	private HashMap<String,CardIssuer> acceptedCardIssuers;
-
-	private boolean cvvrequired;
+	
+	private HashMap<String,CardIssuer> acceptedCardIssuers; // String key is first 4 digits for the bank identifier 
+	
+	
+	// we are assuming that all giftcards are swipe-able, and are one time use
+	private GiftCardDatabase giftcardDB; 					// database to keep track of gift cards 
+	private boolean cvvrequired;							
 
 	private BigDecimal transactionAmount;
 
@@ -52,35 +55,49 @@ public class PaysWithCard implements CardReaderObserver {
 	public void cardDataRead(CardReader reader, CardData data) {
 		
 		if(this.checkout.getState()) {
+			String transactionID;
+			HashMap<String,String> transactionDetails= new HashMap<String,String>();
+			
 			getcardholder = data.getCardholder();
 			gettype = data.getType();
+			getnumber = data.getNumber();
 			
-			if (data instanceof CardSwipeData)
+			if (gettype == "giftcard") {
+				transactionID = useGiftCard(getnumber);
+				if (transactionID == null) {
+					throw(new InvalidArgumentSimulationException("non-valid gift card"));
+				}
+				transactionDetails.put("card type", gettype);
+				transactionDetails.put("amount paid", transactionID);
+				paymentResult.put(transactionID, transactionDetails);
+				return;
+			}
+			
+			else if (data instanceof CardSwipeData)
 			{
-				getcvv = "";
+				getccv = "";
 				cvvrequired = false;
 			} else {
-				getcvv = data.getCVV();
+				getccv = data.getCVV();
 				cvvrequired = true;
 			}
 				
-			getnumber = data.getNumber();
-			String transactionID = makeTransaction();
+			
+			transactionID = makeTransaction();
 			if (transactionID == null) {
 				throw(new InvalidArgumentSimulationException("card declined"));
 			}
 			
-			HashMap<String,String> transactionDetails= new HashMap<String,String>();
+			
 			transactionDetails.put("card type", gettype);
 			transactionDetails.put("card number", getnumber);
 			transactionDetails.put("card holder", getcardholder);
 			transactionDetails.put("amount paid", this.transactionAmount.toString());
 			
 			paymentResult.put(transactionID, transactionDetails);
-			
+			return; 
 			
 		}
-		
 	}
 	// HashMap getter method
 	
@@ -88,8 +105,35 @@ public class PaysWithCard implements CardReaderObserver {
 	{
 		return paymentResult;
 	}
-	
 
+	
+	private String useGiftCard(String cardNumber) {
+		String transactionID = null; 
+		
+		if (giftcardDB.canRedeem(cardNumber)) {
+			BigDecimal redeemedAmount = giftcardDB.getBalance(cardNumber);
+			transactionAmount = transactionAmount.subtract(redeemedAmount);
+			BigDecimal zero = BigDecimal.ZERO;
+			int cmpRes = transactionAmount.compareTo(zero);
+			
+			//if transactionAmount < 0 then record the amount remaining in the gift card 
+			if (cmpRes == -1) {
+				BigDecimal remaining = transactionAmount.negate();
+				giftcardDB.changeBalanceRemaining(cardNumber, remaining);
+				
+			}  
+			// the gift card balance was fully used and we can change its status 
+			else {
+				
+				giftcardDB.changeStatusToRedeemed(cardNumber); 
+			}
+			
+			UUID txId = UUID.randomUUID();
+			transactionID = txId.toString();
+		}
+		
+		return transactionID; 	
+	}
 	
 	private String makeTransaction() {
 		
@@ -120,16 +164,15 @@ public class PaysWithCard implements CardReaderObserver {
 	
 	
 	/* The constructor initializes the banking simulator classes and retrieves what is being charged to the customer from checkout */
-	public PaysWithCard(Checkout checkout)
+	public PaysWithCard(Checkout checkout, GiftCardDatabase gcDB)
 	{	
 		//Remember to get transaction amount somewhere
 		this.acceptedCardIssuers = new HashMap<String,CardIssuer>();
 		this.checkout = checkout;
 		this.transactionAmount= this.checkout.getTotalPrice();
 		this.paymentResult = new HashMap<String,HashMap<String,String>>();
+		this.giftcardDB = gcDB;
 	}
-	
-
 	
 	/* This method replaces every digit after the first four on a customers credit card with an X for receipt printing */
 

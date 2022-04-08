@@ -24,6 +24,7 @@ import org.lsmr.selfcheckout.products.BarcodedProduct;
 import SCSSoftware.BankDeclinedException;
 import SCSSoftware.BankSimulator;
 import SCSSoftware.Checkout;
+import SCSSoftware.GiftCardDatabase;
 import SCSSoftware.PaysWithCard;
 import SCSSoftware.ProductCart;
 import java.util.Calendar;
@@ -35,6 +36,8 @@ public class PaysWithCardTest {
 	private Checkout checkout;
 	private BarcodeScanner barcodescanner;
 	private ProductCart productcart;
+	
+	private GiftCardDatabase giftcardDB; 
 
 	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
 	public Barcode bc1 = new Barcode(code1); 
@@ -47,6 +50,8 @@ public class PaysWithCardTest {
 	private Card tapnochip;
 	private Card notapnochip;
 	private Card fakeCard;
+	private Card giftCard; 
+	private Card usedGiftCard;
 	
 	private String pin; 
 	
@@ -86,6 +91,15 @@ public class PaysWithCardTest {
 		notapnochip = new Card(debit, cardnumberfull1, cardHolder1, "", pin, false, false);
 		fakeCard = new Card(credit, "0987" + "000193830101", cardHolder1, cvv, pin, true, true);
 		
+		String gc1Num = "0193837492039192"; 
+		String gc2Num = "4739098734562910"; 
+		giftCard = new Card("giftcard", gc1Num,null,null,null,false,false); 
+		usedGiftCard = new Card("giftcard", gc2Num,null,null,null,false,false);
+		
+		giftcardDB = new GiftCardDatabase();
+		giftcardDB.addToDatabase(gc1Num, new BigDecimal("50"));
+		giftcardDB.addToDatabase(gc2Num, new BigDecimal("0"));
+		
 		
 		issuer1.addCardData(cardnumber1, cardHolder1, cardExpiry1, cvv,amount1);
 		
@@ -104,7 +118,7 @@ public class PaysWithCardTest {
 		productcart = new ProductCart();
 		checkout = new Checkout(barcodescanner, productcart);
 		cardreader = station.cardReader;
-		payswithcard = new PaysWithCard(checkout);
+		payswithcard= new PaysWithCard(checkout, giftcardDB);
 		cardreader.attach(payswithcard);
 		productcart.addToCart(prod1);
 		checkout.enable();
@@ -174,6 +188,11 @@ public class PaysWithCardTest {
 	{
 		cardreader.insert(fakeCard, pin);
 //		assertTrue(payswithcard.getLastResponse() == "NULL");
+	}
+	
+	@Test 
+	public void testGiftCard() {
+		
 	}
 	
 }
