@@ -170,6 +170,7 @@ public class PaysWithCashTest {
 		bSlot.accept(note2);
 		bSlot.accept(note3);
 		bSlot.accept(note4);
+		bSlot.accept(note4);
 		
 		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
 		Coin coin2 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(1.00));
@@ -182,7 +183,7 @@ public class PaysWithCashTest {
 		cSlot.accept(coin4);
 		cSlot.accept(coin5);
 		
-		BigDecimal expectedChange = BigDecimal.valueOf(183.4);
+		BigDecimal expectedChange = BigDecimal.valueOf(188.4);
 		
 		BigDecimal coinsInserted = new BigDecimal(3.4);
     	pwc.setTotal(coinsInserted);
