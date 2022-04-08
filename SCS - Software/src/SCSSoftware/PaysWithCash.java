@@ -165,7 +165,7 @@ public class PaysWithCash {
 		List<Banknote> listOfNotes = new ArrayList<Banknote>();
 		double totalValueDouble = totalValue.doubleValue();
 		if (totalValue.compareTo(BigDecimal.ZERO) >= 0) {
-			while (totalValueDouble < 5) {
+			while (totalValueDouble > 5) {
 				if (totalValueDouble - 100 >= 0) {
 					totalValueDouble -= 100;
 					listOfNotes.add(new Banknote(Currency.getInstance("CAD"), 100));

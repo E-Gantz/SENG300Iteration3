@@ -195,4 +195,20 @@ public class PaysWithCashTest {
 			
 		assert(expectedChange.doubleValue() == change.doubleValue());
 	}
+	
+	@Test
+	public void testEmitNickel() throws DisabledException, OverloadException
+	{
+		Coin coin4 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.10));
+		cSlot.accept(coin4);
+		BigDecimal expectedChange = BigDecimal.valueOf(0.05);
+		BigDecimal coinsInserted = new BigDecimal(0.10);
+		banknoteRunner.setCheckoutTotal(BigDecimal.valueOf(0.07));
+		pwc.setTotal(coinsInserted);
+		paysWithCash.sumCoinBanknote();
+		paysWithCash.getChange();
+		BigDecimal change = paysWithCash.emitChange();
+			
+		assert(expectedChange.doubleValue() == change.doubleValue());
+	}
 }
