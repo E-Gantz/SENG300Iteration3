@@ -88,6 +88,7 @@ public class PaysWithCoinTest {
     	assertEquals(quarter.getValue(), pwc.getCoinArray().get(0));
     }
     
+    
     @Test
     public void sumTotalTest()
     {

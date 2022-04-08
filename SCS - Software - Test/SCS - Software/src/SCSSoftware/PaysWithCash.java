@@ -28,6 +28,7 @@ public class PaysWithCash {
 	private BigDecimal totalValue;
 	private BanknoteSlot banknoteOutputSlot;
 	private CoinTray coinTray;
+	private BanknoteDispenser banknoteDispener;
 	
 	
 	public PaysWithCash(PaysWithCoin payswithCoin, BanknoteRunner banknoteRunner, Map<Integer, BanknoteDispenser> banknoteDispenser, 
@@ -39,6 +40,7 @@ public class PaysWithCash {
 		this.banknotedispenser = banknoteDispenser;
 		this.banknoteOutputSlot = banknoteOutputSlot;
 		this.coinTray = coinTray;
+		
 	}
 
 	public BigDecimal sumCoinBanknote()
@@ -61,6 +63,9 @@ public class PaysWithCash {
 	
 	public BigDecimal emitChange() throws OverloadException, DisabledException
 	{
+		for(CoinDispenser dispenser : coindispenser.values()) {
+			dispenser.unload();
+		}
 		BigDecimal changeReturned = BigDecimal.ZERO;
 		List<Banknote> listOfNotes = new ArrayList<Banknote>();
 		List<Coin> listOfCoins = new ArrayList<Coin>();
@@ -68,7 +73,7 @@ public class PaysWithCash {
 		{
 			double totalValueDouble = totalValue.doubleValue();
 			while(totalValueDouble != 0) {
-			
+				
 				if(totalValueDouble - 100 >= 0) {
 					totalValueDouble -= 100;
 					listOfNotes.add(new Banknote(Currency.getInstance("CAD"), 100));
@@ -129,6 +134,7 @@ public class PaysWithCash {
 					coindispenser.get(coin.getValue()).load(coin);
 				}
 			}
+			
 			listOfNotes.toArray(notes);
 			listOfCoins.toArray(coins);
 			

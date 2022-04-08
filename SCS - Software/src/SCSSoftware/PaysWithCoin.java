@@ -2,100 +2,80 @@ package SCSSoftware;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 
 import org.lsmr.selfcheckout.Coin;
-import org.lsmr.selfcheckout.devices.AbstractDevice;
+import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.CoinSlot;
-import org.lsmr.selfcheckout.devices.CoinValidator;
+import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
-import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
-import org.lsmr.selfcheckout.devices.observers.CoinSlotObserver;
-import org.lsmr.selfcheckout.devices.observers.CoinValidatorObserver;
 
-public class PaysWithCoin implements CoinValidatorObserver{
+import java.util.Currency;
 
-	private CoinSlot slot;
-	private CoinValidator validator;
-	private BigDecimal total;
+import softwareObservers.CSlotObserver;
+import softwareObservers.CStorageUnitObserver;
+import softwareObservers.CDispencerObserver;
+
+public class PaysWithCoin {
+
+	private CSlotObserver cSlotObserver;
+	private CStorageUnitObserver cStorageObserver;
+	private CDispencerObserver cDispenserObserver;
 	
-	private ArrayList<BigDecimal> coinArray;
+	private CoinSlot coinSlot;
+	private CoinStorageUnit coinStorage;
+	private CoinDispenser coinDispenser;
+	private Coin validCoin;
+	private ArrayList<Coin> coinCart;
+
+	private BigDecimal paidTotal;
+	private BigDecimal checkoutTotal;
 	
-	public PaysWithCoin(CoinSlot slot, CoinValidator validator)
+	public PaysWithCoin(BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinDispenser cDispenser)
 	{
-		this.slot = slot;
-		this.validator = validator;
-		coinArray = new ArrayList<BigDecimal>();
+		this.coinSlot = cslot;
+		this.coinStorage = cStorage;
+		this.coinDispenser = cDispenser;
+		this.paidTotal = BigDecimal.ZERO;
+		this.checkoutTotal = checkoutTotal;
+		this.coinCart = new ArrayList<Coin>();
+		this.cSlotObserver = new CSlotObserver(this);
+		this.cStorageObserver = new CStorageUnitObserver(this);
+		this.cDispenserObserver = new CDispencerObserver(this);
+		this.attachObservers();
 	}
 	
-	public void acceptCoin(Coin insertedCoin) throws DisabledException {
-		try {
-			slot.accept(insertedCoin);
-		} catch (DisabledException e) {
-			e.printStackTrace();
-		} catch (OverloadException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
-		// TODO Auto-generated method stub
-		
+	private void attachObservers() {
+		coinSlot.attach(cSlotObserver);
+		coinStorage.attach(cStorageObserver);
+		coinDispenser.attach(cDispenserObserver);
 	}
 	
-	public void sumTotal(ArrayList<BigDecimal> list) {
-		
-		BigDecimal sum = BigDecimal.valueOf(0.00);
-		int i = 0;
-		
-		while(i < list.size()) {
-			sum = sum.add(list.get(i));
-			i++;
-		}
-		
-		this.setTotalCoins(sum);
+	public BigDecimal getPaidTotal() {
+		return this.paidTotal;
 	}
 	
-	 public void setTotalCoins(BigDecimal total)
-     //setter method
-	 {
-		 this.setTotal(total);
-	 }
-
-	 public BigDecimal getTotalCoins()
-	 {   
-		 return total;
-	 }
-
+	public ArrayList<Coin> getCoinCart(){
+		return this.coinCart;
+	}
 	
-	@Override
-	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
-		getCoinArray().add(value);
+	public void validCoin(Currency currency, BigDecimal value) {
+		this.validCoin = new Coin(currency, value);
 	}
-
-	@Override
-	public void invalidCoinDetected(CoinValidator validator) {
-		// TODO Auto-generated method stub
+	
+	public void addCoin(Coin coin) throws DisabledException, OverloadException { 
+        // This method takes in a parameter of type coin and passes it into coinSlot's accept method to notify it's observer and check if sink is full via deliver().
+        this.coinSlot.accept(coin);
+    }
+	
+	public BigDecimal sumCoins() {
+		return this.getPaidTotal();
+	}
 		
-	}
-
-	public ArrayList<BigDecimal> getCoinArray() {
-		return coinArray;
-	}
-
-	public BigDecimal getTotal() {
-		return total;
-	}
-
-	public void setTotal(BigDecimal total) {
-		this.total = total;
+	public BigDecimal setInsertedCoins(BigDecimal t)
+	{
+		return this.paidTotal;
 	}
 
 }

@@ -29,6 +29,7 @@ public class BValidatorObserver implements BanknoteValidatorObserver {
 	public void validBanknoteDetected(BanknoteValidator validator, Currency currency, int value) {
 		// A valid banknote is detected
 		runner.validNote(currency, value);
+		
 	}
 	@Override
 	public void invalidBanknoteDetected(BanknoteValidator validator) {
