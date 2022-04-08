@@ -6,6 +6,7 @@ import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
+import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.ElectronicScaleObserver;
 
@@ -13,9 +14,9 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	private double expectedWeight;
 	private double previousWeight;
 	private double currentWeight;
-	private double scaleLimit;
 	private ProductCart pcart;
 	private BarcodeScanner scanner;
+	private ItemNotPlaceable notplaceable;
 	private Boolean NotInBags;
 	private Timer timer;
 	private CustomerOwnBag ownbag;
@@ -46,21 +47,25 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	@Override
 	public void weightChanged(ElectronicScale scale, double weightInGrams) throws InvalidArgumentSimulationException {
 		beforePlacing();
+		notplaceable = new ItemNotPlaceable();
 		expectedWeight = pcart.getCart().get((pcart.getCart().size())-1).getExpectedWeight();//this gets the weight of the item most recently added to the cart.
-		if(ownbag.checkOwnBag() == false)
-			currentWeight = weightInGrams;
-		else if(ownbag.getBagWeight() > scale.getSensitivity())
-			currentWeight = weightInGrams  - ownbag.getBagWeight();
-		else 
-			currentWeight = weightInGrams;
-		if(currentWeight == previousWeight + expectedWeight) {
-			this.previousWeight = currentWeight;
-			this.expectedWeight = 0.0;
-			this.scanner.enable();
-			this.NotInBags = false;
-		}
-		else {
-			throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
+		notplaceable.CheckIfPlacable(scale, expectedWeight);
+		if(notplaceable.isPlaceable()) {
+			if(ownbag.checkOwnBag() == false)
+				currentWeight = weightInGrams;
+			else
+				currentWeight = weightInGrams  - ownbag.getBagWeight();
+			if(currentWeight == previousWeight + expectedWeight) {
+				this.previousWeight = currentWeight;
+				this.expectedWeight = 0.0;
+				this.scanner.enable();
+				this.NotInBags = false;
+			}
+			else 
+				throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
+		} else {
+			// Attendant approval required to enable + continue checkout
+//			throw new InvalidArgumentSimulationException("Talk to attendatnt to continue");
 		}
 	}
 
@@ -68,13 +73,18 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	public void overload(ElectronicScale scale) {
 		//Auto-generated method stub
 		//put "too heavy!" message on screen or something
-		throw new InvalidArgumentSimulationException("Too Heavy!");
+		// temporary locks scanner to allow customer to call attendant and fix the issue
+		this.scanner.disable();
+		throw new InvalidArgumentSimulationException("Item too heavy!");
 	}
 
 	@Override
 	public void outOfOverload(ElectronicScale scale) {
 		//Auto-generated method stub
 		//remove the "too heavy!" message
+		//attendant somehow fixes the problem
+		notplaceable.setPlaceable(true);
+		this.scanner.enable();
 	}
 	
 	public void startTimer() {

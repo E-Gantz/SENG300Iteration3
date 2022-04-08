@@ -10,6 +10,7 @@ public class ProductCart {
 	private ArrayList<BarcodedProduct> cart;
 	private ArrayList<String> items;
 	private BigDecimal totalPrice;
+	//private CustomerOwnBag ownbag; //in my opinion the product cart doesnt need to know about the customers bags since its virtual, only needs to worry about the expected weight of the products added.
 	private double totalExpectedWeight;
 	
 	public ProductCart() {
@@ -34,6 +35,23 @@ public class ProductCart {
 		totalExpectedWeight-=prod.getExpectedWeight();
 	}
 	
+	public boolean clearCart() {
+	    boolean ismodified = false;
+	    Iterator<BarcodedProduct> iterator = cart.iterator();
+	    Iterator<String> iterator2 = items.iterator();
+	    while (iterator.hasNext()) {
+	        if (cart.contains(iterator.next())) {
+	        	iterator.remove();
+		        ismodified = true;
+		    }
+	        if (items.contains(iterator2.next())) {
+	        	iterator2.remove();
+	        	ismodified = true;
+	        }
+		}
+		return ismodified;
+	}
+	
 	public BigDecimal getTotalPrice() {
 		return this.totalPrice;
 	}
@@ -47,6 +65,11 @@ public class ProductCart {
 	}
 	
 	public double getTotalExpectedWeight() {
+		/*if(ownbag.getBagWeight() > 0) {
+			return this.totalExpectedWeight - ownbag.getBagWeight();
+		} else {
+			return this.totalExpectedWeight;
+		}*/
 		return this.totalExpectedWeight;
 	}
 }
