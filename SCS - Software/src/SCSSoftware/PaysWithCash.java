@@ -246,9 +246,8 @@ public class PaysWithCash {
 		}
 		return changeReturned;
 	}
-	
-	public BigDecimal emitChange() throws OverloadException, DisabledException
-	{
+
+	public BigDecimal emitChange() throws OverloadException, DisabledException {
 		BigDecimal currentTotal = BigDecimal.ZERO;
 		currentTotal = currentTotal.add(emitBanknotes());
 		currentTotal = currentTotal.add(emitCoins());
