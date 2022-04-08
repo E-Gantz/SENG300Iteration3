@@ -22,7 +22,10 @@ import java.awt.event.ActionEvent;
 public class CheckoutScreen extends JFrame {
 
 	private JPanel contentPane;
-
+	public AddBagsScreen plasticBagScreen;
+	public MembershipCardScreen memberScreen;
+	public JLabel lblPaid;
+	public JLabel lblTotal;
 	/**
 	 * Launch the application.
 	 */
@@ -46,9 +49,10 @@ public class CheckoutScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public CheckoutScreen(DataPasser dataPass, ScanningScreen scanScreen) {
+		CheckoutScreen me = this;
 		setTitle("CartMart Checkout");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -71,20 +75,35 @@ public class CheckoutScreen extends JFrame {
 		panel.add(btnGoToScanning);
 		
 		JButton btnGoToAddBags = new JButton("Add Plastic Bags");
+		btnGoToAddBags.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				plasticBagScreen = new AddBagsScreen(dataPass, me);
+				setVisible(false);
+				plasticBagScreen.setVisible(true);
+			}
+		});
 		panel.add(btnGoToAddBags);
 		
 		JButton btnGoToMembership = new JButton("Enter Membership");
+		btnGoToMembership.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				memberScreen = new MembershipCardScreen(dataPass, me);
+				setVisible(false);
+				memberScreen.setVisible(true);
+				
+			}
+		});
 		panel.add(btnGoToMembership);
 		
 		JPanel panel_payment = new JPanel();
 		contentPane.add(panel_payment, BorderLayout.CENTER);
 		panel_payment.setLayout(new GridLayout(2, 3, 0, 0));
 		
-		JLabel lblTotal = new JLabel("Total:");
+		lblTotal = new JLabel("Total:");
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_payment.add(lblTotal);
 		
-		JLabel lblPaid = new JLabel("Paid:");
+		lblPaid = new JLabel("Paid:");
 		panel_payment.add(lblPaid);
 		
 		JLabel lblPaymentMethod = new JLabel("<html>Choose a payment<br> method or insert coins:</html>");
@@ -100,4 +119,12 @@ public class CheckoutScreen extends JFrame {
 		panel_payment.add(btnGoToCardScan);
 	}
 
+	public void updateLblPaid(String paid){
+		lblPaid.setText("Paid:" + paid);
+	}
+	
+	public void updateLblTotal(String paid){
+		lblTotal.setText("Paid:" + paid);
+	}
+	
 }

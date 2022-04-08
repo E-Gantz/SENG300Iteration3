@@ -22,6 +22,10 @@ public class ScanningScreen extends JFrame {
 
 	private JPanel contentPane;
 	public CheckoutScreen checkoutScreen;
+	public AddOwnBag ownBagScreen;
+	public EnterPLU pluScreen;
+	public ProductLookupScreen productLookupScreen;
+	public JTextArea textReciept;
 
 	/**
 	 * Launch the application.
@@ -46,7 +50,7 @@ public class ScanningScreen extends JFrame {
 	public ScanningScreen(DataPasser dataPass) {
 		setTitle("CartMart Selfcheckout Scanning");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -54,8 +58,8 @@ public class ScanningScreen extends JFrame {
 		
 		ScanningScreen me = this;
 		
-		JTextArea textArea = new JTextArea();
-		contentPane.add(textArea, BorderLayout.CENTER);
+		textReciept = new JTextArea();
+		contentPane.add(textReciept, BorderLayout.CENTER);
 		
 		JButton btnFinishScan = new JButton("Checkout");
 		btnFinishScan.addActionListener(new ActionListener() {
@@ -65,9 +69,6 @@ public class ScanningScreen extends JFrame {
 				
 				setVisible(false);
 				checkoutScreen.setVisible(true);
-				
-				
-				
 			}
 		});
 		contentPane.add(btnFinishScan, BorderLayout.EAST);
@@ -81,13 +82,40 @@ public class ScanningScreen extends JFrame {
 		panel.setLayout(new GridLayout(2, 1, 0, 0));
 		
 		JButton btnEnterPLU = new JButton("<html>Enter <br>PLU Code</html>");
+		btnEnterPLU.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pluScreen = new EnterPLU(dataPass, me);
+				setVisible(false);
+				pluScreen.setVisible(true);
+
+			}
+		});
 		panel.add(btnEnterPLU);
 		
 		JButton btnProductLookup = new JButton("<html>Product <br>Lookup</html>");
+		btnProductLookup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				productLookupScreen = new ProductLookupScreen(dataPass, me);
+				setVisible(false);
+				productLookupScreen.setVisible(true);
+			}
+		});
+		
 		panel.add(btnProductLookup);
 		
 		JButton btnAddBags = new JButton("Add your bags");
+		btnAddBags.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ownBagScreen = new AddOwnBag(dataPass, me);
+				setVisible(false);
+				ownBagScreen.setVisible(true);
+			}
+		});
 		splitPane.setLeftComponent(btnAddBags);
+	}
+	
+	public void updateScreen(String reciept) {
+		textReciept.setText(reciept);
 	}
 
 }

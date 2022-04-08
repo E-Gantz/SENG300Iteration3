@@ -42,8 +42,7 @@ public class HomeScreen extends JFrame {
 	 */
 	public HomeScreen(DataPasser dataPass, LoginScreen loginFrame) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

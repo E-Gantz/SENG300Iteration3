@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MembershipCardScreen extends JFrame {
 
@@ -28,7 +30,10 @@ public class MembershipCardScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MembershipCardScreen frame = new MembershipCardScreen();
+					DataPasser basic = new DataPasser();
+					ScanningScreen sTest = new ScanningScreen(basic);
+					CheckoutScreen cTest = new CheckoutScreen(basic, sTest);
+					MembershipCardScreen frame = new MembershipCardScreen(basic, cTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,15 +45,22 @@ public class MembershipCardScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MembershipCardScreen() {
+	public MembershipCardScreen(DataPasser dataPass, CheckoutScreen checkoutScreen) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnBackToCheckout = new JButton("Go Back");
+		btnBackToCheckout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				checkoutScreen.setVisible(true);
+				setVisible(false);
+				dispose();
+			}
+		});
 		btnBackToCheckout.setForeground(Color.YELLOW);
 		btnBackToCheckout.setBackground(Color.RED);
 		contentPane.add(btnBackToCheckout);
@@ -61,6 +73,12 @@ public class MembershipCardScreen extends JFrame {
 		textFieldMembershipID.setColumns(10);
 		
 		JButton btnEnterMembership = new JButton("Enter");
+		btnEnterMembership.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dataPass.setMembershipID(textFieldMembershipID.getText());
+				
+			}
+		});
 		contentPane.add(btnEnterMembership);
 	}
 

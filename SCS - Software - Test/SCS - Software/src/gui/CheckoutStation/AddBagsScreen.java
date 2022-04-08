@@ -11,11 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AddBagsScreen extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textBagNumber;
+	public JTextField textBagNumber;
 
 	/**
 	 * Launch the application.
@@ -24,7 +26,10 @@ public class AddBagsScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddBagsScreen frame = new AddBagsScreen();
+					DataPasser basic = new DataPasser();
+					ScanningScreen sTest = new ScanningScreen(basic);
+					CheckoutScreen cTest = new CheckoutScreen(basic, sTest);
+					AddBagsScreen frame = new AddBagsScreen(basic, cTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,15 +41,25 @@ public class AddBagsScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddBagsScreen() {
+	public AddBagsScreen(DataPasser dataPass, CheckoutScreen checkoutScreen) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		
+		
+		
 		JButton btnBackToCheckout = new JButton("Go Back");
+		btnBackToCheckout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				checkoutScreen.setVisible(true);
+				setVisible(false);
+				dispose();
+			}
+		});
 		btnBackToCheckout.setForeground(Color.YELLOW);
 		btnBackToCheckout.setBackground(Color.RED);
 		contentPane.add(btnBackToCheckout);
@@ -57,6 +72,13 @@ public class AddBagsScreen extends JFrame {
 		textBagNumber.setColumns(10);
 		
 		JButton btnEnterBags = new JButton("Enter");
+		btnEnterBags.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textBagNumber.getText() != "") {
+				dataPass.setPlasticBags(textBagNumber.getText());
+				}
+			}
+		});
 		contentPane.add(btnEnterBags);
 	}
 

@@ -6,18 +6,21 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.FlowLayout;
+
+import org.lsmr.selfcheckout.Barcode;
+import org.lsmr.selfcheckout.Numeral;
+
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class EnterPLU extends JFrame {
+public class ProductLookupScreen extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textFieldPLUEntry;
+	public Barcode appleBarcode;
+	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
+	
 
 	/**
 	 * Launch the application.
@@ -28,7 +31,7 @@ public class EnterPLU extends JFrame {
 				try {
 					DataPasser basic = new DataPasser();
 					ScanningScreen sTest = new ScanningScreen(basic);
-					EnterPLU frame = new EnterPLU(basic, sTest);
+					ProductLookupScreen frame = new ProductLookupScreen(basic, sTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,13 +43,13 @@ public class EnterPLU extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EnterPLU(DataPasser dataPass, ScanningScreen scanScreen) {
+	public ProductLookupScreen(DataPasser dataPass, ScanningScreen scanScreen) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnBackToScanning = new JButton("Go Back");
 		btnBackToScanning.addActionListener(new ActionListener() {
@@ -58,23 +61,16 @@ public class EnterPLU extends JFrame {
 		});
 		btnBackToScanning.setForeground(Color.YELLOW);
 		btnBackToScanning.setBackground(Color.RED);
-		contentPane.add(btnBackToScanning);
+		contentPane.add(btnBackToScanning, BorderLayout.NORTH);
 		
-		JLabel lblEnterPlu = new JLabel("Please enter in your PLU code:");
-		contentPane.add(lblEnterPlu);
-		
-		textFieldPLUEntry = new JTextField();
-		contentPane.add(textFieldPLUEntry);
-		textFieldPLUEntry.setColumns(10);
-		
-		JButton btnEnterPLU = new JButton("Enter");
-		btnEnterPLU.addActionListener(new ActionListener() {
+		JButton btnAddPockyApple = new JButton("Picture of PockyFlavouredApple");
+		btnAddPockyApple.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dataPass.setPLUEntered(textFieldPLUEntry.getText());
-				
+				appleBarcode = new Barcode(code1);
+				dataPass.setLookupBarcode(appleBarcode);
 			}
 		});
-		contentPane.add(btnEnterPLU);
+		contentPane.add(btnAddPockyApple, BorderLayout.CENTER);
 	}
 
 }

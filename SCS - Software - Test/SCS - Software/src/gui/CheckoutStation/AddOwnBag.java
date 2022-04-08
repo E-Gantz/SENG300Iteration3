@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AddOwnBag extends JFrame {
 
@@ -21,7 +23,9 @@ public class AddOwnBag extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddOwnBag frame = new AddOwnBag();
+					DataPasser basic = new DataPasser();
+					ScanningScreen sTest = new ScanningScreen(basic);
+					AddOwnBag frame = new AddOwnBag(basic, sTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,9 +37,9 @@ public class AddOwnBag extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddOwnBag() {
+	public AddOwnBag(DataPasser dataPass,ScanningScreen scanScreen) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -45,6 +49,13 @@ public class AddOwnBag extends JFrame {
 		contentPane.add(lblAddOwnBags, BorderLayout.CENTER);
 		
 		JButton btnBackToScanning = new JButton("Go Back");
+		btnBackToScanning.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scanScreen.setVisible(true);
+				setVisible(false);
+				dispose();
+			}
+		});
 		btnBackToScanning.setForeground(Color.YELLOW);
 		btnBackToScanning.setBackground(Color.RED);
 		contentPane.add(btnBackToScanning, BorderLayout.NORTH);
