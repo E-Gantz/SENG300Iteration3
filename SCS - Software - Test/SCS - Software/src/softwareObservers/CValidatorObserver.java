@@ -34,7 +34,6 @@ public class CValidatorObserver implements CoinValidatorObserver {
 	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
 		coinrunner.validCoin(value);
 		coinrunner.addValidCoin();
-		
 	}
 
 	@Override
