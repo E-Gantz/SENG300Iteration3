@@ -33,6 +33,7 @@ public class CValidatorObserver implements CoinValidatorObserver {
 	@Override
 	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
 		pwc.validCoin(value);
+		pwc.addValidCoin();
 		
 	}
 
