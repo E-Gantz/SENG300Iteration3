@@ -87,7 +87,6 @@ public class PaysWithCoinTest {
 //		cSlot.accept(coin);
 //		assertEquals(pwc.getCoinCart().get(0).getValue(), coinCart.get(0).getValue());
 //	}
-
 	@Test
 	public void testSumCoins() throws DisabledException, OverloadException {
 

@@ -31,3 +31,4 @@ outputs/
 *.xlsx
 /bin/
 .classpath
+*.xml
