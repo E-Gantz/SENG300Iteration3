@@ -4,20 +4,24 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import org.lsmr.selfcheckout.products.BarcodedProduct;
+import org.lsmr.selfcheckout.products.PLUCodedProduct;
 
 //This represents the users virtual cart, when items are scanned they are added here to keep track of what is in their cart and how much it costs.
 public class ProductCart {
 	private ArrayList<BarcodedProduct> cart;
 	private ArrayList<String> items;
+	private ArrayList<PLUCodedProduct> pluCart;
 	private BigDecimal totalPrice;
-	//private CustomerOwnBag ownbag; //in my opinion the product cart doesnt need to know about the customers bags since its virtual, only needs to worry about the expected weight of the products added.
 	private double totalExpectedWeight;
+	private double newestExpectedWeight;
 	
 	public ProductCart() {
 		cart = new ArrayList<BarcodedProduct>();
+		pluCart = new ArrayList<PLUCodedProduct>();
 		items = new ArrayList<String>();
 		totalPrice = new BigDecimal(0);
 		totalExpectedWeight = 0.0;
+		newestExpectedWeight = 0.0;
 	}
 	
 	public void addToCart(BarcodedProduct prod) {
@@ -26,6 +30,7 @@ public class ProductCart {
 		items.add(nameAndPrice); // string added should look like "Milk $10" or something.
 		totalPrice = totalPrice.add(prod.getPrice());
 		totalExpectedWeight += prod.getExpectedWeight();
+		newestExpectedWeight = prod.getExpectedWeight();
 	}
 	
 	public void removeFromCart(BarcodedProduct prod) {
@@ -33,6 +38,22 @@ public class ProductCart {
 		items.remove(prod.getDescription());
 		totalPrice = totalPrice.subtract(prod.getPrice());
 		totalExpectedWeight-=prod.getExpectedWeight();
+	}
+	
+	public void addToCartPLU(PLUCodedProduct prod, BigDecimal price, double weight) {
+		pluCart.add(prod);
+		String nameAndPrice = prod.getDescription() + " " + "$" + price.toPlainString();
+		items.add(nameAndPrice);
+		totalPrice = totalPrice.add(price);
+		totalExpectedWeight += weight;
+		newestExpectedWeight = weight;
+	}
+	
+	public void removeFromCartPLU(PLUCodedProduct prod, BigDecimal price, double weight) {
+		pluCart.remove(prod);
+		items.remove(prod.getDescription());
+		totalPrice = totalPrice.subtract(price);
+		totalExpectedWeight -= weight;
 	}
 	
 	public BigDecimal getTotalPrice() {
@@ -48,11 +69,10 @@ public class ProductCart {
 	}
 	
 	public double getTotalExpectedWeight() {
-		/*if(ownbag.getBagWeight() > 0) {
-			return this.totalExpectedWeight - ownbag.getBagWeight();
-		} else {
-			return this.totalExpectedWeight;
-		}*/
 		return this.totalExpectedWeight;
+	}
+	
+	public double getNewestExpectedWeight() {
+		return this.newestExpectedWeight;
 	}
 }

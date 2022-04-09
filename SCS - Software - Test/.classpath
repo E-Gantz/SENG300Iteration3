@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="SCS - Software/src"/>
-	<classpathentry kind="src" path="SCS - Software/SCS - Hardware - v3.0/src"/>
+	<classpathentry excluding="SCS - Hardware - v3/1/src/|SCS - Hardware - v3.1/src/" kind="src" path="SCS - Software/src"/>
+	<classpathentry kind="src" path="SCS - Hardware - v3.1/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
