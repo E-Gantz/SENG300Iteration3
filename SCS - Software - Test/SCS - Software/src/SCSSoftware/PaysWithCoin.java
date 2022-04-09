@@ -2,100 +2,92 @@ package SCSSoftware;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 
 import org.lsmr.selfcheckout.Coin;
-import org.lsmr.selfcheckout.devices.AbstractDevice;
+import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.CoinSlot;
+import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
-import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
-import org.lsmr.selfcheckout.devices.observers.CoinSlotObserver;
-import org.lsmr.selfcheckout.devices.observers.CoinValidatorObserver;
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 
-public class PaysWithCoin implements CoinValidatorObserver{
+import java.util.Currency;
 
-	private CoinSlot slot;
-	private CoinValidator validator;
-	private BigDecimal total;
-	
-	private ArrayList<BigDecimal> coinArray;
-	
-	public PaysWithCoin(CoinSlot slot, CoinValidator validator)
-	{
-		this.slot = slot;
-		this.validator = validator;
-		coinArray = new ArrayList<BigDecimal>();
-	}
-	
-	public void acceptCoin(Coin insertedCoin) throws DisabledException {
-		try {
-			slot.accept(insertedCoin);
-		} catch (DisabledException e) {
-			e.printStackTrace();
-		} catch (OverloadException e) {
-			e.printStackTrace();
-		}
-	}
+import softwareObservers.BSlotObserver;
+import softwareObservers.BStorageObserver;
+import softwareObservers.BValidatorObserver;
+import softwareObservers.CSlotObserver;
+import softwareObservers.CStorageUnitObserver;
+import softwareObservers.CValidatorObserver;
 
-	@Override
-	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
-		// TODO Auto-generated method stub
-		
-	}
+public class PaysWithCoin {
 
-	@Override
-	public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void sumTotal(ArrayList<BigDecimal> list) {
-		
-		BigDecimal sum = BigDecimal.valueOf(0.00);
-		int i = 0;
-		
-		while(i < list.size()) {
-			sum = sum.add(list.get(i));
-			i++;
-		}
-		
-		this.setTotalCoins(sum);
-	}
-	
-	 public void setTotalCoins(BigDecimal total)
-     //setter method
-	 {
-		 this.setTotal(total);
-	 }
+	private CSlotObserver cSlotObserver;
+	private CStorageUnitObserver cStorageObserver;
+	private CValidatorObserver cValidatorObserver;
 
-	 public BigDecimal getTotalCoins()
-	 {   
-		 return total;
-	 }
+	private CoinSlot coinSlot;
+	private CoinStorageUnit coinStorage;
+	private CoinValidator coinValidator;
+	private Coin validCoin;
+	private ArrayList<Coin> coinCart;
+	// private Checkout checkout;
+	private Currency currency;
+	private BigDecimal paidTotal;
+	private BigDecimal checkoutTotal;
+	private SelfCheckoutStation station;
+	private int[] banknoteDenominations;
+	private BigDecimal[] coinDenominations;
 
-	
-	@Override
-	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
-		getCoinArray().add(value);
+	public PaysWithCoin(Currency currency, int[] banknoteDenominations, BigDecimal[] coinDenominations,
+						BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinValidator cValidator) {
+		this.paidTotal = BigDecimal.ZERO;
+		this.checkoutTotal = checkoutTotal;
+		this.banknoteDenominations = banknoteDenominations;
+		this.coinDenominations = coinDenominations;
+		this.currency = currency;
+		this.coinSlot = cslot;
+		this.coinStorage = cStorage;
+		this.coinValidator = cValidator;
+		this.cSlotObserver = new CSlotObserver(this);
+		this.cStorageObserver = new CStorageUnitObserver(this);
+		this.cValidatorObserver = new CValidatorObserver(this);
+		coinSlot.attach(cSlotObserver);
+		coinStorage.attach(cStorageObserver);
+		coinValidator.attach(cValidatorObserver);
 	}
 
-	@Override
-	public void invalidCoinDetected(CoinValidator validator) {
-		// TODO Auto-generated method stub
-		
+	// Getters for the checkout total. paid total, and the banknote cart
+	public BigDecimal getCheckoutTotal() {
+		return this.checkoutTotal;
 	}
 
-	public ArrayList<BigDecimal> getCoinArray() {
-		return coinArray;
+	public void setCheckoutTotal(BigDecimal t) {
+		this.checkoutTotal = t;
 	}
 
-	public BigDecimal getTotal() {
-		return total;
+	public BigDecimal getPaidTotal() {
+		return this.paidTotal;
 	}
 
-	public void setTotal(BigDecimal total) {
-		this.total = total;
+	public ArrayList<Coin> getCoinCart() {
+		return this.coinCart;
+	}
+
+	public void validCoin(BigDecimal value) {
+		this.validCoin = new Coin(Currency.getInstance("CAD"), value);
+	}
+
+	public void addValidCoin() {
+		paidTotal = paidTotal.add(validCoin.getValue());
+		this.coinCart.add(validCoin);
+		validCoin = null;
+	}
+
+	public BigDecimal sumCoins() {
+		return this.paidTotal;
 	}
 
 }
