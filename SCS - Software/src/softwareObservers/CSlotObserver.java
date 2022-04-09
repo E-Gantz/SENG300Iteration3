@@ -5,14 +5,14 @@ import org.lsmr.selfcheckout.devices.CoinSlot;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.CoinSlotObserver;
 
-import SCSSoftware.CoinRunner;
+import SCSSoftware.PaysWithCoin;
 
 public class CSlotObserver implements CoinSlotObserver
 {
-	CoinRunner coinrunner;
-	public CSlotObserver(CoinRunner coinrunner)
+	PaysWithCoin pwc;
+	public CSlotObserver(PaysWithCoin pwc)
 	{
-		this.coinrunner = coinrunner;
+		this.pwc = pwc;
 	}
 
 	@Override
@@ -29,6 +29,7 @@ public class CSlotObserver implements CoinSlotObserver
 
 	@Override
 	public void coinInserted(CoinSlot slot) {
+		// TODO Auto-generated method stub
 		
 	}
 	

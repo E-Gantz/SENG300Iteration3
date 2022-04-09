@@ -55,7 +55,7 @@ public final class CoinValidator extends AbstractDevice<CoinValidatorObserver> i
 			throw new NullPointerSimulationException("currency");
 
 		if(denominations == null)
-			throw new NullPointerSimulationException("denominations");
+			throw new NullPointerSimulationException("denominations");    
 
 		if(denominations.size() < 1)
 			throw new InvalidArgumentSimulationException("There must be at least one denomination.");
