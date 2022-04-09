@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,11 +53,18 @@ public class PaysWithCardTest {
 	private Card fakeCard;
 	private Card giftCard; 
 	private Card usedGiftCard;
+	private Card giftCardXL;
 	
 	private String pin; 
 	
 	private CardIssuer issuer1; 
 	private CardIssuer issuer2; 
+	
+	private String gc1Num;
+	private String gc2Num;
+	private String gc3Num; 
+	
+	private BigDecimal amtToPay;
 
 	@Before
 	public void setup()
@@ -91,21 +99,22 @@ public class PaysWithCardTest {
 		notapnochip = new Card(debit, cardnumberfull1, cardHolder1, "", pin, false, false);
 		fakeCard = new Card(credit, "0987" + "000193830101", cardHolder1, cvv, pin, true, true);
 		
-		String gc1Num = "0193837492039192"; 
-		String gc2Num = "4739098734562910"; 
-		giftCard = new Card("giftcard", gc1Num,null,null,null,false,false); 
-		usedGiftCard = new Card("giftcard", gc2Num,null,null,null,false,false);
+		gc1Num = "0193837492039192"; 
+		gc2Num = "4739098734562910"; 
+		gc3Num = "2843999911110000";
+		
+		giftCard = new Card("giftcard", gc1Num,"","","",false,false); 
+		usedGiftCard = new Card("giftcard", gc2Num,"","","",false,false);
+		giftCardXL = new Card("giftcard",gc3Num,"","","",false,false);
 		
 		giftcardDB = new GiftCardDatabase();
 		giftcardDB.addToDatabase(gc1Num, new BigDecimal("50"));
 		giftcardDB.addToDatabase(gc2Num, new BigDecimal("0"));
+		giftcardDB.addToDatabase(gc3Num, new BigDecimal("100"));
 		
 		
 		issuer1.addCardData(cardnumber1, cardHolder1, cardExpiry1, cvv,amount1);
 		
-		
-		
-
 		c = Currency.getInstance("CAD");
 		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
 						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
@@ -118,10 +127,14 @@ public class PaysWithCardTest {
 		productcart = new ProductCart();
 		checkout = new Checkout(barcodescanner, productcart);
 		cardreader = station.cardReader;
-		payswithcard= new PaysWithCard(checkout, giftcardDB);
+		checkout.setAmountPaid(new BigDecimal("50"));
+		
+		amtToPay = new BigDecimal("50");
+		payswithcard= new PaysWithCard(checkout, giftcardDB, amtToPay);
 		cardreader.attach(payswithcard);
 		productcart.addToCart(prod1);
 		checkout.enable();
+		
 		
 		payswithcard.addAcceptedCardIssuer(issuer1, issuer1DigitId);
 		payswithcard.addAcceptedCardIssuer(issuer2, issuer2DigitId);
@@ -191,9 +204,48 @@ public class PaysWithCardTest {
 	}
 	
 	@Test 
-	public void testGiftCard() {
+	public void testGiftCardCoversAll() throws IOException {
+		Boolean swiped = false;
+		while (!swiped) {
+			try {
+				cardreader.swipe(giftCard);
+				swiped = true; 
+			} catch (MagneticStripeFailureException e) {}
+		}
+		
+		BigDecimal amt = giftcardDB.getBalance(gc1Num);
+		assertTrue(amt.compareTo(amtToPay) == 0);
 		
 	}
+	@Test
+	public void testGiftCardCoverPartialWithRemainingLeft() throws IOException {
+		BigDecimal amtBefore = giftcardDB.getBalance(gc3Num);
+		Boolean swiped = false;
+		while (!swiped) {
+			try {
+				cardreader.swipe(giftCardXL);
+				swiped = true; 
+			} catch (MagneticStripeFailureException e) {}
+		}
+		
+		BigDecimal amtLeft = giftcardDB.getBalance(gc3Num); 
+		assertTrue(amtLeft.compareTo(amtBefore.subtract(amtToPay)) == 0);
+		
+	}
+	
+	@Test(expected=InvalidArgumentSimulationException.class)
+	public void usesUsedGiftCard() throws IOException{
+		Boolean swiped = false;
+		while (!swiped) {
+			try {
+				cardreader.swipe(usedGiftCard);
+				swiped = true; 
+			} catch (MagneticStripeFailureException e) {}
+		}
+	}
+	
+	
+	
 	
 }
 

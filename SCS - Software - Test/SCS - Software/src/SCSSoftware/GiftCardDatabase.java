@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 public class GiftCardDatabase {
 
-	private String gcnumber;
-
 	private HashMap<String, HashMap<String, String>> db;
 
 	public GiftCardDatabase() {
@@ -16,8 +14,8 @@ public class GiftCardDatabase {
 	
 	private Boolean verifyCardData(String cardnumber)
 	{
-		return db.get(cardnumber).get("cardNumber") == gcnumber &&
-				db.get(cardnumber).get("activationStatus") == "true";
+		return db.get(cardnumber).get("status").equals("true") &&
+		new BigDecimal(db.get(cardnumber).get("balance")).compareTo(BigDecimal.ZERO) == 1;
 	}
 	
 	
@@ -33,7 +31,6 @@ public class GiftCardDatabase {
 	public BigDecimal getBalance(String cardnumber)
 	{
 		String currentBalance = db.get(cardnumber).get("balance"); 
-//		return Double.parseDouble(currentBalance);
 		BigDecimal bal = new BigDecimal(currentBalance);
 		return bal;
 	}

@@ -63,12 +63,14 @@ public class PaysWithCard implements CardReaderObserver {
 			getnumber = data.getNumber();
 			
 			if (gettype == "giftcard") {
+				//System.out.println(transactionAmount);
 				transactionID = useGiftCard(getnumber);
 				if (transactionID == null) {
 					throw(new InvalidArgumentSimulationException("non-valid gift card"));
 				}
+				BigDecimal giftCardCovers = transactionAmount.subtract(giftcardDB.getBalance(getnumber));
 				transactionDetails.put("card type", gettype);
-				transactionDetails.put("amount paid", transactionID);
+				transactionDetails.put("amount paid",giftCardCovers.toString());
 				paymentResult.put(transactionID, transactionDetails);
 				return;
 			}
@@ -118,7 +120,7 @@ public class PaysWithCard implements CardReaderObserver {
 			
 			//if transactionAmount < 0 then record the amount remaining in the gift card 
 			if (cmpRes == -1) {
-				BigDecimal remaining = transactionAmount.negate();
+				BigDecimal remaining = transactionAmount.abs();
 				giftcardDB.changeBalanceRemaining(cardNumber, remaining);
 				
 			}  
@@ -164,12 +166,12 @@ public class PaysWithCard implements CardReaderObserver {
 	
 	
 	/* The constructor initializes the banking simulator classes and retrieves what is being charged to the customer from checkout */
-	public PaysWithCard(Checkout checkout, GiftCardDatabase gcDB)
+	public PaysWithCard(Checkout checkout, GiftCardDatabase gcDB, BigDecimal amountToPay)
 	{	
 		//Remember to get transaction amount somewhere
 		this.acceptedCardIssuers = new HashMap<String,CardIssuer>();
 		this.checkout = checkout;
-		this.transactionAmount= this.checkout.getTotalPrice();
+		this.transactionAmount= amountToPay;
 		this.paymentResult = new HashMap<String,HashMap<String,String>>();
 		this.giftcardDB = gcDB;
 	}
