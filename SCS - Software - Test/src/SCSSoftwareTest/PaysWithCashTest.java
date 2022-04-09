@@ -97,13 +97,6 @@ public class PaysWithCashTest {
 
 	@Before
 	public void setup() {
-		Coin.DEFAULT_CURRENCY = cad;
-		nickel = new Coin(BigDecimal.valueOf(0.05));
-		dime = new Coin(BigDecimal.valueOf(0.10));
-		quarter = new Coin(BigDecimal.valueOf(0.25));
-		loonie = new Coin(BigDecimal.valueOf(1.00));
-		toonie = new Coin(BigDecimal.valueOf(2.00));
-
 		Coin.DEFAULT_CURRENCY = Currency.getInstance("CAD");
 		nickel = new Coin(BigDecimal.valueOf(0.05));
 		dime = new Coin(BigDecimal.valueOf(0.10));

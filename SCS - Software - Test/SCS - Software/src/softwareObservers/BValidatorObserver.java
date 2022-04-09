@@ -23,7 +23,6 @@ public class BValidatorObserver implements BanknoteValidatorObserver {
 	@Override
 	public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public void validBanknoteDetected(BanknoteValidator validator, Currency currency, int value) {

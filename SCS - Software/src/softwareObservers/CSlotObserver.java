@@ -29,6 +29,7 @@ public class CSlotObserver implements CoinSlotObserver
 
 	@Override
 	public void coinInserted(CoinSlot slot) {
+		// TODO Auto-generated method stub
 		
 	}
 	

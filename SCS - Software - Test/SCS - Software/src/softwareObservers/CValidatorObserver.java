@@ -1,20 +1,23 @@
 package softwareObservers;
 
+import java.math.BigDecimal;
+
 import org.lsmr.selfcheckout.devices.AbstractDevice;
-import org.lsmr.selfcheckout.devices.CoinStorageUnit;
+import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
-import org.lsmr.selfcheckout.devices.observers.CoinStorageUnitObserver;
+import org.lsmr.selfcheckout.devices.observers.CoinValidatorObserver;
 
 import SCSSoftware.PaysWithCoin;
 
-public class CStorageUnitObserver implements CoinStorageUnitObserver {
+public class CValidatorObserver implements CoinValidatorObserver {
 	PaysWithCoin pwc;
 	
-	public CStorageUnitObserver (PaysWithCoin pwc)
+	
+	public CValidatorObserver(PaysWithCoin pwc)
 	{
 		this.pwc = pwc;
 	}
-			
+
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
@@ -28,25 +31,13 @@ public class CStorageUnitObserver implements CoinStorageUnitObserver {
 	}
 
 	@Override
-	public void coinsFull(CoinStorageUnit unit) {
-		// TODO Auto-generated method stub
+	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
+		pwc.validCoin(validator, value);
 		
 	}
 
 	@Override
-	public void coinAdded(CoinStorageUnit unit) {
-		pwc.addValidCoin();
-		
-	}
-
-	@Override
-	public void coinsLoaded(CoinStorageUnit unit) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void coinsUnloaded(CoinStorageUnit unit) {
+	public void invalidCoinDetected(CoinValidator validator) {
 		// TODO Auto-generated method stub
 		
 	}

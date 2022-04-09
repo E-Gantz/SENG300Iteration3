@@ -4,19 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Currency;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.lsmr.selfcheckout.Banknote;
+import org.lsmr.selfcheckout.Barcode;
+import org.lsmr.selfcheckout.BarcodedItem;
 import org.lsmr.selfcheckout.Coin;
-import org.lsmr.selfcheckout.devices.Acceptor;
+import org.lsmr.selfcheckout.Numeral;
+import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.CoinSlot;
 import org.lsmr.selfcheckout.devices.CoinStorageUnit;
@@ -25,99 +23,80 @@ import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
-import org.lsmr.selfcheckout.devices.UnidirectionalChannel;
+import org.lsmr.selfcheckout.products.BarcodedProduct;
 
+import SCSSoftware.Checkout;
 import SCSSoftware.PaysWithCoin;
+import SCSSoftware.ProductCart;
 
 public class PaysWithCoinTest {
-	private Coin nickel;
-	private Coin dime;
-	private Coin quarter;
-	private Coin loonie;
-	private Coin toonie;
-	
-	private PaysWithCoin pwc;
-    
-	private CoinSlot slot;
+
+	private CoinStorageUnit cStorage;
 	private CoinValidator cValidator;
-	private CoinStorageUnit storage;
-	private CoinTray tray;
-	
 	private SelfCheckoutStation station;
-	private Currency c;
-	
+	private CoinSlot cSlot;
+	private PaysWithCoin pwc;
+	public Currency currency;
+	private Checkout checkout;
+	private BarcodeScanner scanner;
+	private ProductCart pcart;
+
+	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
+	public Numeral[] code2 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.two };
+	public Barcode bc1 = new Barcode(code1); // 001
+	public Barcode bc2 = new Barcode(code2); // 002
+	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
+	public BarcodedItem item2 = new BarcodedItem(bc2, 4);
+	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
+	public BarcodedProduct prod2 = new BarcodedProduct(bc2, "Milk", new BigDecimal(10), 4);
 	@Before
-	public void setup()
-	{
-		c = Currency.getInstance("CAD");
-		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
-						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
-		int [] bankNoteDenom = {5, 10, 20, 50, 100};
-		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
-		Coin.DEFAULT_CURRENCY = c;
-		nickel = new Coin(BigDecimal.valueOf(0.05));
-		dime = new Coin(BigDecimal.valueOf(0.10));
-		quarter = new Coin(BigDecimal.valueOf(0.25));
-		loonie = new Coin(BigDecimal.valueOf(1.00));
-		toonie = new Coin(BigDecimal.valueOf(2.00));
-		
-		slot = station.coinSlot;
+	public void setup() {
+		BigDecimal[] coinArray = { new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+				new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00) };
+		int[] bankNoteDenom = { 5, 10, 20, 50, 100 };
+		currency = Currency.getInstance("CAD");
+		station = new SelfCheckoutStation(currency, bankNoteDenom, coinArray, 1000, 1);
+		scanner = station.mainScanner;
+		pcart = new ProductCart();
+		checkout = new Checkout(scanner, pcart);
+		cSlot = station.coinSlot;
 		cValidator = station.coinValidator;
-		pwc = new PaysWithCoin(slot, cValidator);
-		cValidator.attach(pwc);
-		
-		storage = station.coinStorage;
-		tray = station.coinTray;
-    }
-	
-	@After
-	public void tearDown() {
-		cValidator = null;
-		c = null;
-		slot = null;
-		pwc = null;
-		storage = null;
-		tray = null;
-		station = null;
+		cStorage = station.coinStorage;
+		pwc = new PaysWithCoin(currency, bankNoteDenom, coinArray, checkout.getTotalPrice(), cSlot, cStorage,
+				cValidator);
 	}
 	
-    @Test
-    public void insertCoinTest() throws DisabledException, OverloadException
-    {
-    	slot.accept(quarter);
-    	assertEquals(quarter.getValue(), pwc.getCoinArray().get(0));
-    }
-    
-    
-    @Test
-    public void sumTotalTest()
-    {
-    	pwc.getCoinArray().add(nickel.getValue());
-    	pwc.getCoinArray().add(dime.getValue());
-    	pwc.getCoinArray().add(quarter.getValue());
-    	pwc.getCoinArray().add(loonie.getValue());
-    	pwc.getCoinArray().add(toonie.getValue());
-    	pwc.sumTotal(pwc.getCoinArray());
-    	BigDecimal expected = BigDecimal.valueOf(3.40);
-    	
-    	assertEquals(expected, (pwc.getTotal()).stripTrailingZeros());
-    	//assertTrue(expected.equals(pwc.getTotalCoins()));
-    }
-    
-    @Test
-    public void getTotalTest()
-    {
-    	BigDecimal testSet = new BigDecimal(5.00);
-    	pwc.setTotal(testSet);
-    	assertEquals(testSet, pwc.getTotal());
-    }
-    
-    @Test
-    public void getTotalCoinsTest()
-    {
-    	BigDecimal testSet = new BigDecimal(5.00);
-    	pwc.setTotal(testSet);
-    	assertEquals(testSet, pwc.getTotalCoins());
-    }
-    
+
+	@Test
+	public void testGetCheckoutTotal() {
+		scanner.scan(item1); 
+		assertEquals(pwc.getCheckoutTotal(), checkout.getTotalPrice());
+	}
+
+	@Test
+	public void testGetPaidTotal() throws DisabledException, OverloadException {
+		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(5.0));
+		cSlot.accept(coin);
+		assertEquals(pwc.getPaidTotal(), coin.getValue());
+	}
+
+	@Test
+	public void testCoinCart() throws DisabledException, OverloadException {
+		Coin coin = new Coin(currency, BigDecimal.valueOf(2.0));
+		ArrayList<Coin> coinCart = new ArrayList<Coin>();
+		coinCart.add(coin);
+		cSlot.accept(coin);
+		assertEquals(pwc.getCoinCart().get(0).getValue(), coinCart.get(0).getValue());
+	}   
+
+	@Test
+	public void testSumCoins() throws DisabledException, OverloadException {
+		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
+		cSlot.accept(coin);
+		cSlot.accept(coin);
+		System.out.println(pwc.sumCoins().doubleValue());
+		assert(pwc.sumCoins().doubleValue() == 4.0);
+
+	}
+
 }
