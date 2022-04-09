@@ -3,15 +3,15 @@ package SCSSoftware;
 import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 
 public class CustomerEntersBagsUsed /*extends CustomerOwnBag*/ {
-	private int totalBags;
+	private double totalBags;
 	private boolean purchaseBag;
 	//private boolean additionalBags;
 	
-	public CustomerEntersBagsUsed(int totalBags, boolean purchaseBag) {
+	public CustomerEntersBagsUsed(double totalBags, boolean purchaseBag) {
 		//super(weightInGrams, bagWeight);
-		if (totalBags <= 0) {
+		if (totalBags < 0.0) {
 			throw new InvalidArgumentSimulationException("Cannot have negative of plastic bags");
-		} else if (totalBags == 0){
+		} else if (totalBags == 0.0){
 			this.purchaseBag = false;
 			//throw new InvalidArgumentSimulationException("Customer has brought own bags. No plastic bags needed");
 		} else {
@@ -38,7 +38,7 @@ public class CustomerEntersBagsUsed /*extends CustomerOwnBag*/ {
 	 * 
 	 * @return The number of bags used.
 	 */
-	public int bagNumberSelection() {
+	public double bagNumberSelection() {
 		return totalBags;
 	}
 	
