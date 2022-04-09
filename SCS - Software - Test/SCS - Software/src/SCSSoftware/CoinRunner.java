@@ -25,11 +25,9 @@ public class CoinRunner {
 	private CoinValidator coinValidator;
 	private Coin validCoin;
 	private ArrayList<Coin> coinCart;
-	// private Checkout checkout;
 	private Currency currency;
 	private BigDecimal paidTotal;
 	private BigDecimal checkoutTotal;
-	private SelfCheckoutStation station;
 	private int[] banknoteDenominations;
 	private BigDecimal[] coinDenominations;
 
