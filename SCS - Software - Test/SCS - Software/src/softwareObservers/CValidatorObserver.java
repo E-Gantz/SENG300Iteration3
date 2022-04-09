@@ -7,15 +7,15 @@ import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.CoinValidatorObserver;
 
-import SCSSoftware.PaysWithCoin;
+import SCSSoftware.CoinRunner;
 
 public class CValidatorObserver implements CoinValidatorObserver {
-	PaysWithCoin pwc;
+	CoinRunner coinrunner;
 	
 	
-	public CValidatorObserver(PaysWithCoin pwc)
+	public CValidatorObserver(CoinRunner coinrunner)
 	{
-		this.pwc = pwc;
+		this.coinrunner = coinrunner;
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class CValidatorObserver implements CoinValidatorObserver {
 
 	@Override
 	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
-		pwc.validCoin(value);
-		pwc.addValidCoin();
+		coinrunner.validCoin(value);
+		coinrunner.addValidCoin();
 		
 	}
 

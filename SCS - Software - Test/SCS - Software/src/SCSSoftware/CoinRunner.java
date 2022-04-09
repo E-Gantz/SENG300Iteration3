@@ -5,24 +5,16 @@ import java.util.ArrayList;
 import java.util.Currency;
 
 import org.lsmr.selfcheckout.Coin;
-import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.CoinSlot;
 import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.CoinValidator;
-import org.lsmr.selfcheckout.devices.DisabledException;
-import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 
-import java.util.Currency;
-
-import softwareObservers.BSlotObserver;
-import softwareObservers.BStorageObserver;
-import softwareObservers.BValidatorObserver;
 import softwareObservers.CSlotObserver;
 import softwareObservers.CStorageUnitObserver;
 import softwareObservers.CValidatorObserver;
 
-public class PaysWithCoin {
+public class CoinRunner {
 
 	private CSlotObserver cSlotObserver;
 	private CStorageUnitObserver cStorageObserver;
@@ -41,8 +33,8 @@ public class PaysWithCoin {
 	private int[] banknoteDenominations;
 	private BigDecimal[] coinDenominations;
 
-	public PaysWithCoin(Currency currency, int[] banknoteDenominations, BigDecimal[] coinDenominations,
-						BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinValidator cValidator) {
+	public CoinRunner(Currency currency, int[] banknoteDenominations, BigDecimal[] coinDenominations,
+					  BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinValidator cValidator) {
 		this.paidTotal = BigDecimal.ZERO;
 		this.checkoutTotal = checkoutTotal;
 		this.banknoteDenominations = banknoteDenominations;

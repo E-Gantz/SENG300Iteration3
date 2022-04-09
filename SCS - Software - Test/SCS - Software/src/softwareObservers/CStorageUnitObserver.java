@@ -5,14 +5,14 @@ import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.CoinStorageUnitObserver;
 
-import SCSSoftware.PaysWithCoin;
+import SCSSoftware.CoinRunner;
 
 public class CStorageUnitObserver implements CoinStorageUnitObserver {
-	PaysWithCoin pwc;
+	CoinRunner coinrunner;
 	
-	public CStorageUnitObserver (PaysWithCoin pwc)
+	public CStorageUnitObserver (CoinRunner coinrunner)
 	{
-		this.pwc = pwc;
+		this.coinrunner = coinrunner;
 	}
 			
 	@Override
@@ -35,7 +35,7 @@ public class CStorageUnitObserver implements CoinStorageUnitObserver {
 
 	@Override
 	public void coinAdded(CoinStorageUnit unit) {
-		pwc.addValidCoin();
+		coinrunner.addValidCoin();
 		
 	}
 

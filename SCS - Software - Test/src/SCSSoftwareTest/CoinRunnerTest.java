@@ -19,19 +19,18 @@ import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
-import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.Checkout;
-import SCSSoftware.PaysWithCoin;
+import SCSSoftware.CoinRunner;
 import SCSSoftware.ProductCart;
 
-public class PaysWithCoinTest {
+public class CoinRunnerTest {
 
 	private CoinStorageUnit cStorage;
 	private CoinValidator cValidator;
 	private SelfCheckoutStation station;
 	private CoinSlot cSlot;
-	private PaysWithCoin pwc;
+	private CoinRunner coinrunner;
 	public Currency currency;
 	private Checkout checkout;
 	private BarcodeScanner scanner;
@@ -52,7 +51,7 @@ public class PaysWithCoinTest {
 		cSlot = station.coinSlot;
 		cValidator = station.coinValidator;
 		cStorage = station.coinStorage;
-		pwc = new PaysWithCoin(currency, bankNoteDenom, coinArray, checkout.getTotalPrice(), cSlot, cStorage,
+		coinrunner = new CoinRunner(currency, bankNoteDenom, coinArray, checkout.getTotalPrice(), cSlot, cStorage,
 				cValidator);
 	}
 	
@@ -60,14 +59,14 @@ public class PaysWithCoinTest {
 	@Test
 	public void testGetCheckoutTotal() {
 		scanner.scan(item1); 
-		assertEquals(pwc.getCheckoutTotal(), checkout.getTotalPrice());
+		assertEquals(coinrunner.getCheckoutTotal(), checkout.getTotalPrice());
 	}
 
 	@Test
 	public void testGetPaidTotal() throws DisabledException, OverloadException {
 		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.0));
 		cSlot.accept(coin);
-		assertEquals(pwc.getPaidTotal(), coin.getValue());
+		assertEquals(coinrunner.getPaidTotal(), coin.getValue());
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class PaysWithCoinTest {
 		ArrayList<Coin> coinCart = new ArrayList<>();
 		coinCart.add(coin);
 		cSlot.accept(coin);
-		assertEquals(pwc.getCoinCart().get(0).getValue(), coinCart.get(0).getValue());
+		assertEquals(coinrunner.getCoinCart().get(0).getValue(), coinCart.get(0).getValue());
 	}
 	@Test
 	public void testSumCoins() throws DisabledException, OverloadException {
@@ -90,6 +89,6 @@ public class PaysWithCoinTest {
 		cSlot.accept(quarter);
 		cSlot.accept(dime);
 		cSlot.accept(nickel);
-		assert(pwc.sumCoins().doubleValue() == 3.40);
+		assert(coinrunner.sumCoins().doubleValue() == 3.40);
 	}
 }

@@ -5,14 +5,14 @@ import org.lsmr.selfcheckout.devices.CoinSlot;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.CoinSlotObserver;
 
-import SCSSoftware.PaysWithCoin;
+import SCSSoftware.CoinRunner;
 
 public class CSlotObserver implements CoinSlotObserver
 {
-	PaysWithCoin pwc;
-	public CSlotObserver(PaysWithCoin pwc)
+	CoinRunner coinrunner;
+	public CSlotObserver(CoinRunner coinrunner)
 	{
-		this.pwc = pwc;
+		this.coinrunner = coinrunner;
 	}
 
 	@Override
