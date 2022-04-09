@@ -42,7 +42,7 @@ public class PaysWithCoin {
 	private BigDecimal[] coinDenominations;
 
 	public PaysWithCoin(Currency currency, int[] banknoteDenominations, BigDecimal[] coinDenominations,
-			BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinValidator cValidator) {
+						BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinValidator cValidator) {
 		this.paidTotal = BigDecimal.ZERO;
 		this.checkoutTotal = checkoutTotal;
 		this.banknoteDenominations = banknoteDenominations;
@@ -54,6 +54,7 @@ public class PaysWithCoin {
 		this.cSlotObserver = new CSlotObserver(this);
 		this.cStorageObserver = new CStorageUnitObserver(this);
 		this.cValidatorObserver = new CValidatorObserver(this);
+		this.coinCart = new ArrayList<Coin>();
 		coinSlot.attach(cSlotObserver);
 		coinStorage.attach(cStorageObserver);
 		coinValidator.attach(cValidatorObserver);
@@ -77,10 +78,11 @@ public class PaysWithCoin {
 	}
 
 	public void validCoin(BigDecimal value) {
-		this.validCoin = new Coin(value);
+		this.validCoin = new Coin(Currency.getInstance("CAD"), value);
 	}
 
 	public void addValidCoin() {
+		this.validCoin = new Coin(currency, validCoin.getValue());
 		paidTotal = paidTotal.add(validCoin.getValue());
 		this.coinCart.add(validCoin);
 		validCoin = null;
