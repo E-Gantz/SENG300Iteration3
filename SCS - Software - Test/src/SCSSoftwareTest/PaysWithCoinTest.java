@@ -72,29 +72,35 @@ public class PaysWithCoinTest {
 		assertEquals(pwc.getCheckoutTotal(), checkout.getTotalPrice());
 	}
 
-//	@Test
-//	public void testGetPaidTotal() throws DisabledException, OverloadException {
-//		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(5.0));
-//		cSlot.accept(coin);
-//		assertEquals(pwc.getPaidTotal(), coin.getValue());
-//	}
-//
-//	@Test
-//	public void testCoinCart() throws DisabledException, OverloadException {
-//		Coin coin = new Coin(currency, BigDecimal.valueOf(2.0));
-//		ArrayList<Coin> coinCart = new ArrayList<Coin>();
-//		coinCart.add(coin);
-//		cSlot.accept(coin);
-//		assertEquals(pwc.getCoinCart().get(0).getValue(), coinCart.get(0).getValue());
-//	}
+	@Test
+	public void testGetPaidTotal() throws DisabledException, OverloadException {
+		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.0));
+		cSlot.accept(coin);
+		assertEquals(pwc.getPaidTotal(), coin.getValue());
+	}
+
+	@Test
+	public void testCoinCart() throws DisabledException, OverloadException {
+		Coin coin = new Coin(currency, BigDecimal.valueOf(2.0));
+		ArrayList<Coin> coinCart = new ArrayList<Coin>();
+		coinCart.add(coin);
+		cSlot.accept(coin);
+		assertEquals(pwc.getCoinCart().get(0).getValue(), coinCart.get(0).getValue());
+	}
+
 	@Test
 	public void testSumCoins() throws DisabledException, OverloadException {
-
-		Coin coin = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
-		cSlot.accept(coin);
-		cSlot.accept(coin);
-		System.out.println(pwc.sumCoins().doubleValue());
-		assert(pwc.sumCoins().doubleValue() == 4.0);
+		Coin toonie = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
+		Coin loonie = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(1.00));
+		Coin quarter = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.25));
+		Coin dime = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.10));
+		Coin nickel = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.05));
+		cSlot.accept(toonie);
+		cSlot.accept(loonie);
+		cSlot.accept(quarter);
+		cSlot.accept(dime);
+		cSlot.accept(nickel);
+		assert(pwc.sumCoins().doubleValue() == 3.40);
 	}
 
 }
