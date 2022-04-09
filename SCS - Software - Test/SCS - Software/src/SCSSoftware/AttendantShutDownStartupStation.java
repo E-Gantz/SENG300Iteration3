@@ -14,7 +14,7 @@ import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.ElectronicScaleObserver;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
-public class ShutDownAndStartupStation{
+public class AttendantShutDownStartupStation{
 
 private SelfCheckoutStation station;
 private SupervisionStation attendantStation;
@@ -26,13 +26,13 @@ private boolean stationStartup = false;
 private boolean attendantStationStartup = false;
 	
 	// Constructor takes an individual scs that needs to be shut down
-	public ShutDownAndStartupStation(SelfCheckoutStation scs, SupervisionStation ss) {
+	public AttendantShutDownStartupStation(SelfCheckoutStation scs, SupervisionStation ss) {
 		this.station = scs;
 		this.attendantStation = ss;
 	}	
 	
 	// Constructor takes the supervision station that needs to be shut down
-	public ShutDownAndStartupStation(SupervisionStation ss) {
+	public AttendantShutDownStartupStation(SupervisionStation ss) {
 		this.attendantStation = ss;
 	}
 	
