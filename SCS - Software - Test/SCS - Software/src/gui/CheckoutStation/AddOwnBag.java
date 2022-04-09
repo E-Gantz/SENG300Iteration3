@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class AddOwnBag extends JFrame {
 
@@ -46,6 +47,7 @@ public class AddOwnBag extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel lblAddOwnBags = new JLabel("Please put your own bags on the scale now.");
+		lblAddOwnBags.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblAddOwnBags, BorderLayout.CENTER);
 		
 		JButton btnBackToScanning = new JButton("Go Back");

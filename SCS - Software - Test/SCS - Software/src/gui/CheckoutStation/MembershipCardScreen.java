@@ -65,7 +65,7 @@ public class MembershipCardScreen extends JFrame {
 		btnBackToCheckout.setBackground(Color.RED);
 		contentPane.add(btnBackToCheckout);
 		
-		JLabel lblNewLabel = new JLabel("Please enter your membership number or scan the card:");
+		JLabel lblNewLabel = new JLabel("Please scan your membership card:");
 		contentPane.add(lblNewLabel);
 		
 		textFieldMembershipID = new JTextField();
