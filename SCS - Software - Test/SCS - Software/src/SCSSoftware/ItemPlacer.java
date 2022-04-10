@@ -50,6 +50,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	public void weightChanged(ElectronicScale scale, double weightInGrams) throws InvalidArgumentSimulationException {
 		beforePlacing();
 		expectedWeight = pcart.getNewestExpectedWeight();//this gets the weight of the item most recently added to the cart.
+		System.out.println(expectedWeight);
 		if(ownbag.checkOwnBag() == false)
 			currentWeight = weightInGrams;
 		else
