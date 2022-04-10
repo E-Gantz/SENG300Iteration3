@@ -10,8 +10,8 @@ public class BlockStations {
     private ArrayList<SelfCheckoutStation> blockList;
 
     public BlockStations(ArrayList<SelfCheckoutStation> scslist) {
-        this.scsList = new ArrayList<SelfCheckoutStation> scslist;
-        this.blockList = new ArrayList<SelfCheckoutStation>;
+        this.scsList = scslist;
+        this.blockList = new ArrayList<SelfCheckoutStation>();
     }
 
     public void addToBlockList(SelfCheckoutStation scs)
@@ -31,12 +31,12 @@ public class BlockStations {
 
     public void blockAll()
     {
-        scsList.forEach((scs) -> blockSCS(scs));
+        getScsList().forEach((scs) -> blockSCS(scs));
     }
 
     public void unblockAll()
     {
-        scsList.forEach((scs) -> unblockSCS(scs));
+        getScsList().forEach((scs) -> unblockSCS(scs));
     }
 
     public void blockSCS(SelfCheckoutStation scs)
@@ -60,4 +60,12 @@ public class BlockStations {
         scs.banknoteInput.enable();
         scs.coinSlot.enable();
     }
+
+	public ArrayList<SelfCheckoutStation> getScsList() {
+		return scsList;
+	}
+	
+	public ArrayList<SelfCheckoutStation> getBlockList() {
+		return blockList;
+	}
 }
