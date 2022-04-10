@@ -36,6 +36,7 @@ public class CustomerScreenTest {
 	private BigDecimal[] coin_denominations;
 	private int maxWeight;
 	private int sensitivity;
+	private giftCardDatabase giftcardDB; 
 	private DataPasser dataPass;
 	private Card testCard;
 
@@ -53,6 +54,7 @@ public class CustomerScreenTest {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         found = 0;
         testCard = new Card("4040111177778888","","","","", false,false);
+        
         dataPass = new DataPasser(scs, testCard);
        
     }
