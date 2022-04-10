@@ -126,8 +126,22 @@ public class CheckoutScreen extends JFrame {
 		});
 		panel_payment.add(btnEnterCoin);
 		
-		JButton btnGoToCreditScan = new JButton("Credit");
-		panel_payment.add(btnGoToCreditScan);
+		JButton btnAddBanknote = new JButton("Add20Banknote");
+		btnAddBanknote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addTwenty();
+				} catch (DisabledException | OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				String total = "Paid: " + dataPass.paidString;
+				lblPaid.setText(total);
+				
+				
+			}
+		});
+		panel_payment.add(btnAddBanknote);
 		
 		JButton btnGoToCardScan = new JButton("Gift Card");
 		panel_payment.add(btnGoToCardScan);

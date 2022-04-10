@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Map;
 
+import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.BarcodedItem;
 import org.lsmr.selfcheckout.Coin;
@@ -67,6 +68,7 @@ public class DataPasser {
 	private CoinStorageUnit cStorage;
 	private CoinRunner coinrunner;
 	Coin toonie = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
+	Banknote twentyBill = new Banknote(Currency.getInstance("CAD"), 20);
 	public DataPasser() {};
 	
 	public String paidString;
@@ -99,6 +101,13 @@ public class DataPasser {
 	
 	public void addToonie() throws DisabledException, OverloadException {
 		cSlot.accept(toonie);
+		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
+		totalPaid = addedTotal;
+		paidString = totalPaid.toString();
+	}
+	
+	public void addTwenty() throws DisabledException, OverloadException {
+		bSlot.accept(twentyBill);
 		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
