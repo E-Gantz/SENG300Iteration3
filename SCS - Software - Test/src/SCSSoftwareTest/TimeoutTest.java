@@ -55,12 +55,11 @@ public class TimeoutTest {
 		inventory.addInventory(bc1, prod1);
 		inventory.addInventory(bc2, prod2);
 		cart = new ProductCart();
-		placer = new ItemPlacer(scanner, cart, station.handheldScanner);
+		placer = new ItemPlacer(scanner, cart);
 		scale = station.baggingArea;
 		scale.attach(placer);
-		adder = new ItemAdder(inventory, cart, placer, scanner, station.handheldScanner);
+		adder = new ItemAdder(inventory, cart, placer);
 		scanner.attach(adder);
-		station.handheldScanner.attach(adder);
 		cartSize = cart.getItemNames().size();
 		expectedWeight = 0;
 	}
@@ -243,170 +242,6 @@ public class TimeoutTest {
 		
 		
 		assertTrue(placer.getTimeoutStatus()); //i think this tests if the flag is properly set if the first item is bagged but the second is not, it should be true
-	}
-	
-	@Test (timeout = 10000)
-	public void ItemPlacedInTimeHandheld() throws InterruptedException {
-		station.handheldScanner.scan(item1);
-		//next two if statements simulate someone retrying to scan a couple times if the first scan doesn't work
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		TimeUnit.SECONDS.sleep(2);
-		scale.add(item1);
-		TimeUnit.SECONDS.sleep(3);
-		assertTrue(true);
-	}
-	
-	@Test (timeout = 10000) //(expected = SimulationException.class)	//this throws an exception in a different thread, so this won't work to catch it.
-	public void ItemNotPlacedInTimeHandheld() throws InterruptedException, SimulationException {
-		station.handheldScanner.scan(item1);
-		//next two if statements simulate someone retrying to scan a couple times if the first scan doesn't work
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		TimeUnit.SECONDS.sleep(5);
-		assertTrue(placer.getTimeoutStatus());
-	}
-	
-	@Test (timeout = 10000)
-	public void ItemPlacedAfterHandheld() throws InterruptedException, OverloadException {
-		station.handheldScanner.scan(item1);
-		//next two if statements simulate someone retrying to scan a couple times if the first scan doesn't work
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		TimeUnit.SECONDS.sleep(5);
-		scale.add(item1);
-		
-		assertTrue(!placer.getTimeoutStatus()); //once they place the item in bags after being yelled at, the not in bags flag should go back to false
-	}
-	
-	@Test (timeout = 10000)
-	public void ItemPlacedInstantlyHandheld() throws InterruptedException, OverloadException {
-		station.handheldScanner.scan(item1);
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			station.handheldScanner.scan(item1);
-		}
-		
-		scale.add(item1);
-		TimeUnit.SECONDS.sleep(5);
-		expectedWeight = 3;
-		
-		assertEquals(placer.getBagWeight(), expectedWeight, 0.5);
-	}
-	
-	@Test (timeout = 10000)
-	public void MultiItemPlacedInTimeBothScanners() throws InterruptedException, OverloadException {
-		scanner.scan(item1);
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		cartSize++;
-		
-		scale.add(item1);
-		
-		for (int i = 0; i <= 2; i++) {
-			if (cart.getItemNames().size() == cartSize) {
-				station.handheldScanner.scan(item2);
-			}
-		}
-		
-		TimeUnit.SECONDS.sleep(2);
-		scale.add(item2);
-		TimeUnit.SECONDS.sleep(3);
-		expectedWeight = 7;
-		
-		assertEquals(placer.getBagWeight(), expectedWeight, 1);
-	}
-	
-	@Test (timeout = 10000)
-	public void MultiItemNotPlacedBothScanners() throws InterruptedException, OverloadException {
-		scanner.scan(item1);
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		
-		cartSize++;
-		
-		scale.add(item1);
-	
-		for (int i = 0; i <= 2; i++) {
-			if (cart.getItemNames().size() == cartSize) {
-				station.handheldScanner.scan(item2);
-			}
-		}
-		
-		TimeUnit.SECONDS.sleep(5);
-		
-		assertTrue(!(placer.getTimeoutStatus()));
-	}
-	
-	@Test (timeout = 10000)
-	public void MultiItemPlacedAfterBothScanners() throws InterruptedException, OverloadException {
-		scanner.scan(item1);
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		
-		scale.add(item1);
-		cartSize++;
-	
-		for (int i = 0; i < 2; i++) {
-			if (cart.getItemNames().size() == cartSize) {
-				station.handheldScanner.scan(item2);
-			}
-		}
-		
-		TimeUnit.SECONDS.sleep(5);
-		scale.add(item2);
-		
-		assertTrue(!placer.getTimeoutStatus());
-	}
-	
-	@Test (timeout = 10000)
-	public void MultiItemPlaceHalfBothScanners() throws InterruptedException, OverloadException {
-		scanner.scan(item1);
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		if (cart.getItemNames().size() == cartSize) {
-			scanner.scan(item1);
-		}
-		
-		scale.add(item1);
-		cartSize++;
-	
-		for (int i = 0; i < 2; i++) {
-			if (cart.getItemNames().size() == cartSize) {
-				station.handheldScanner.scan(item2);
-			}
-		}
-		TimeUnit.SECONDS.sleep(5);
-		
-		
-		assertTrue(!(placer.getTimeoutStatus())); //i think this tests if the flag is properly set if the first item is bagged but the second is not, it should be true
 	}
 
 }
