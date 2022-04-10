@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.lsmr.selfcheckout.devices.DisabledException;
+import org.lsmr.selfcheckout.devices.OverloadException;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -100,14 +104,27 @@ public class CheckoutScreen extends JFrame {
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_payment.add(lblTotal);
 		
-		lblPaid = new JLabel("Paid:");
+		lblPaid = new JLabel("Paid: 0");
 		panel_payment.add(lblPaid);
 		
 		JLabel lblPaymentMethod = new JLabel("<html>Choose a payment<br> method or insert coins:</html>");
 		panel_payment.add(lblPaymentMethod);
 		
-		JButton btnEnterBanknotes = new JButton("Banknote");
-		panel_payment.add(btnEnterBanknotes);
+		JButton btnEnterCoin = new JButton("Add Toonie");
+		btnEnterCoin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addToonie();
+				} catch (DisabledException | OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				String total = "Paid: " + dataPass.paidString;
+				lblPaid.setText(total);
+				
+			}
+		});
+		panel_payment.add(btnEnterCoin);
 		
 		JButton btnGoToCreditScan = new JButton("Credit");
 		panel_payment.add(btnGoToCreditScan);

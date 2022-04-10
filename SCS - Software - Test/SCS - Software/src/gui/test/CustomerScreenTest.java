@@ -50,7 +50,7 @@ public class CustomerScreenTest {
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         found = 0;
-        dataPass = new DataPasser();
+        dataPass = new DataPasser(scs);
         
     }
 
