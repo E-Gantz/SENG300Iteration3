@@ -49,7 +49,7 @@ public class CardScanScreen extends JFrame {
 	 */
 	public CardScanScreen(DataPasser dataPass, 
 						  CheckoutScreen checkout,
-						  HashMap<String,HashMap<String,String>> result) {
+						  HashMap<String, HashMap<String, String>> hashMap) {
 		CardScanScreen me = this;
 		checkoutScreen = checkout;
 		setTitle("Select a card type:");
@@ -75,7 +75,7 @@ public class CardScanScreen extends JFrame {
 		JButton btnCredit = new JButton("Credit");
 		btnCredit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				credit = new CreditSelection(dataPass, me);
+				credit = new CreditSelection(dataPass, me, hashMap, checkoutScreen);
 				setVisible(false);
 				credit.setVisible(true);
 			}
@@ -85,7 +85,7 @@ public class CardScanScreen extends JFrame {
 		JButton btnDebit = new JButton("Debit");
 		btnDebit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				debit = new DebitSelection(dataPass, me, result, checkoutScreen);
+				debit = new DebitSelection(dataPass, me, hashMap, checkoutScreen);
 				setVisible(false);
 				debit.setVisible(true);
 			}
@@ -103,5 +103,4 @@ public class CardScanScreen extends JFrame {
 		});
 		panel1.add(btnGift);
 	}
-
 }

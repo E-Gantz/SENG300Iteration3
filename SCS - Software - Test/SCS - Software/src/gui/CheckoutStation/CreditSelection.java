@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 public class CreditSelection extends JFrame {
@@ -25,8 +27,8 @@ public class CreditSelection extends JFrame {
 					DataPasser basic = new DataPasser();
 					ScanningScreen ssTest = new ScanningScreen(basic);
 					CheckoutScreen cTest = new CheckoutScreen(basic, ssTest);
-					CardScanScreen css = new CardScanScreen(basic, cTest);
-					CreditSelection frame = new CreditSelection(basic, css);
+					CardScanScreen css = new CardScanScreen(basic, cTest, new HashMap<String, HashMap<String, String>>());
+					CreditSelection frame = new CreditSelection(basic, css, new HashMap<String, HashMap<String, String>>(), cTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,7 +40,10 @@ public class CreditSelection extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CreditSelection(DataPasser dataPass, CardScanScreen css) {
+	public CreditSelection(DataPasser dataPass, 
+			  CardScanScreen css, 
+			  HashMap<String,HashMap<String,String>> result,
+			  CheckoutScreen checkoutScreen) {
 		setTitle("CreditSelection");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -58,6 +63,19 @@ public class CreditSelection extends JFrame {
 		contentPane.add(btnGoBack);
 		
 		JButton btnTap = new JButton("Tap");
+		btnTap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.makeTapPayment(result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				checkoutScreen.setVisible(true);
+				dispose();
+				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
+			}
+		});
+		
 		contentPane.add(btnTap);
 		
 		JButton btnSwipe = new JButton("Swipe");

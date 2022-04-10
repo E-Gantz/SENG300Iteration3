@@ -72,6 +72,7 @@ public class DebitSelection extends JFrame {
 				}
 				checkoutScreen.setVisible(true);
 				dispose();
+				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
 			}
 		});
 		contentPane.add(btnTap);
