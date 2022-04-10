@@ -28,6 +28,7 @@ public class CheckoutScreen extends JFrame {
 	public JLabel lblPaid;
 	public JLabel lblTotal;
 	public CardScanScreen cardScreen;
+	public CoinSelection coinScreen;
 	/**
 	 * Launch the application.
 	 */
@@ -110,17 +111,11 @@ public class CheckoutScreen extends JFrame {
 		JLabel lblPaymentMethod = new JLabel("<html>Choose a payment<br> method or insert coins:</html>");
 		panel_payment.add(lblPaymentMethod);
 		
-		JButton btnEnterCoin = new JButton("Add Toonie");
+		JButton btnEnterCoin = new JButton("Add Coins");
 		btnEnterCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					dataPass.addToonie();
-				} catch (DisabledException | OverloadException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				String total = "Paid: " + dataPass.paidString;
-				lblPaid.setText(total);
+				coinScreen = new CoinSelection(dataPass, me);
+				coinScreen.setVisible(true);
 				
 			}
 		});
