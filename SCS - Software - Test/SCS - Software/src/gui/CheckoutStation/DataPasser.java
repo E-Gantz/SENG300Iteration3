@@ -1,18 +1,22 @@
 package gui.CheckoutStation;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.BarcodedItem;
+import org.lsmr.selfcheckout.Card;
 import org.lsmr.selfcheckout.Coin;
 import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.devices.BanknoteSlot;
 import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
 import org.lsmr.selfcheckout.devices.BanknoteValidator;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
+import org.lsmr.selfcheckout.devices.CardReader;
 import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.CoinSlot;
 import org.lsmr.selfcheckout.devices.CoinStorageUnit;
@@ -25,6 +29,8 @@ import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
 import SCSSoftware.CoinRunner;
+import SCSSoftware.GiftCardDatabase;
+import SCSSoftware.PaysWithCard;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
 
@@ -42,8 +48,6 @@ public class DataPasser {
 	
 	
 	public BigDecimal totalPaid;
-	
-	
 	
 	private BarcodeScanner scanner;
 	public BanknoteRunner banknoteRunner;
@@ -69,11 +73,20 @@ public class DataPasser {
 	private CoinRunner coinrunner;
 	Coin toonie = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
 	Banknote twentyBill = new Banknote(Currency.getInstance("CAD"), 20);
+	
+	private PaysWithCard pwc;
+	private GiftCardDatabase giftDB;
+	private CardReader creader;
+	
+	
+	private Card payCard;
+	
+	
 	public DataPasser() {};
 	
 	public String paidString;
 	
-	public DataPasser(SelfCheckoutStation scs) {
+	public DataPasser(SelfCheckoutStation scs, Card cardToUse, Gift) { 
 		Coin.DEFAULT_CURRENCY = Currency.getInstance("CAD");
 		pcart = new ProductCart();
 		station = scs;
@@ -87,6 +100,7 @@ public class DataPasser {
 		this.bStorage = station.banknoteStorage;
 		this.bValidator = station.banknoteValidator;
 		this.coinDispensers = station.coinDispensers;
+		this.creader = station.cardReader;
 
 		checkout = new Checkout(scanner, pcart);
 
@@ -96,6 +110,9 @@ public class DataPasser {
 		paysWithCash = new PaysWithCash(coinrunner, banknoteRunner, station.banknoteDispensers, station.coinDispensers,
 				bOutput, cTray);
 		totalPaid = new BigDecimal(0);
+		this.giftDB = new GiftCardDatabase();
+		this.payCard = cardToUse;
+		this.pwc = new PaysWithCard(checkout,giftDB,checkout.getTotalPrice());
 		
 	}
 	
@@ -113,6 +130,12 @@ public class DataPasser {
 		paidString = totalPaid.toString();
 	}
 	
+	public void makeTapPayment(HashMap<String,HashMap<String,String>> result) throws IOException {
+
+		creader.tap(payCard);
+		result = pwc.getPaymentResult(); 
+
+	}
 	
 	
 	public void setFound(int setNumber){

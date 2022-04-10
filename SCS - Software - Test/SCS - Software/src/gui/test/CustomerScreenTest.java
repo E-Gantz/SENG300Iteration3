@@ -1,5 +1,6 @@
 package gui.test;
 
+import org.lsmr.selfcheckout.Card;
 import org.lsmr.selfcheckout.devices.*;
 import org.lsmr.selfcheckout.devices.observers.*;
 
@@ -36,6 +37,7 @@ public class CustomerScreenTest {
 	private int maxWeight;
 	private int sensitivity;
 	private DataPasser dataPass;
+	private Card testCard;
 
     @Before
     public void setup() {
@@ -50,7 +52,8 @@ public class CustomerScreenTest {
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         found = 0;
-        dataPass = new DataPasser(scs);
+        testCard = new Card("4040111177778888","","","","", false,false);
+        dataPass = new DataPasser(scs, testCard);
        
     }
 
