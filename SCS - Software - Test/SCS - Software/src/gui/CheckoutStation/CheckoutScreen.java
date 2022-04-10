@@ -27,6 +27,7 @@ public class CheckoutScreen extends JFrame {
 	public MembershipCardScreen memberScreen;
 	public JLabel lblPaid;
 	public JLabel lblTotal;
+	public CardScanScreen cardScreen;
 	/**
 	 * Launch the application.
 	 */
@@ -35,8 +36,7 @@ public class CheckoutScreen extends JFrame {
 			public void run() {
 				try {
 					DataPasser basic = new DataPasser();
-					ScanningScreen ssTest = new ScanningScreen(basic);
-					
+					ScanningScreen ssTest = new ScanningScreen(basic);				
 					CheckoutScreen frame = new CheckoutScreen(basic, ssTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -143,8 +143,15 @@ public class CheckoutScreen extends JFrame {
 		});
 		panel_payment.add(btnAddBanknote);
 		
-		JButton btnGoToCardScan = new JButton("Gift Card");
-		panel_payment.add(btnGoToCardScan);
+		JButton btnPayWithCard = new JButton("Card");
+		btnPayWithCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardScreen = new CardScanScreen(dataPass, me);
+				cardScreen.setVisible(true);				
+				setVisible(false);
+			}
+		});
+		panel_payment.add(btnPayWithCard);
 	}
 
 	public void updateLblPaid(String paid){

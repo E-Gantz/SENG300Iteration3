@@ -79,7 +79,6 @@ public class EnterPLU extends JFrame {
 		panel.add(textFieldPLUEntry);
 		textFieldPLUEntry.setColumns(10);
 		pluBuilder = "";
-		
 		JButton btnEnterPLU = new JButton("Enter");
 		panel.add(btnEnterPLU);
 		btnEnterPLU.addActionListener(new ActionListener() {
