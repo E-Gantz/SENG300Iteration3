@@ -13,6 +13,7 @@ import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.CustomerOwnBag;
 import SCSSoftware.ItemAdder;
+import SCSSoftware.ItemNotPlaceable;
 import SCSSoftware.ItemPlacer;
 import SCSSoftware.ProductCart;
 import SCSSoftware.ProductInventory;
@@ -30,13 +31,18 @@ public class ItemPlacerTest {
 	public CustomerOwnBag ownbag;
 	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
 	public Numeral[] code2 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.two};
+	public Numeral[] code3 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.three};
 	public Barcode bc1 = new Barcode(code1); //001
 	public Barcode bc2 = new Barcode(code2); //002
+	public Barcode bc3 = new Barcode(code3); //003
 	public BarcodedItem item1 = new BarcodedItem(bc1, 24.99);
 	public BarcodedItem item2 = new BarcodedItem(bc2, 28.91);
+	public BarcodedItem item3 = new BarcodedItem(bc3, 1000.91);
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 24.99);
 	public BarcodedProduct prod2 = new BarcodedProduct(bc2, "Milk", new BigDecimal(10), 28.91);
+	public BarcodedProduct prod3 = new BarcodedProduct(bc3, "Rice", new BigDecimal(20), 1000.91);
 	public ItemPlacer placer;
+	public ItemNotPlaceable notPlaceable;
 	public ElectronicScale scale;
 	public int cartSize;
 	public SelfCheckoutStation station;
@@ -54,11 +60,13 @@ public class ItemPlacerTest {
 		inventory = new ProductInventory();
 		inventory.addInventory(bc1, prod1);
 		inventory.addInventory(bc2, prod2);
+		inventory.addInventory(bc3, prod3);
 		cart = new ProductCart();
-		placer = new ItemPlacer(scanner, cart);
+		placer = new ItemPlacer(scanner, cart, station.handheldScanner);
+		notPlaceable = new ItemNotPlaceable();
 		scale = station.baggingArea;
 		scale.attach(placer);
-		adder = new ItemAdder(inventory, cart, placer);
+		adder = new ItemAdder(inventory, cart, placer, scanner, station.handheldScanner);
 		scanner.attach(adder);
 		cartSize = cart.getItemNames().size();
 	}
@@ -71,6 +79,7 @@ public class ItemPlacerTest {
 		adder = null;
 		scale = null;
 		placer = null;
+		notPlaceable = null;
 		cart = null;
 		inventory = null;
 		cartSize = 0;
@@ -88,8 +97,8 @@ public class ItemPlacerTest {
 	
 	@Test (expected = InvalidArgumentSimulationException.class)
 	public void testCheckAdd1() {
-		BarcodedItem item3 = new BarcodedItem(bc1, 500);
-		scale.add(item3);
+		BarcodedItem item4 = new BarcodedItem(bc1, 500);
+		scale.add(item4);
 	}
 	
 	@Test (expected = InvalidArgumentSimulationException.class) 
@@ -109,11 +118,49 @@ public class ItemPlacerTest {
 	}
 	
 	@Test
+	public void ItemsCanBePlaced() {
+		cart.addToCart(prod1);
+		scale.add(item1);
+		cart.addToCart(prod2);
+		scale.add(item2);
+		assertTrue(notPlaceable.isPlaceable());	
+	}
+	
+	@Test (expected = InvalidArgumentSimulationException.class) 
+	public void ItemTooHeavyTest(){
+		cart.addToCart(prod3);
+		scale.add(item3);
+	}
+	
+	@Test (expected = InvalidArgumentSimulationException.class)
+	public void ScannerWhenItemHeavyTest() {
+		cart.addToCart(prod3);
+		scale.add(item3);
+		notPlaceable.CheckIfPlacable(scale, item3.getWeight());
+		assertTrue(scanner.isDisabled());
+	}
+	
+	@Test
+	public void HeavyItemCheck() {
+		cart.addToCart(prod3);
+		notPlaceable.CheckIfPlacable(scale, prod3.getExpectedWeight());
+		assertTrue(!(notPlaceable.isPlaceable()));
+	}
+	
+	@Test
 	public void scannerReEnabled() {
 		cart.addToCart(prod1);
 		scanner.disable();
 		scale.add(item1);
 		assertTrue(!(scanner.isDisabled()));
+	}
+	
+	@Test
+	public void handheldScannerReEnabled() {
+		cart.addToCart(prod1);
+		scanner.disable();
+		scale.add(item1);
+		assertTrue(!(station.handheldScanner.isDisabled()));
 	}
 	
 }

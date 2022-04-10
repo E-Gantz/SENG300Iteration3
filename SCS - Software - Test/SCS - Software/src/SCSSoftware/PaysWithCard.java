@@ -2,7 +2,6 @@ package SCSSoftware;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.UUID;
 
 //import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.Card.CardData;
@@ -11,28 +10,22 @@ import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.CardReader;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.CardReaderObserver;
-import org.lsmr.selfcheckout.external.CardIssuer;
-import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 
 public class PaysWithCard implements CardReaderObserver {
 
 	private String gettype;
 	private String getnumber;
 	private String getcardholder;
-	private String getccv; 
+	private String getcvv; 
 	private Checkout checkout;
-	
-	
-	private HashMap<String,CardIssuer> acceptedCardIssuers; // String key is first 4 digits for the bank identifier 
-	
-	
-	// we are assuming that all giftcards are swipe-able, and are one time use
-	private GiftCardDatabase giftcardDB; 					// database to keep track of gift cards 
-	private boolean cvvrequired;							
+	private BankSimulator bank;
+	private boolean cvvrequired;
 
 	private BigDecimal transactionAmount;
 
+
 	private HashMap<String,HashMap<String,String>>paymentResult; 
+	private String lastResponse;
 
 	public void cardInserted(CardReader reader) {
 		// IGNORE
@@ -55,51 +48,28 @@ public class PaysWithCard implements CardReaderObserver {
 	public void cardDataRead(CardReader reader, CardData data) {
 		
 		if(this.checkout.getState()) {
-			String transactionID;
-			HashMap<String,String> transactionDetails= new HashMap<String,String>();
-			
 			getcardholder = data.getCardholder();
 			gettype = data.getType();
-			getnumber = data.getNumber();
 			
-			if (gettype == "giftcard") {
-				//System.out.println(transactionAmount);
-				transactionID = useGiftCard(getnumber);
-				if (transactionID == null) {
-					throw(new InvalidArgumentSimulationException("non-valid gift card"));
-				}
-				BigDecimal giftCardCovers = transactionAmount.subtract(giftcardDB.getBalance(getnumber));
-				transactionDetails.put("card type", gettype);
-				transactionDetails.put("amount paid",giftCardCovers.toString());
-				paymentResult.put(transactionID, transactionDetails);
-				return;
-			}
-			
-			else if (data instanceof CardSwipeData)
+			if (data instanceof CardSwipeData)
 			{
-				getccv = "";
+				getcvv = "";
 				cvvrequired = false;
 			} else {
-				getccv = data.getCVV();
+				getcvv = data.getCVV();
 				cvvrequired = true;
 			}
 				
-			
-			transactionID = makeTransaction();
-			if (transactionID == null) {
-				throw(new InvalidArgumentSimulationException("card declined"));
-			}
-			
-			
-			transactionDetails.put("card type", gettype);
-			transactionDetails.put("card number", getnumber);
-			transactionDetails.put("card holder", getcardholder);
-			transactionDetails.put("amount paid", this.transactionAmount.toString());
-			
-			paymentResult.put(transactionID, transactionDetails);
-			return; 
-			
+			getnumber = data.getNumber();
+			/*try {
+				makePayment();
+			} catch (BankDeclinedException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}*/
+			makePayment();
 		}
+		
 	}
 	// HashMap getter method
 	
@@ -107,73 +77,39 @@ public class PaysWithCard implements CardReaderObserver {
 	{
 		return paymentResult;
 	}
-
-	
-	private String useGiftCard(String cardNumber) {
-		String transactionID = null; 
-		
-		if (giftcardDB.canRedeem(cardNumber)) {
-			BigDecimal redeemedAmount = giftcardDB.getBalance(cardNumber);
-			transactionAmount = transactionAmount.subtract(redeemedAmount);
-			BigDecimal zero = BigDecimal.ZERO;
-			int cmpRes = transactionAmount.compareTo(zero);
-			
-			//if transactionAmount < 0 then record the amount remaining in the gift card 
-			if (cmpRes == -1) {
-				BigDecimal remaining = transactionAmount.abs();
-				giftcardDB.changeBalanceRemaining(cardNumber, remaining);
-				
-			}  
-			// the gift card balance was fully used and we can change its status 
-			else {
-				
-				giftcardDB.changeStatusToRedeemed(cardNumber); 
-			}
-			
-			UUID txId = UUID.randomUUID();
-			transactionID = txId.toString();
-		}
-		
-		return transactionID; 	
-	}
-	
-	private String makeTransaction() {
-		
-		String transactionID = null;
-		String[] stringParts = this.getnumber.split(""); 
-		String bankIdDigits = stringParts[0] + stringParts[1] + stringParts[2] + stringParts[3]; 
-		String customersCard = "";
-		
-		for(int i = 4; i < stringParts.length; i++) 
-			customersCard += stringParts[i];
-		
-		if (acceptedCardIssuers.containsKey(bankIdDigits)) {
-			CardIssuer issuer = acceptedCardIssuers.get(bankIdDigits);
-			int holdReference = issuer.authorizeHold(customersCard, this.transactionAmount);
-			
-			if (holdReference != -1) {
-				Boolean successful = issuer.postTransaction(customersCard, holdReference, this.transactionAmount);
-				if (successful) {
-					UUID txId = UUID.randomUUID();
-					transactionID = txId.toString(); 
-				}
-			}
-		} 
-			
-		return transactionID;  
-		
-	}
-	
 	
 	/* The constructor initializes the banking simulator classes and retrieves what is being charged to the customer from checkout */
-	public PaysWithCard(Checkout checkout, GiftCardDatabase gcDB, BigDecimal amountToPay)
+	public PaysWithCard(BankSimulator bank, Checkout checkout)
 	{	
 		//Remember to get transaction amount somewhere
-		this.acceptedCardIssuers = new HashMap<String,CardIssuer>();
+		this.bank = bank;
 		this.checkout = checkout;
-		this.transactionAmount= amountToPay;
-		this.paymentResult = new HashMap<String,HashMap<String,String>>();
-		this.giftcardDB = gcDB;
+		this.transactionAmount= this.checkout.getTotalPrice();
+	}
+	
+	/* This method passes customer information gathered from the observer to the bank simulator class and awaits for a response 
+	 * if a successful transaction occurs, selected information is then saved into a HashMap to generate receipt information
+	 * The whole exception bit of this is a real conundrum, settled on saving the last response instead, see card declined test
+	 * in the test file for usage.
+	 */
+	public void makePayment() /*throws BankDeclinedException*/ {
+		/*
+		 * response is the UUID of the transaction 
+		 * (like if we were making a request to an api)
+		 * */
+		lastResponse = bank.transactionCanHappen(getcardholder, getnumber, getcvv, gettype, transactionAmount, cvvrequired);
+
+		if(lastResponse != "NULL")
+		{
+			paymentResult = new HashMap<String,HashMap<String,String>>();
+			HashMap<String, String> data = new HashMap<String, String>();  
+			data.put("cardType", gettype); 
+			data.put("amountPaid", transactionAmount.toString());
+			paymentResult.put(lastResponse,data);  
+			
+		}/* else {
+			  throw new BankDeclinedException("Card Declined");
+		}*/
 	}
 	
 	/* This method replaces every digit after the first four on a customers credit card with an X for receipt printing */
@@ -187,10 +123,6 @@ public class PaysWithCard implements CardReaderObserver {
 			returnString += "X"; 
 		return returnString; 
 	}
-	
-	public void addAcceptedCardIssuer(CardIssuer cardIssuer, String cardIssuerDigits) {
-		acceptedCardIssuers.put(cardIssuerDigits, cardIssuer);
-	}
 
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
@@ -202,6 +134,10 @@ public class PaysWithCard implements CardReaderObserver {
 	public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String getLastResponse() {
+		return this.lastResponse;
 	}
 
 }

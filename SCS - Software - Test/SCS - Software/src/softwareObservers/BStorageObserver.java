@@ -25,7 +25,7 @@ public class BStorageObserver implements BanknoteStorageUnitObserver {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 	@Override
 	public void banknotesFull(BanknoteStorageUnit unit) {
 		// TODO Auto-generated method stub
