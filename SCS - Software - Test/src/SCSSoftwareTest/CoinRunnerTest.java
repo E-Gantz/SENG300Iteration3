@@ -47,7 +47,7 @@ public class CoinRunnerTest {
 		station = new SelfCheckoutStation(currency, bankNoteDenom, coinArray, 1000, 1);
 		scanner = station.mainScanner;
 		pcart = new ProductCart();
-		checkout = new Checkout(scanner, pcart);
+		checkout = new Checkout(scanner,station.handheldScanner, pcart);
 		cSlot = station.coinSlot;
 		cValidator = station.coinValidator;
 		cStorage = station.coinStorage;

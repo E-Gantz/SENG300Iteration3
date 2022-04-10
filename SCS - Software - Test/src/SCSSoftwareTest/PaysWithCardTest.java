@@ -125,7 +125,7 @@ public class PaysWithCardTest {
 //		
 		barcodescanner = station.handheldScanner;
 		productcart = new ProductCart();
-		checkout = new Checkout(barcodescanner, productcart);
+		checkout = new Checkout(barcodescanner,station.handheldScanner, productcart);
 		cardreader = station.cardReader;
 		checkout.setAmountPaid(new BigDecimal("50"));
 		

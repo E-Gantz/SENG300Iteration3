@@ -62,7 +62,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 			if(Math.abs(currentWeight - (previousWeight + expectedWeight)) < 1.5) {
 				this.previousWeight = currentWeight;
 				this.expectedWeight = 0.0;
-				this.scanner.enable();
+				enableScanners();
 				
 				this.NotInBags = false;
 			}
@@ -129,6 +129,11 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	public void disableScanners() {
 		scanner.disable();
 		handScanner.disable();
+	}
+	
+	public void enableScanners() {
+		scanner.enable();
+		handScanner.enable();
 	}
 
 }

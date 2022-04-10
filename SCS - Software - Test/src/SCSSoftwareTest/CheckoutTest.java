@@ -42,7 +42,7 @@ public class CheckoutTest {
 		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
 		scanner = station.mainScanner;
 		pcart = new ProductCart();
-		checkout = new Checkout(scanner, pcart);
+		checkout = new Checkout(scanner,station.handheldScanner, pcart);
 	}
 
 	@After
