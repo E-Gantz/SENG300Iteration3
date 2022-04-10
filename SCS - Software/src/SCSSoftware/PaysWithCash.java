@@ -61,6 +61,9 @@ public class PaysWithCash {
 	
 	public BigDecimal emitChange() throws OverloadException, DisabledException
 	{
+		for(CoinDispenser dispenser : coindispenser.values()) {
+			dispenser.unload();
+		}
 		BigDecimal changeReturned = BigDecimal.ZERO;
 		List<Banknote> listOfNotes = new ArrayList<Banknote>();
 		List<Coin> listOfCoins = new ArrayList<Coin>();
@@ -129,6 +132,7 @@ public class PaysWithCash {
 					coindispenser.get(coin.getValue()).load(coin);
 				}
 			}
+			
 			listOfNotes.toArray(notes);
 			listOfCoins.toArray(coins);
 			

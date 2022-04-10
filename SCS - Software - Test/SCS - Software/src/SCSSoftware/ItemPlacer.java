@@ -29,7 +29,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 		this.handScanner = handScanner;
 		this.previousWeight = 0.0;
 		this.currentWeight = 0.0;
-		this.notInBags = false;
+		this.NotInBags = false;
 		this.timer = new Timer();
 		this.timerRunning = false;
 	}
@@ -64,7 +64,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 				this.expectedWeight = 0.0;
 				this.scanner.enable();
 				
-				this.notInBags = false;
+				this.NotInBags = false;
 			}
 			else {
 				throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
@@ -112,18 +112,18 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	}
 		
 	public void BagTimeout() {
-		notInBags = true;
+		NotInBags = true;
 	}
 	
 	public void timerDone() {
 		timerRunning = false;
-		if (notInBags) {
+		if (NotInBags) {
 			throw new InvalidArgumentSimulationException("Please place your item on the scale.");
 		}
 	}
 	
 	public Boolean getTimeoutStatus() {
-		return this.notInBags;
+		return this.NotInBags;
 	}
 	
 	public void disableScanners() {

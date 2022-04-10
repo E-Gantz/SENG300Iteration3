@@ -75,7 +75,7 @@ public class PLUAdderTest {
 	public void scannerDisabledAfterScan() throws OverloadException {
 		station.scanningArea.add(item1);
 		adder.addItem("0001");
-		assertTrue(placer.scanner.isDisabled());
+		assertTrue(placer.handScanner.isDisabled());
 	} 
 	@Test
 	public void handheldScannerDisabledAfterScan() throws OverloadException {

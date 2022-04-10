@@ -15,7 +15,7 @@ public class PrintReceiptsCheckInkTest {
 	@Before
 	public void setUp() throws Exception {
 		ReceiptPrinter pc = new ReceiptPrinter();
-		pc.endConfigurationPhase();
+		pc.endendConfigurationPhase();
 		pc.addInk(10);
 		pc.addPaper(10);
 		printReceiptsCheckInk = new PrintReceiptsCheckInk(pc);
