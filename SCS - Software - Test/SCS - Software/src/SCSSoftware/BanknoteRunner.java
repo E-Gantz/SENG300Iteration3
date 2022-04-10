@@ -90,4 +90,9 @@ public class BanknoteRunner {
 	public BigDecimal sumBanknotes() {
 		return this.getPaidTotal();
 	}
+	
+	public BigDecimal setInsertedBanknotes(BigDecimal t)
+	{
+		return this.paidTotal;
+	}
 }

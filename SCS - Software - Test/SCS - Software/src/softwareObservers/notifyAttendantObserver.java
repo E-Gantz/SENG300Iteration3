@@ -6,7 +6,6 @@ import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.BanknoteDispenser;
 import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
-import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.BanknoteDispenserObserver;
@@ -48,7 +47,8 @@ public class notifyAttendantObserver implements ReceiptPrinterObserver, Electron
 	
 	@Override
 	public void outOfPaper(ReceiptPrinter printer) {
-		notify.addPaper();
+		// TODO Auto-generated method stub
+		
 	}
 	
 	@Override

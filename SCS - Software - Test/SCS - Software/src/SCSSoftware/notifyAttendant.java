@@ -5,7 +5,6 @@ import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
 import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
-import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 
 import softwareObservers.notifyAttendantObserver;
@@ -46,14 +45,8 @@ public class notifyAttendant {
 	
 //------------------------- RECEIPT PRINTER METHODS -------------------------------//	
 	
-	public ReceiptPrinter addPaper() {
-		try {
-			printer.addPaper(100);
-		} catch (OverloadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return printer;
+	public ReceiptPrinter checkPaper(int units) {
+		return null;
 	}
 	
 	public ReceiptPrinter checkInk(int quantity) {
