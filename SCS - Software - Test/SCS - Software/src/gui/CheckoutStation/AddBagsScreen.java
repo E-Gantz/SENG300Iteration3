@@ -85,9 +85,8 @@ public class AddBagsScreen extends JFrame {
 		panel.add(btnEnterPLU);
 		btnEnterPLU.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String bags = textFieldPBagEntry.getText();
-				dataPass.setPlasticBags(bags);
-				checkScreen.updateLblTotal((Double.parseDouble(bags) * 0.05) + "");
+				dataPass.setPlasticBags(textFieldPBagEntry.getText());
+				
 			}
 		});
 		

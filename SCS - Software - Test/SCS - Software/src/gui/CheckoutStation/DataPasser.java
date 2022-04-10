@@ -21,16 +21,14 @@ import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
-import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
 import SCSSoftware.CoinRunner;
-import SCSSoftware.CustomerEntersBagsUsed;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
 
-// Data can be passed through a class like this through button events
+// Data can be passed through a class like this through button events 
 // Maybe we can store strings and stuff and pass it to classes through here
 public class DataPasser {
 	private int found;
@@ -41,24 +39,19 @@ public class DataPasser {
 	private String PlasticBags;
 	private String displayReciept;
 	public SelfCheckoutStation station;
-
-
+	
+	
 	public BigDecimal totalPaid;
-
-
-
+	
+	
+	
 	private BarcodeScanner scanner;
 	public BanknoteRunner banknoteRunner;
 	private ProductCart pcart;
 	private Checkout checkout;
-	private CustomerEntersBagsUsed bagsUsed;
 	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
 	public Barcode bc1 = new Barcode(code1); // 001
 	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
-	public Numeral[] code0 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.zero };
-	public Barcode bc0 = new Barcode(code0); // 000
-	public BarcodedItem item0 = new BarcodedItem(bc0, 0.05);
-	public BarcodedProduct prod0 = new BarcodedProduct(bc0, "Plastic Bag", BigDecimal.valueOf(0.05), 0.01);
 	private BanknoteSlot bSlot;
 	private BanknoteValidator bValidator;
 	private BanknoteStorageUnit bStorage;
@@ -81,9 +74,9 @@ public class DataPasser {
 	Coin nickel = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.05));
 	Banknote twentyBill = new Banknote(Currency.getInstance("CAD"), 20);
 	public DataPasser() {};
-
+	
 	public String paidString;
-
+	
 	public DataPasser(SelfCheckoutStation scs) {
 		Coin.DEFAULT_CURRENCY = Currency.getInstance("CAD");
 		pcart = new ProductCart();
@@ -107,30 +100,30 @@ public class DataPasser {
 		paysWithCash = new PaysWithCash(coinrunner, banknoteRunner, station.banknoteDispensers, station.coinDispensers,
 				bOutput, cTray);
 		totalPaid = new BigDecimal(0);
-
+		
 	}
-
+	
 	public void addToonie() throws DisabledException, OverloadException {
 		cSlot.accept(toonie);
 		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
 	}
-
+	
 	public void addLoonie() throws DisabledException, OverloadException {
 		cSlot.accept(loonie);
 		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
 	}
-
+	
 	public void addQuarter() throws DisabledException, OverloadException {
 		cSlot.accept(quarter);
 		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
 	}
-
+	
 	public void addDime() throws DisabledException, OverloadException {
 		cSlot.accept(dime);
 		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
@@ -143,16 +136,16 @@ public class DataPasser {
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
 	}
-
+	
 	public void addTwenty() throws DisabledException, OverloadException {
 		bSlot.accept(twentyBill);
 		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
 	}
-
-
-
+	
+	
+	
 	public void setFound(int setNumber){
 		found = setNumber;
 	}
@@ -162,21 +155,21 @@ public class DataPasser {
 	public void setEmployeeIDLogin(String employeeId) {
 		employeeIDLogin = employeeId;
 	}
-
+	
 	public String getEmployeeIDLogin() {
 		return employeeIDLogin;
 	}
 	public void setLookupBarcode(Barcode appleBarcode) {
 		LookupBarcode = appleBarcode;
 	}
-
+	
 	public Barcode getLookupBarcode() {
 		return LookupBarcode;
 	}
 	public void setMembershipID(String text) {
-		membershipIDEnter = text;
+		membershipIDEnter = text;	
 	}
-
+	
 	public String getMembershipID() {
 		return membershipIDEnter;
 	}
@@ -188,28 +181,18 @@ public class DataPasser {
 	}
 	public void setPlasticBags(String valueOf) {
 		PlasticBags = valueOf;
-		bagsUsed = new CustomerEntersBagsUsed(Double.parseDouble(PlasticBags), false);
-		bagsUsed.setPurchaseBag(false);
-		for(int i = 0; i < Double.parseDouble(PlasticBags); i++) {
-			scanner.scan(item0);
-			pcart.addToCart(prod0);
-		}
 	}
-
+	
 	public String getPlasticBags() {
 		return PlasticBags;
 	}
-
+	
 	public void setDisplayReciept(String items) {
 		displayReciept = items;
 	}
-
+	
 	public String getDisplayReciept() {
 		return displayReciept;
 	}
-
-	public BigDecimal getCheckoutPrice() {
-		return checkout.getTotalPrice();
-	}
-
+	
 }

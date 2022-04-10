@@ -101,7 +101,7 @@ public class CheckoutScreen extends JFrame {
 		contentPane.add(panel_payment, BorderLayout.CENTER);
 		panel_payment.setLayout(new GridLayout(2, 3, 0, 0));
 		
-		lblTotal = new JLabel("Total: 0");
+		lblTotal = new JLabel("Total:");
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_payment.add(lblTotal);
 		
