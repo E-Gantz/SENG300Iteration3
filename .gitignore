@@ -32,3 +32,4 @@ outputs/
 /bin/
 .classpath
 *.xml
+.DS_Store
