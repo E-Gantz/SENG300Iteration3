@@ -1,5 +1,6 @@
 package gui.test;
 
+import org.lsmr.selfcheckout.Card;
 import org.lsmr.selfcheckout.devices.*;
 import org.lsmr.selfcheckout.devices.observers.*;
 
@@ -22,6 +23,7 @@ import org.junit.Test;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.TouchScreenObserver;
 
+import SCSSoftware.GiftCardDatabase;
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
 
@@ -35,7 +37,9 @@ public class CustomerScreenTest {
 	private BigDecimal[] coin_denominations;
 	private int maxWeight;
 	private int sensitivity;
+	private GiftCardDatabase giftcardDB; 
 	private DataPasser dataPass;
+	private Card testCard;
 
     @Before
     public void setup() {
@@ -50,7 +54,9 @@ public class CustomerScreenTest {
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         found = 0;
-        dataPass = new DataPasser(scs);
+        testCard = new Card("4040111177778888","","","","", false,false);
+        
+        dataPass = new DataPasser(scs, testCard, giftcardDB);
        
     }
 

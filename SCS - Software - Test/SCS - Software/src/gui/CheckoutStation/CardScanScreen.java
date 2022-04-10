@@ -6,9 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.lsmr.selfcheckout.Card;
+
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 public class CardScanScreen extends JFrame {
@@ -18,6 +22,7 @@ public class CardScanScreen extends JFrame {
 	public CreditSelection credit;
 	public DebitSelection debit;
 	public GiftSelection gift;
+	public Card cardToPayWith;
 
 	/**
 	 * Launch the application.
@@ -27,9 +32,10 @@ public class CardScanScreen extends JFrame {
 			public void run() {
 				try {
 					DataPasser basic = new DataPasser();
+					HashMap<String,HashMap<String,String>> basicRes = new HashMap<String,HashMap<String,String>>();
 					ScanningScreen ssTest = new ScanningScreen(basic);
 					CheckoutScreen cTest = new CheckoutScreen(basic, ssTest);
-					CardScanScreen frame = new CardScanScreen(basic, cTest);
+					CardScanScreen frame = new CardScanScreen(basic, cTest,basicRes);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,7 +47,9 @@ public class CardScanScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CardScanScreen(DataPasser dataPass, CheckoutScreen checkout) {
+	public CardScanScreen(DataPasser dataPass, 
+						  CheckoutScreen checkout,
+						  HashMap<String, HashMap<String, String>> hashMap) {
 		CardScanScreen me = this;
 		checkoutScreen = checkout;
 		setTitle("Select a card type:");
@@ -67,7 +75,7 @@ public class CardScanScreen extends JFrame {
 		JButton btnCredit = new JButton("Credit");
 		btnCredit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				credit = new CreditSelection(dataPass, me);
+				credit = new CreditSelection(dataPass, me, hashMap, checkoutScreen);
 				setVisible(false);
 				credit.setVisible(true);
 			}
@@ -77,7 +85,7 @@ public class CardScanScreen extends JFrame {
 		JButton btnDebit = new JButton("Debit");
 		btnDebit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				debit = new DebitSelection(dataPass, me);
+				debit = new DebitSelection(dataPass, me, hashMap, checkoutScreen);
 				setVisible(false);
 				debit.setVisible(true);
 			}
@@ -95,5 +103,4 @@ public class CardScanScreen extends JFrame {
 		});
 		panel1.add(btnGift);
 	}
-
 }

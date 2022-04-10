@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,11 +23,12 @@ public class DebitSelection extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					HashMap<String,HashMap<String,String>> res = new HashMap<String,HashMap<String,String>>();
 					DataPasser basic = new DataPasser();
 					ScanningScreen ssTest = new ScanningScreen(basic);
 					CheckoutScreen cTest = new CheckoutScreen(basic, ssTest);
-					CardScanScreen css = new CardScanScreen(basic, cTest);
-					DebitSelection frame = new DebitSelection(basic, css);
+					CardScanScreen css = new CardScanScreen(basic, cTest, res);
+					DebitSelection frame = new DebitSelection(basic, css,res,cTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,7 +40,10 @@ public class DebitSelection extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DebitSelection(DataPasser dataPass, CardScanScreen css) {
+	public DebitSelection(DataPasser dataPass, 
+						  CardScanScreen css, 
+						  HashMap<String,HashMap<String,String>> result,
+						  CheckoutScreen checkoutScreen) {
 		setTitle("GiftSelection");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -57,6 +63,18 @@ public class DebitSelection extends JFrame {
 		contentPane.add(btnGoBack);
 		
 		JButton btnTap = new JButton("Tap");
+		btnTap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.makeTapPayment(result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				checkoutScreen.setVisible(true);
+				dispose();
+				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
+			}
+		});
 		contentPane.add(btnTap);
 		
 		JButton btnSwipe = new JButton("Swipe");

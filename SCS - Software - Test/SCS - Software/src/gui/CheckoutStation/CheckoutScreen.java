@@ -18,6 +18,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 public class CheckoutScreen extends JFrame {
@@ -137,11 +138,12 @@ public class CheckoutScreen extends JFrame {
 			}
 		});
 		panel_payment.add(btnAddBanknote);
-		
+		HashMap<String,HashMap<String,String>>paymentResult = new HashMap<String,HashMap<String,String>>();
 		JButton btnPayWithCard = new JButton("Card");
 		btnPayWithCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cardScreen = new CardScanScreen(dataPass, me);
+				 
+				cardScreen = new CardScanScreen(dataPass, me, paymentResult);
 				cardScreen.setVisible(true);				
 				setVisible(false);
 			}

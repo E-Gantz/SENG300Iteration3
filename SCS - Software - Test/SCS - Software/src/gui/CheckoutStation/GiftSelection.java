@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,7 +26,7 @@ public class GiftSelection extends JFrame {
 					DataPasser basic = new DataPasser();
 					ScanningScreen ssTest = new ScanningScreen(basic);
 					CheckoutScreen cTest = new CheckoutScreen(basic, ssTest);
-					CardScanScreen css = new CardScanScreen(basic, cTest);
+					CardScanScreen css = new CardScanScreen(basic, cTest, new HashMap<String, HashMap<String, String>>());
 					GiftSelection frame = new GiftSelection(basic, css);
 					frame.setVisible(true);
 				} catch (Exception e) {
