@@ -86,7 +86,7 @@ public class DataPasser {
 	
 	public String paidString;
 	
-	public DataPasser(SelfCheckoutStation scs, Card cardToUse, Gift) { 
+	public DataPasser(SelfCheckoutStation scs, Card cardToUse, GiftCardDatabase giftDB) { 
 		Coin.DEFAULT_CURRENCY = Currency.getInstance("CAD");
 		pcart = new ProductCart();
 		station = scs;
@@ -110,9 +110,9 @@ public class DataPasser {
 		paysWithCash = new PaysWithCash(coinrunner, banknoteRunner, station.banknoteDispensers, station.coinDispensers,
 				bOutput, cTray);
 		totalPaid = new BigDecimal(0);
-		this.giftDB = new GiftCardDatabase();
+		this.giftDB = giftDB;
 		this.payCard = cardToUse;
-		this.pwc = new PaysWithCard(checkout,giftDB,checkout.getTotalPrice());
+		this.pwc = new PaysWithCard(this.checkout,this.giftDB,this.checkout.getTotalPrice());
 		
 	}
 	
