@@ -1,3 +1,4 @@
+package SCSSoftwareTest;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
@@ -9,9 +10,9 @@ import org.junit.Test;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.devices.SupervisionStation;
 
-import SCSSoftware.ShutDownAndStartupStation;
+import SCSSoftware.AttendantShutDownStartupStation;
 
-public class ShutDownAndStartupStationTest {
+public class AttendantShutDownStartupTest {
 
 	
 	SelfCheckoutStation station;
@@ -34,7 +35,7 @@ public class ShutDownAndStartupStationTest {
 	public void shutDownStation() {
 		
 		attendantStation.add(station);
-		ShutDownAndStartupStation shutDown = new ShutDownAndStartupStation(station, attendantStation );
+		AttendantShutDownStartupStation shutDown = new AttendantShutDownStartupStation(station, attendantStation );
 		shutDown.shutDownStation();
 		
 		assertTrue(shutDown.getStationShutDown());
@@ -45,7 +46,7 @@ public class ShutDownAndStartupStationTest {
 	public void shutDownStationRemoved() {
 		
 		attendantStation.add(station);
-		ShutDownAndStartupStation shutDown = new ShutDownAndStartupStation(station, attendantStation );
+		AttendantShutDownStartupStation shutDown = new AttendantShutDownStartupStation(station, attendantStation );
 		shutDown.shutDownStation();
 		
 		assertFalse(attendantStation.supervisedStations().contains(station));
@@ -55,7 +56,7 @@ public class ShutDownAndStartupStationTest {
 	@Test 
 	public void shutDownAttendantStation() {
 		
-		ShutDownAndStartupStation shutDown = new ShutDownAndStartupStation(attendantStation);
+		AttendantShutDownStartupStation shutDown = new AttendantShutDownStartupStation(attendantStation);
 		shutDown.shutDownAttendantStation();
 		
 		assertTrue(shutDown.getAttendantStationShutDown());
@@ -64,7 +65,7 @@ public class ShutDownAndStartupStationTest {
 	@Test 
 	public void shutDownNonExistentStation() {
 		
-		ShutDownAndStartupStation shutDown = new ShutDownAndStartupStation(station, attendantStation );
+		AttendantShutDownStartupStation shutDown = new AttendantShutDownStartupStation(station, attendantStation );
 		shutDown.shutDownStation();
 		
 		assertFalse(shutDown.getStationShutDown());
@@ -74,7 +75,7 @@ public class ShutDownAndStartupStationTest {
 	@Test 
 	public void startupStation() {
 		
-		ShutDownAndStartupStation startup = new ShutDownAndStartupStation(station, attendantStation);
+		AttendantShutDownStartupStation startup = new AttendantShutDownStartupStation(station, attendantStation);
 		startup.startupStation();
 		
 		assertTrue(startup.getStationStartup());
@@ -84,7 +85,7 @@ public class ShutDownAndStartupStationTest {
 	@Test
 	public void startupStationAdded() {
 		
-		ShutDownAndStartupStation startup = new ShutDownAndStartupStation(station, attendantStation);
+		AttendantShutDownStartupStation startup = new AttendantShutDownStartupStation(station, attendantStation);
 		startup.startupStation();
 		
 		assertTrue(attendantStation.supervisedStations().contains(station));
@@ -94,7 +95,7 @@ public class ShutDownAndStartupStationTest {
 	@Test 
 	public void startupAttendantStation() {
 		
-		ShutDownAndStartupStation startup = new ShutDownAndStartupStation( attendantStation);
+		AttendantShutDownStartupStation startup = new AttendantShutDownStartupStation( attendantStation);
 		startup.startupAttendantStation();
 		
 		assertTrue(startup.getAttendantStationStartup());
