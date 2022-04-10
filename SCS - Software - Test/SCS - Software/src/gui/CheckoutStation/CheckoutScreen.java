@@ -156,7 +156,7 @@ public class CheckoutScreen extends JFrame {
 	}
 	
 	public void updateLblTotal(String paid){
-		lblTotal.setText("Paid:" + paid);
+		lblTotal.setText("Total:" + paid);
 	}
 	
 }

@@ -31,6 +31,8 @@ import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
 import SCSSoftware.CoinRunner;
 import SCSSoftware.CustomerEntersBagsUsed;
+import SCSSoftware.GiftCardDatabase;
+import SCSSoftware.PaysWithCard;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
 
@@ -211,7 +213,7 @@ public class DataPasser {
 		PlasticBags = valueOf;
 		bagsUsed = new CustomerEntersBagsUsed(Double.parseDouble(PlasticBags), false);
 		bagsUsed.setPurchaseBag(false);
-		for(int i = 0; i < Double.parseDouble(PlasticBags); i++) {
+		for(int i = 0; i < Integer.parseInt(PlasticBags); i++) {
 			scanner.scan(item0);
 			pcart.addToCart(prod0);
 		}
