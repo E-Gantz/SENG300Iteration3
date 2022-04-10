@@ -57,7 +57,7 @@ public class DataPasser {
 	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
 	public Numeral[] code0 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.zero };
 	public Barcode bc0 = new Barcode(code0); // 000
-	public BarcodedItem item0 = new BarcodedItem(bc0, 0.01);
+	public BarcodedItem item0 = new BarcodedItem(bc0, 0.05);
 	public BarcodedProduct prod0 = new BarcodedProduct(bc0, "Plastic Bag", BigDecimal.valueOf(0.05), 0.01);
 	private BanknoteSlot bSlot;
 	private BanknoteValidator bValidator;
@@ -161,6 +161,7 @@ public class DataPasser {
 		bagsUsed.setPurchaseBag(false);
 		for(int i = 0; i < Double.parseDouble(PlasticBags); i++) {
 			scanner.scan(item0);
+			pcart.addToCart(prod0);
 		}
 	}
 	
@@ -175,6 +176,10 @@ public class DataPasser {
 	
 	public String getDisplayReciept() {
 		return displayReciept;
+	}
+
+	public BigDecimal getCheckoutPrice() {
+		return checkout.getTotalPrice();
 	}
 	
 }
