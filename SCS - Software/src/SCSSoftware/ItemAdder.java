@@ -11,7 +11,7 @@ public class ItemAdder implements BarcodeScannerObserver{
 	private ProductInventory productInventory;
 	private ProductCart cart;
 	private ItemPlacer placer;
-	private BarcodeScanner mainScanner;
+	public BarcodeScanner mainScanner;
 	private BarcodeScanner handScanner;
 	
 	public ItemAdder(ProductInventory inventory, ProductCart cart, ItemPlacer placer, BarcodeScanner mainScanner, BarcodeScanner handScanner) { //kinda ugly but i need to disable both scanners now

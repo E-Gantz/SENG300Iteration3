@@ -6,6 +6,7 @@ import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.ElectronicScale;
+import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.ElectronicScaleObserver;
 
@@ -14,9 +15,10 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	private double previousWeight;
 	private double currentWeight;
 	private ProductCart pcart;
-	public BarcodeScanner scanner;
+	private BarcodeScanner scanner;
 	public BarcodeScanner handScanner;
-	private Boolean notInBags;
+	private ItemNotPlaceable notplaceable;
+	private Boolean NotInBags;
 	private Timer timer;
 	private CustomerOwnBag ownbag;
 	private boolean timerRunning;
@@ -27,7 +29,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 		this.handScanner = handScanner;
 		this.previousWeight = 0.0;
 		this.currentWeight = 0.0;
-		this.notInBags = false;
+		this.NotInBags = false;
 		this.timer = new Timer();
 		this.timerRunning = false;
 	}
@@ -49,20 +51,27 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	@Override
 	public void weightChanged(ElectronicScale scale, double weightInGrams) throws InvalidArgumentSimulationException {
 		beforePlacing();
-		expectedWeight = pcart.getNewestExpectedWeight();//this gets the weight of the item most recently added to the cart.
-		if(ownbag.checkOwnBag() == false)
-			currentWeight = weightInGrams;
-		else
-			currentWeight = weightInGrams  - ownbag.getBagWeight();
-		if(Math.abs(currentWeight - (previousWeight + expectedWeight)) < 1.5) {
-			this.previousWeight = currentWeight;
-			this.expectedWeight = 0.0;
-			this.scanner.enable();
-			this.handScanner.enable();
-			this.notInBags = false;
-		}
-		else {
-			throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
+		notplaceable = new ItemNotPlaceable();
+		expectedWeight = pcart.getCart().get((pcart.getCart().size())-1).getExpectedWeight();//this gets the weight of the item most recently added to the cart.
+		notplaceable.CheckIfPlacable(scale, expectedWeight);
+		if(notplaceable.isPlaceable()) {
+			if(ownbag.checkOwnBag() == false)
+				currentWeight = weightInGrams;
+			else
+				currentWeight = weightInGrams  - ownbag.getBagWeight();
+			if(Math.abs(currentWeight - (previousWeight + expectedWeight)) < 1.5) {
+				this.previousWeight = currentWeight;
+				this.expectedWeight = 0.0;
+				this.scanner.enable();
+				
+				this.NotInBags = false;
+			}
+			else {
+				throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
+			}
+		} else {
+			// Attendant approval required to enable + continue checkout
+//			throw new InvalidArgumentSimulationException("Talk to attendatnt to continue");h
 		}
 	}
 
@@ -70,13 +79,18 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	public void overload(ElectronicScale scale) {
 		//Auto-generated method stub
 		//put "too heavy!" message on screen or something
-		throw new InvalidArgumentSimulationException("Too Heavy!");
+		// temporary locks scanner to allow customer to call attendant and fix the issue
+		this.scanner.disable();
+		throw new InvalidArgumentSimulationException("Item too heavy!");
 	}
 
 	@Override
 	public void outOfOverload(ElectronicScale scale) {
 		//Auto-generated method stub
 		//remove the "too heavy!" message
+		//attendant somehow fixes the problem
+		notplaceable.setPlaceable(true);
+		this.scanner.enable();
 	}
 	
 	public void startTimer() {
@@ -98,18 +112,18 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	}
 		
 	public void BagTimeout() {
-		notInBags = true;
+		NotInBags = true;
 	}
 	
 	public void timerDone() {
 		timerRunning = false;
-		if (notInBags) {
+		if (NotInBags) {
 			throw new InvalidArgumentSimulationException("Please place your item on the scale.");
 		}
 	}
 	
 	public Boolean getTimeoutStatus() {
-		return this.notInBags;
+		return this.NotInBags;
 	}
 	
 	public void disableScanners() {

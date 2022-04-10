@@ -31,3 +31,15 @@ outputs/
 *.xlsx
 /bin/
 .classpath
+*.xml
+*.iml
+classes/.DS_Store
+classes/production/.DS_Store
+SCS - Software - Test/SCS - Hardware - v3.1/.DS_Store
+SCS - Software - Test/.DS_Store
+SCS - Software - Test/SCS - Software/.DS_Store
+SCS - Software - Test/SCS - Software/src/.DS_Store
+SCS - Software/.DS_Store
+SCS - Software/SCS - Hardware - v3.1/.DS_Store
+SCS - Software/src/.DS_Store
+.DS_Store

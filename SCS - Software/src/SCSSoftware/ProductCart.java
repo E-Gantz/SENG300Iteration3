@@ -40,6 +40,23 @@ public class ProductCart {
 		totalExpectedWeight-=prod.getExpectedWeight();
 	}
 	
+	public boolean clearCart() {
+	    boolean ismodified = false;
+	    Iterator<BarcodedProduct> iterator = cart.iterator();
+	    Iterator<String> iterator2 = items.iterator();
+	    while (iterator.hasNext()) {
+	        if (cart.contains(iterator.next())) {
+	        	iterator.remove();
+		        ismodified = true;
+		    }
+	        if (items.contains(iterator2.next())) {
+	        	iterator2.remove();
+	        	ismodified = true;
+	        }
+		}
+		return ismodified;
+	}
+
 	public void addToCartPLU(PLUCodedProduct prod, BigDecimal price, double weight) {
 		pluCart.add(prod);
 		String nameAndPrice = prod.getDescription() + " " + "$" + price.toPlainString();
