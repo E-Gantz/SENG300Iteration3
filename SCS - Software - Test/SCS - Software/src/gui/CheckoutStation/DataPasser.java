@@ -21,7 +21,9 @@ import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
+import org.lsmr.selfcheckout.products.BarcodedProduct;
 
+import SCSSoftware.CustomerEntersBagsUsed;
 import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
 import SCSSoftware.CoinRunner;
@@ -47,11 +49,16 @@ public class DataPasser {
 	
 	private BarcodeScanner scanner;
 	public BanknoteRunner banknoteRunner;
+	public CustomerEntersBagsUsed bagsUsed;
 	private ProductCart pcart;
 	private Checkout checkout;
 	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
 	public Barcode bc1 = new Barcode(code1); // 001
 	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
+	public Numeral[] code0 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.zero };
+	public Barcode bc0 = new Barcode(code0); // 000
+	public BarcodedItem item0 = new BarcodedItem(bc0, 0.01);
+	public BarcodedProduct prod0 = new BarcodedProduct(bc0, "Plastic Bag", BigDecimal.valueOf(0.05), 0.01);
 	private BanknoteSlot bSlot;
 	private BanknoteValidator bValidator;
 	private BanknoteStorageUnit bStorage;
@@ -150,6 +157,11 @@ public class DataPasser {
 	}
 	public void setPlasticBags(String valueOf) {
 		PlasticBags = valueOf;
+		bagsUsed = new CustomerEntersBagsUsed(Double.parseDouble(PlasticBags), false);
+		bagsUsed.setPurchaseBag(false);
+		for(int i = 0; i < Double.parseDouble(PlasticBags); i++) {
+			scanner.scan(item0);
+		}
 	}
 	
 	public String getPlasticBags() {
@@ -157,6 +169,7 @@ public class DataPasser {
 	}
 	
 	public void setDisplayReciept(String items) {
+		bagsUsed.setPurchaseBag(true);
 		displayReciept = items;
 	}
 	
