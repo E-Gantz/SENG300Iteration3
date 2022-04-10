@@ -21,10 +21,12 @@ import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
+import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
 import SCSSoftware.CoinRunner;
+import SCSSoftware.CustomerEntersBagsUsed;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
 
@@ -49,6 +51,7 @@ public class DataPasser {
 	public BanknoteRunner banknoteRunner;
 	private ProductCart pcart;
 	private Checkout checkout;
+	private CustomerEntersBagsUsed bagsUsed;
 	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
 	public Barcode bc1 = new Barcode(code1); // 001
 	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
