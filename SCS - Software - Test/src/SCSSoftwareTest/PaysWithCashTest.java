@@ -71,7 +71,7 @@ public class PaysWithCashTest {
 		this.bValidator = station.banknoteValidator;
 		this.coinDispensers = station.coinDispensers;
 
-		checkout = new Checkout(scanner, pcart);
+		checkout = new Checkout(scanner,station.handheldScanner, pcart);
 
         coinrunner = new CoinRunner(currency, banknoteDenom, coinDenom, checkout.getTotalPrice(), cSlot,
                 cStorage, cValidator);

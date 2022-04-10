@@ -10,10 +10,12 @@ public class Checkout {
 	boolean state;
 	ProductCart pcart;
 	BarcodeScanner scanner;
+	BarcodeScanner handScanner;
 	private BigDecimal amountpaid;
 	
-	public Checkout(BarcodeScanner scanner, ProductCart pcart) {
-		this.scanner = scanner;
+	public Checkout(BarcodeScanner mainscanner, BarcodeScanner handScanner, ProductCart pcart) {
+		this.scanner = mainscanner;
+		this.handScanner = handScanner;
 		this.pcart = pcart;
 		state = false;
 	}
@@ -26,7 +28,7 @@ public class Checkout {
 	 *             If the cart is empty.
 	 */
 	public void enable() {
-		if(scanner.isDisabled()) {
+		if(scanner.isDisabled() || handScanner.isDisabled()) {
 			throw new NullPointerSimulationException("Need to place all items in bagging area before proceeding to checkout.");
 		}
 		
@@ -35,6 +37,7 @@ public class Checkout {
 		}
 		
 		scanner.disable(); //disable scanner during payment
+		handScanner.disable();
 		state = true;
 	}
 	
@@ -42,6 +45,7 @@ public class Checkout {
 	//this would be executed if the user cancels checkout so they can add more items.
 	public void disable() {
 		scanner.enable();
+		handScanner.enable();
 		state = false;
 	}
 	
