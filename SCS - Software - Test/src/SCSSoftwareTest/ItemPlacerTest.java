@@ -62,11 +62,11 @@ public class ItemPlacerTest {
 		inventory.addInventory(bc2, prod2);
 		inventory.addInventory(bc3, prod3);
 		cart = new ProductCart();
-		placer = new ItemPlacer(scanner, cart);
+		placer = new ItemPlacer(scanner, cart, station.handheldScanner);
 		notPlaceable = new ItemNotPlaceable();
 		scale = station.baggingArea;
 		scale.attach(placer);
-		adder = new ItemAdder(inventory, cart, placer);
+		adder = new ItemAdder(inventory, cart, placer, scanner, station.handheldScanner);
 		scanner.attach(adder);
 		cartSize = cart.getItemNames().size();
 	}
@@ -153,6 +153,14 @@ public class ItemPlacerTest {
 		scanner.disable();
 		scale.add(item1);
 		assertTrue(!(scanner.isDisabled()));
+	}
+	
+	@Test
+	public void handheldScannerReEnabled() {
+		cart.addToCart(prod1);
+		scanner.disable();
+		scale.add(item1);
+		assertTrue(!(station.handheldScanner.isDisabled()));
 	}
 	
 }

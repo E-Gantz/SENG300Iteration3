@@ -21,6 +21,7 @@ public class BaggingTimeout extends TimerTask{
 			//System.out.println("it has been 5 seconds");
 			counter = 0;
 			this.cancel();
+			placer.timerDone();
 			placer.BagTimeout();
 			//should trigger some kind of 'please place your item in the bagging area' ui message, just sets a flag in placer for now.
 			//throw new SimulationException("Please place your item on the scale");
@@ -28,6 +29,7 @@ public class BaggingTimeout extends TimerTask{
 		else if (cart.getTotalExpectedWeight() == placer.getBagWeight()) {
 			counter = 0;
 			this.cancel();
+			placer.timerDone();
 		}
 		
 	}

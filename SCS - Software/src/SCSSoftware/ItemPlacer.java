@@ -16,18 +16,22 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	private double currentWeight;
 	private ProductCart pcart;
 	private BarcodeScanner scanner;
+	public BarcodeScanner handScanner;
 	private ItemNotPlaceable notplaceable;
 	private Boolean NotInBags;
 	private Timer timer;
 	private CustomerOwnBag ownbag;
+	private boolean timerRunning;
 	
-	public ItemPlacer(BarcodeScanner scanner, ProductCart pcart) {
-		this.scanner = scanner;
+	public ItemPlacer(BarcodeScanner mainScanner, ProductCart pcart, BarcodeScanner handScanner) { //need both scanners to enable them after the item is placed.
+		this.scanner = mainScanner;
 		this.pcart = pcart;
+		this.handScanner = handScanner;
 		this.previousWeight = 0.0;
 		this.currentWeight = 0.0;
-		this.NotInBags = false;
+		this.notInBags = false;
 		this.timer = new Timer();
+		this.timerRunning = false;
 	}
 	
 
@@ -55,17 +59,19 @@ public class ItemPlacer implements ElectronicScaleObserver {
 				currentWeight = weightInGrams;
 			else
 				currentWeight = weightInGrams  - ownbag.getBagWeight();
-			if(currentWeight == previousWeight + expectedWeight) {
+			if(Math.abs(currentWeight - (previousWeight + expectedWeight)) < 1.5) {
 				this.previousWeight = currentWeight;
 				this.expectedWeight = 0.0;
 				this.scanner.enable();
-				this.NotInBags = false;
+				
+				this.notInBags = false;
 			}
-			else 
+			else {
 				throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
+			}
 		} else {
 			// Attendant approval required to enable + continue checkout
-//			throw new InvalidArgumentSimulationException("Talk to attendatnt to continue");
+//			throw new InvalidArgumentSimulationException("Talk to attendatnt to continue");h
 		}
 	}
 
@@ -88,12 +94,16 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	}
 	
 	public void startTimer() {
-		BaggingTimeout timeout = new BaggingTimeout(pcart, this);
-		timer.schedule(timeout,50, 500); //this should run the BaggingTimeout run() method every .5 seconds.
+		if (!timerRunning) {
+			timerRunning = true;
+			BaggingTimeout timeout = new BaggingTimeout(pcart, this);
+			timer.schedule(timeout,50, 500); //this should run the BaggingTimeout run() method every .5 seconds.
+		}
+		
 	}
 	
 	public void beforePlacing() {
-		ItemPlacer itmp = new ItemPlacer(scanner, pcart);
+		ItemPlacer itmp = new ItemPlacer(scanner, pcart, handScanner);
 		this.ownbag = new CustomerOwnBag(1.0, itmp.getBagWeight());
 	}
 	
@@ -102,11 +112,23 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	}
 		
 	public void BagTimeout() {
-		NotInBags = true;
+		notInBags = true;
+	}
+	
+	public void timerDone() {
+		timerRunning = false;
+		if (notInBags) {
+			throw new InvalidArgumentSimulationException("Please place your item on the scale.");
+		}
 	}
 	
 	public Boolean getTimeoutStatus() {
-		return this.NotInBags;
+		return this.notInBags;
+	}
+	
+	public void disableScanners() {
+		scanner.disable();
+		handScanner.disable();
 	}
 
 }

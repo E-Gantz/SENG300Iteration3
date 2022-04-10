@@ -30,3 +30,6 @@ outputs/
 
 *.xlsx
 /bin/
+.classpath
+*.xml
+*.iml
