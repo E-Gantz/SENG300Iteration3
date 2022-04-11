@@ -66,8 +66,21 @@ public class ProductLookupScreen extends JFrame {
 		JButton btnAddPockyApple = new JButton("Picture of PockyFlavouredApple");
 		btnAddPockyApple.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String items = "";
+				String tempPrice = "";
 				appleBarcode = new Barcode(code1);
 				dataPass.setLookupBarcode(appleBarcode);
+				dataPass.addLookupProduct(appleBarcode);
+								
+				for (int i = 0; i < dataPass.pcart.getItemNames().size(); i++) {
+					items = items + dataPass.pcart.getItemNames().get(i);
+					items = items + "\n";
+				}
+				
+				tempPrice = "$" + dataPass.pcart.getTotalPrice().toString();
+				
+				items = items + "\n" + tempPrice;
+				scanScreen.textReciept.setText(items);
 			}
 		});
 		contentPane.add(btnAddPockyApple, BorderLayout.CENTER);

@@ -57,7 +57,6 @@ public class CustomerScreenTest {
         testCard = new Card("4040111177778888","","","","", false,false);
         
         dataPass = new DataPasser(scs, testCard, giftcardDB);
-       
     }
 
     @Test

@@ -102,11 +102,13 @@ public class CheckoutScreen extends JFrame {
 		contentPane.add(panel_payment, BorderLayout.CENTER);
 		panel_payment.setLayout(new GridLayout(2, 3, 0, 0));
 		
-		lblTotal = new JLabel("Total: 0");
+		lblTotal = new JLabel("Total: $0");
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_payment.add(lblTotal);
 		
-		lblPaid = new JLabel("Paid: 0");
+		lblTotal.setText("Total: $" + dataPass.pcart.getTotalPrice().toString());
+		
+		lblPaid = new JLabel("Paid: $0");
 		panel_payment.add(lblPaid);
 		
 		JLabel lblPaymentMethod = new JLabel("<html>Choose a payment<br> method or insert coins:</html>");
@@ -131,7 +133,7 @@ public class CheckoutScreen extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				String total = "Paid: " + dataPass.paidString;
+				String total = "Paid: $" + dataPass.paidString;
 				lblPaid.setText(total);
 				
 				

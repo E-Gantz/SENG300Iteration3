@@ -29,12 +29,14 @@ import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
+import SCSSoftware.CheckoutInterface;
 import SCSSoftware.CoinRunner;
 import SCSSoftware.CustomerEntersBagsUsed;
 import SCSSoftware.GiftCardDatabase;
 import SCSSoftware.PaysWithCard;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
+import SCSSoftware.ProductInventory;
 
 // Data can be passed through a class like this through button events
 // Maybe we can store strings and stuff and pass it to classes through here
@@ -50,10 +52,16 @@ public class DataPasser {
 
 
 	public BigDecimal totalPaid;
+	public CheckoutInterface checkoutInterface;
+	public ProductInventory inventory;
+
+	public Numeral[] code001 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
+	public Barcode pockyAppleBC = new Barcode(code001);
+	public BarcodedProduct pockyApples = new BarcodedProduct(pockyAppleBC, "Pocky Flavoured Apples", BigDecimal.TEN, 1);
 
 	private BarcodeScanner scanner;
 	public BanknoteRunner banknoteRunner;
-	private ProductCart pcart;
+	public ProductCart pcart;
 	private Checkout checkout;
 	private CustomerEntersBagsUsed bagsUsed;
 	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
@@ -124,7 +132,10 @@ public class DataPasser {
 		this.giftDB = giftDB;
 		this.payCard = cardToUse;
 		this.pwc = new PaysWithCard(this.checkout,this.giftDB,this.checkout.getTotalPrice());
-
+		inventory = new ProductInventory();
+		inventory.addInventory(pockyAppleBC, pockyApples);
+		checkoutInterface = new CheckoutInterface(inventory, pcart, scs);
+			
 	}
 
 	public void addToonie() throws DisabledException, OverloadException {
@@ -233,6 +244,9 @@ public class DataPasser {
 
 	public BigDecimal getCheckoutPrice() {
 		return checkout.getTotalPrice();
+	}
+	public void addLookupProduct(Barcode barcode) {
+		checkoutInterface.addFromCatalogue(barcode);
 	}
 
 }
