@@ -21,22 +21,46 @@ public class MemberCard {
 		this.cardNum = number;
 	}
 	
+	/**
+	 * Getter method to obtain the MemberCard number
+	 * 
+	 * @return Card Number String
+	 */
 	public String getCardNumString() {
 		return this.cardNum;
 	}
 	
+	/**
+	 * Getter method to obtain member points
+	 * 
+	 * @return Reward Points
+	 */
 	public int getPoints() {
 		return this.points;
 	}
 	
+	/**
+	 * This method takes in a integer argument to add more points to the card
+	 * 
+	 * @param morePoints
+	 */
 	public void addPoints(int morePoints) {
 		points+=morePoints;
 	}
-	
+	/**
+	 * This method takes in a integer argument to add more points to the card
+	 * 
+	 * @param morePoints
+	 */
 	public void removePoints(int lessPoints) {
 		points-=lessPoints;
 	}
 	
+	/**
+	 * Getter method to obtain a Member Card object
+	 * 
+	 * @return Card
+	 */
 	public Card getCard() {
 		return this.card;
 	}
