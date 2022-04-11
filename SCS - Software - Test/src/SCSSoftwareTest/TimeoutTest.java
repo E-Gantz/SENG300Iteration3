@@ -367,7 +367,7 @@ public class TimeoutTest {
 
 		TimeUnit.SECONDS.sleep(5);
 
-		assertTrue((placer.getTimeoutStatus()));
+		assertTrue(placer.getTimeoutStatus());
 	}
 
 	@Test(timeout = 10000)
@@ -415,7 +415,7 @@ public class TimeoutTest {
 		}
 		TimeUnit.SECONDS.sleep(5);
 
-		assertTrue(!(placer.getTimeoutStatus())); // i think this tests if the flag is properly set if the first item is
+		assertTrue(placer.getTimeoutStatus()); // i think this tests if the flag is properly set if the first item is
 													// bagged but the second is not, it should be true
 	}
 
