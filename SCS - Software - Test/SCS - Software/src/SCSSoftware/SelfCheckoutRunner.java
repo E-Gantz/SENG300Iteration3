@@ -45,7 +45,7 @@ public class SelfCheckoutRunner {
 	
 	public void setupCheckoutObjects() {
 		pcart = new ProductCart();
-		checkout= new Checkout(this.station.mainScanner,pcart);
+		checkout= new Checkout(this.station.mainScanner, this.station.handheldScanner,pcart);
 		productInventory = new ProductInventory();
 		itemPlacer = new ItemPlacer(this.station.mainScanner,pcart,this.station.handheldScanner);
 		itemAdder = new ItemAdder(productInventory,
