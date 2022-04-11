@@ -8,15 +8,24 @@ import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 
-// Station detects that the paper in a receipt printer is low.
+/**
+ * facilitates the system detecting that the printer is out of paper
+ */
 public class PrintReceiptsCheckpaper {
 	private ReceiptPrinter printer;
 
+	/**
+	 * constructor
+	 * @param printer
+	 * the self checkout system's printer
+	 */
 	public PrintReceiptsCheckpaper(ReceiptPrinter printer) {
 		this.printer = printer;
 	}
 
-	// check the printer status, if empty judge the message
+	/**
+	 * @return true if the printer is out of paper
+	 */
 	public boolean isOutOfPaper(){
 		boolean flag = false;
 		try {

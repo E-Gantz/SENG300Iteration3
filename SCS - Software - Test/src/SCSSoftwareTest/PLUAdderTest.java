@@ -65,9 +65,24 @@ public class PLUAdderTest {
 	}
 	
 	@Test
-	public void itemNameAddedToCart() throws OverloadException {
+	public void attendantItemNameAddedToCart() throws OverloadException {
 		station.scanningArea.add(item1);
 		adder.addItem("0001");
+		assertTrue(pcart.getItemNames().contains(prod1.getDescription() + " " + "$" + (pcart.getTotalPrice().toPlainString())));
+	}
+	
+	@Test
+	public void attendantItemPriceAddedToCart() throws OverloadException {
+		station.scanningArea.add(item1);
+		adder.attendantAddItem("0001");
+		double price = pcart.getTotalPrice().doubleValue();
+		assertEquals(price, 7500, 15);
+	}
+	
+	@Test
+	public void itemNameAddedToCart() throws OverloadException {
+		station.scanningArea.add(item1);
+		adder.attendantAddItem("0001");
 		assertTrue(pcart.getItemNames().contains(prod1.getDescription() + " " + "$" + (pcart.getTotalPrice().toPlainString())));
 	}
 	
