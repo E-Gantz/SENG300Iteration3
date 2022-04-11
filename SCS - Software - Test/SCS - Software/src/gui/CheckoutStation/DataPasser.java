@@ -150,6 +150,7 @@ public class DataPasser {
 		checkout = new Checkout(scanner, handheldscanner, pcart);
 		inventory = new ProductInventory();
 		inventory.addInventory(bc1, prod1);
+		inventory.addInventory(bc0, prod0);
 		inventory.addPLUinventory(pl1, plprod1);
 		inventory.addPLUinventory(pl2, plprod2);
 		checkoutI = new CheckoutInterface(inventory, this.pcart, this.station);
@@ -163,7 +164,6 @@ public class DataPasser {
 		this.giftDB = giftDB;
 		this.payCard = cardToUse;
 		this.pwc = new PaysWithCard(this.checkout,this.giftDB,this.checkout.getTotalPrice());
-		inventory = new ProductInventory();
 		inventory.addInventory(pockyAppleBC, pockyApples);
 		checkoutInterface = new CheckoutInterface(inventory, pcart, scs);
 
