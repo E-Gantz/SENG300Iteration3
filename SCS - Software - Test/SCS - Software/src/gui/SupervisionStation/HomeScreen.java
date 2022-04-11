@@ -59,15 +59,16 @@ public class HomeScreen extends JFrame {
 		
 		JButton btnStation1Start = new JButton("Start");
 		Station1.add(btnStation1Start);
+		btnStation1Start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		}
 		
 		JButton btnStation1AddInk = new JButton("Add Ink");
 		Station1.add(btnStation1AddInk);
 		
 		JButton btnStation1AddCoins = new JButton("Add Coin");
 		Station1.add(btnStation1AddCoins);
-		
-		JButton btnStation1RemoveCoin = new JButton("<html>Remove<br>Coin</html>");
-		Station1.add(btnStation1RemoveCoin);
 		
 		JButton btnStation1ApproveWeight = new JButton("<html>Approve<br>Weight</html>");
 		Station1.add(btnStation1ApproveWeight);
@@ -103,9 +104,6 @@ public class HomeScreen extends JFrame {
 		JButton btnStation2AddCoin = new JButton("Add Coin");
 		Station2.add(btnStation2AddCoin);
 		
-		JButton btnStation2RemoveCoin = new JButton("<html>Remove<br>Coin</html>");
-		Station2.add(btnStation2RemoveCoin);
-		
 		JButton btnStation2ApproveWeight = new JButton("<html>Approve<br>Weight</html>");
 		Station2.add(btnStation2ApproveWeight);
 		
@@ -137,9 +135,6 @@ public class HomeScreen extends JFrame {
 		JButton btnStation3AddCoin = new JButton("Add Coin");
 		Station3.add(btnStation3AddCoin);
 		
-		JButton btnStation3RemoveCoin = new JButton("<html>Remove<br>Coin</html>");
-		Station3.add(btnStation3RemoveCoin);
-		
 		JButton btnStation3ApproveWeight = new JButton("<html>Approve<br>Weight</html>");
 		Station3.add(btnStation3ApproveWeight);
 		
@@ -170,9 +165,6 @@ public class HomeScreen extends JFrame {
 		
 		JButton btnStation4AddCoin = new JButton("Add Coin");
 		Station4.add(btnStation4AddCoin);
-		
-		JButton btnStation4RemoveCoin = new JButton("<html>Remove<br>Coin</html>");
-		Station4.add(btnStation4RemoveCoin);
 		
 		JButton btnStation4ApproveWeight = new JButton("<html>Approve<br>Weight</html>");
 		Station4.add(btnStation4ApproveWeight);
