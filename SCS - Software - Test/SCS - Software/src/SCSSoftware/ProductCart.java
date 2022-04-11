@@ -28,7 +28,7 @@ public class ProductCart {
 		cart.add(prod);
 		String nameAndPrice = prod.getDescription() + " " + "$" + prod.getPrice().toPlainString();
 		items.add(nameAndPrice); // string added should look like "Milk $10" or something.
-		totalPrice = totalPrice.add(prod.getPrice());
+		totalPrice = totalPrice.add(prod.getPrice()).setScale(2, BigDecimal.ROUND_CEILING);;
 		totalExpectedWeight += prod.getExpectedWeight();
 		newestExpectedWeight = prod.getExpectedWeight();
 	}
@@ -74,7 +74,7 @@ public class ProductCart {
 	}
 	
 	public BigDecimal getTotalPrice() {
-		return this.totalPrice;
+		return this.totalPrice.setScale(2, BigDecimal.ROUND_CEILING);
 	}
 	
 	public ArrayList<String> getItemNames(){
