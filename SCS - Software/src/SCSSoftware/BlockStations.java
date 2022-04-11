@@ -1,13 +1,17 @@
 package SCSSoftware;
 
+import java.util.ArrayList;
+
+import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
+
 public class BlockStations {
 	
 	private ArrayList<SelfCheckoutStation> scsList;
 	private ArrayList<SelfCheckoutStation> blockList;
 	
 	public BlockStations(ArrayList<SelfCheckoutStation> scslist) {
-		this.scsList = new ArrayList<SelfCheckoutStation> scslist;
-		this.blockList = new ArrayList<SelfCheckoutStation>;
+		this.scsList =  scslist;
+		this.blockList = new ArrayList<SelfCheckoutStation>();
 	}
 	
 	public void addToBlockList(SelfCheckoutStation scs)
