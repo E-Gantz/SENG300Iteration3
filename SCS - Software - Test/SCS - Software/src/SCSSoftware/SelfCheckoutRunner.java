@@ -5,6 +5,8 @@ import java.util.Currency;
 
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 
+import gui.CheckoutStation.DataPasser;
+
 public class SelfCheckoutRunner {
 	
 	
@@ -28,6 +30,7 @@ public class SelfCheckoutRunner {
 	private int weight;
 	private int scaleSens;
 	private GiftCardDatabase giftDB;
+	private DataPasser guiConnection;
 	
 	
 	public SelfCheckoutRunner(Currency c, int[] coinDenoms, BigDecimal[] banknoteDenom, int weight, int scaleSens) {
@@ -40,6 +43,8 @@ public class SelfCheckoutRunner {
 		this.currency = c; 
 		this.weight = weight; 
 		this.scaleSens = scaleSens;
+		
+//		guiConnection = new DataPasser(this.station,);
 		
 	}
 	
