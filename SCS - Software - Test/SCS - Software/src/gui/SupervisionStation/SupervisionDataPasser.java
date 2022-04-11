@@ -132,8 +132,11 @@ public class SupervisionDataPasser {
 		shutdownstartup.shutDownStation();
 	}
 	
-	public void addInk(int stationId) {
+	public void addInk(int stationId) throws OverloadException {
 		selectSCS(stationId); 
+		int inkToAdd = 1000;
+		attendentRefillsDispensers.addInk(inkToAdd);
+		
 	}
 	
 	public void addPaper(int stationId) {
