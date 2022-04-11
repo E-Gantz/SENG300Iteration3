@@ -14,7 +14,6 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -31,23 +30,13 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 	@Override
 	public void outOfPaper(ReceiptPrinter printer) {
 		this.outOfPaper = true; 
-//		try {
-//			printer.addPaper(100);
-//		} catch (OverloadException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 	}
 
 	@Override
 	public void outOfInk(ReceiptPrinter printer) {
 		this.outOfInk = true; 
-//		try {
-//			printer.addInk(100);
-//		} catch (OverloadException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 		
 	}
 
@@ -62,6 +51,14 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 		this.outOfInk = false; 
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public boolean getInkStatus() {
+		return this.outOfInk; 
+	}
+	
+	public boolean getPaperStatus() {
+		return this.outOfPaper;
 	}
 
 }
