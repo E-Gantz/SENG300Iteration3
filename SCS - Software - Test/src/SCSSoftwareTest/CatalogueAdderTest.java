@@ -111,4 +111,18 @@ public class CatalogueAdderTest {
 		double price = cart.getTotalPrice().doubleValue();
 		assertEquals(price, 7500, 15);
 	}
+	
+	@Test
+	public void attendantItemPriceAddedToCart() {
+		cAdder.attendantAddItem(bc1);
+		assertTrue(prod1.getPrice().equals(cart.getTotalPrice()));
+	}
+	
+	@Test
+	public void attendantItemPriceAddedToCartPLU() throws OverloadException {
+		station.scanningArea.add(item3);
+		cAdder.attendantAddItem(plu1);
+		double price = cart.getTotalPrice().doubleValue();
+		assertEquals(price, 7500, 15);
+	}
 }
