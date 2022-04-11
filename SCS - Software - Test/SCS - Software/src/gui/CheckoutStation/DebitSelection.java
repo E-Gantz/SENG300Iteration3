@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 public class DebitSelection extends JFrame {
 
 	private JPanel contentPane;
+	public DebitPin debitScreen;
 
 	/**
 	 * Launch the application.
@@ -44,6 +45,7 @@ public class DebitSelection extends JFrame {
 						  CardScanScreen css, 
 						  HashMap<String,HashMap<String,String>> result,
 						  CheckoutScreen checkoutScreen) {
+		DebitSelection me = this;
 		setTitle("GiftSelection");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -81,6 +83,14 @@ public class DebitSelection extends JFrame {
 		contentPane.add(btnSwipe);
 		
 		JButton btnInsert = new JButton("Insert");
+		btnInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				debitScreen = new DebitPin(dataPass, me);
+				debitScreen.setVisible(true);
+				setVisible(false);
+				
+			}
+		});
 		contentPane.add(btnInsert);
 	}
 

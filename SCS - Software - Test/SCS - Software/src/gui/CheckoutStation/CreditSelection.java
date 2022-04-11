@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 public class CreditSelection extends JFrame {
 
 	private JPanel contentPane;
+	public CreditPin creditPin;
 
 	/**
 	 * Launch the application.
@@ -61,7 +62,7 @@ public class CreditSelection extends JFrame {
 			}
 		});
 		contentPane.add(btnGoBack);
-		
+		CreditSelection me = this;
 		JButton btnTap = new JButton("Tap");
 		btnTap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -82,6 +83,13 @@ public class CreditSelection extends JFrame {
 		contentPane.add(btnSwipe);
 		
 		JButton btnInsert = new JButton("Insert");
+		btnInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				creditPin = new CreditPin(dataPass, me);
+				creditPin.setVisible(true);
+				setVisible(false);
+			}
+		});
 		contentPane.add(btnInsert);
 	}
 
