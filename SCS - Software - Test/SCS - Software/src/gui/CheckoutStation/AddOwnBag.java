@@ -16,24 +16,11 @@ import javax.swing.SwingConstants;
 public class AddOwnBag extends JFrame {
 
 	private JPanel contentPane;
+	public JButton btnBackToScanning;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DataPasser basic = new DataPasser();
-					ScanningScreen sTest = new ScanningScreen(basic);
-					AddOwnBag frame = new AddOwnBag(basic, sTest);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -50,9 +37,10 @@ public class AddOwnBag extends JFrame {
 		lblAddOwnBags.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblAddOwnBags, BorderLayout.CENTER);
 		
-		JButton btnBackToScanning = new JButton("Go Back");
+		btnBackToScanning = new JButton("Go Back");
 		btnBackToScanning.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.setFound(7);
 				scanScreen.setVisible(true);
 				setVisible(false);
 				dispose();
