@@ -15,7 +15,9 @@ import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
+/**
+ * This test is for the AttendantRefillsDispensers class 
+  */
 public class AttendantRefillsDispensersTest {
     private SelfCheckoutStation selfCheckoutStation;
     private final Currency CAD = Currency.getInstance(Locale.CANADA);
@@ -44,6 +46,9 @@ public class AttendantRefillsDispensersTest {
     private Banknote fifty;
     private Banknote hundred;
 
+    /**
+     * setup to load currency denominations 
+      */
     @Before
     public void setup() throws OverloadException {
         int[] banknoteDenominations = new int[]{5, 10, 20, 50, 100};
@@ -76,6 +81,9 @@ public class AttendantRefillsDispensersTest {
         hundred = new Banknote(CAD, banknoteDenominations[4]);
     }
 
+    /**
+     * Refills dispensers for every denomination, will fail only if an error is thrown
+      */
     @Test
     public void RefillCoinDispenserTest() {
         AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
@@ -99,6 +107,9 @@ public class AttendantRefillsDispensersTest {
 
     }
 
+    /**
+     * Refills dispensers for every denomination, will fail only if an error is thrown
+      */
     @Test
     public void RefillBanknoteDispenserTest() {
         AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
@@ -121,6 +132,9 @@ public class AttendantRefillsDispensersTest {
 
     }
 
+    /**
+     * Test to see if dispenser is overloaded for coins
+      */
     @Test
     public void OverloadCoinDispenserTest() {
         AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
@@ -131,6 +145,9 @@ public class AttendantRefillsDispensersTest {
         } catch (OverloadException ignored) {}
     }
 
+    /**
+     * Test to see if dispenser is overloaded for banknotes
+      */
     @Test
     public void OverloadBanknoteDispenserTest() {
         AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
@@ -141,12 +158,18 @@ public class AttendantRefillsDispensersTest {
         } catch (OverloadException ignored) {}
     }
 
+    /**
+     * Test to see if ink is refilled 
+      */
     @Test
     public void refilInkTest() throws OverloadException{
         AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
         attendantRefillsDispensers.addInk(10);
     }
 
+    /**
+     * Test to see if paper is refilled
+      */
     @Test
     public void refilPaperTest() throws OverloadException {
         AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
