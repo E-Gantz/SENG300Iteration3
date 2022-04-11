@@ -43,19 +43,17 @@ public class CatalogueAdder {
 		pluAdder.addItem(code.toString());
 	}
 	
-<<<<<<< HEAD
+
 	/**
 	 * simulates the attendant adding a barcoded item
 	 * @param code
 	 * the barcode
 	 */
-=======
->>>>>>> e9677c88d3a419beebf75fe0489127f1d9682f5e
 	public void attendantAddItem(Barcode code) {
 		bcAdder.barcodeScanned(bcAdder.mainScanner, code);
 	}
 	
-<<<<<<< HEAD
+
 	/**
 	 * facilitates the attendant adding a PLU coded item
 	 * @param code
@@ -63,8 +61,6 @@ public class CatalogueAdder {
 	 * @throws OverloadException
 	 * if the weight of the item has overloaded the scale.
 	 */
-=======
->>>>>>> e9677c88d3a419beebf75fe0489127f1d9682f5e
 	public void attendantAddItem(PriceLookupCode code) throws OverloadException {
 		pluAdder.attendantAddItem(code.toString());
 	}
