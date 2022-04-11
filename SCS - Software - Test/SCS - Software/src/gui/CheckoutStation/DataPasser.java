@@ -11,6 +11,7 @@ import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.BarcodedItem;
 import org.lsmr.selfcheckout.Card;
 import org.lsmr.selfcheckout.Coin;
+import org.lsmr.selfcheckout.IllegalPhaseSimulationException;
 import org.lsmr.selfcheckout.Numeral;
 import org.lsmr.selfcheckout.devices.BanknoteSlot;
 import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
@@ -185,7 +186,25 @@ public class DataPasser {
 		result = pwc.getPaymentResult();
 
 	}
+	
+	public void makeSwipePayment(HashMap<String,HashMap<String,String>> result) throws IOException {
 
+		creader.swipe(payCard);
+		result = pwc.getPaymentResult();
+
+	}
+
+	public void makeInsertPayment(HashMap<String,HashMap<String,String>> result, String pin) throws IOException {
+		
+		try{
+			creader.remove();
+		}catch(IllegalPhaseSimulationException e) {
+			
+		}
+		creader.insert(payCard, pin);
+		result = pwc.getPaymentResult();
+
+	}
 
 	public void setFound(int setNumber){
 		found = setNumber;
