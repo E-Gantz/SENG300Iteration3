@@ -12,6 +12,7 @@ import org.lsmr.selfcheckout.BarcodedItem;
 import org.lsmr.selfcheckout.Card;
 import org.lsmr.selfcheckout.Coin;
 import org.lsmr.selfcheckout.Numeral;
+import org.lsmr.selfcheckout.devices.BanknoteDispenser;
 import org.lsmr.selfcheckout.devices.BanknoteSlot;
 import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
 import org.lsmr.selfcheckout.devices.BanknoteValidator;
@@ -23,7 +24,9 @@ import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.CoinTray;
 import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.DisabledException;
+import org.lsmr.selfcheckout.devices.ElectronicScale;
 import org.lsmr.selfcheckout.devices.OverloadException;
+import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
@@ -36,7 +39,15 @@ import SCSSoftware.GiftCardDatabase;
 import SCSSoftware.PaysWithCard;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
+<<<<<<< Updated upstream
 import SCSSoftware.ProductInventory;
+=======
+import SCSSoftware.AttendantData;
+import SCSSoftware.AttendantRefillsDispensers;
+import SCSSoftware.AttendantRemovesProd;
+import SCSSoftware.AttendantShutDownStartupStation;
+import SCSSoftware.notifyAttendant;
+>>>>>>> Stashed changes
 
 // Data can be passed through a class like this through button events
 // Maybe we can store strings and stuff and pass it to classes through here
@@ -84,6 +95,7 @@ public class DataPasser {
 	private Currency currency = Currency.getInstance("CAD");
 	private PaysWithCash paysWithCash;
 	public Map<BigDecimal, CoinDispenser> coinDispensers;
+	public Map<Integer, BanknoteDispenser> banknoteDispensers;
 	private CoinStorageUnit cStorage;
 	private CoinRunner coinrunner;
 	Coin toonie = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
@@ -96,6 +108,10 @@ public class DataPasser {
 	private PaysWithCard pwc;
 	private GiftCardDatabase giftDB;
 	private CardReader creader;
+	private ReceiptPrinter printer;
+	private ElectronicScale scale;
+	
+	public notifyAttendant notifyAttendant;
 
 
 	private Card payCard;
@@ -110,6 +126,7 @@ public class DataPasser {
 		pcart = new ProductCart();
 		station = scs;
 		this.scanner = station.mainScanner;
+		this.scale = station.baggingArea;
 		this.bOutput = station.banknoteOutput;
 		this.bSlot = station.banknoteInput;
 		this.cSlot = station.coinSlot;
@@ -119,7 +136,10 @@ public class DataPasser {
 		this.bStorage = station.banknoteStorage;
 		this.bValidator = station.banknoteValidator;
 		this.coinDispensers = station.coinDispensers;
+		this.banknoteDispensers = station.banknoteDispensers;
 		this.creader = station.cardReader;
+		this.printer = station.printer;
+		this.notifyAttendant = new notifyAttendant(printer, scale, new CoinDispenser(100), new BanknoteDispenser(100));
 
 		checkout = new Checkout(scanner, pcart);
 
@@ -178,14 +198,22 @@ public class DataPasser {
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
 	}
-
-	public void makeTapPayment(HashMap<String,HashMap<String,String>> result) throws IOException {
-
-		creader.tap(payCard);
+	
+	public void makeSwipePayment(HashMap<String, HashMap<String, String>> result) throws IOException {
+		creader.swipe(payCard);
 		result = pwc.getPaymentResult();
-
+		
 	}
 
+	public void makeTapPayment(HashMap<String,HashMap<String,String>> result) throws IOException {
+		creader.tap(payCard);
+		result = pwc.getPaymentResult();
+	}
+
+	public void makeInsertPayment(HashMap<String,HashMap<String,String>> result, String pin) throws IOException {
+		creader.insert(payCard, pin);
+		result = pwc.getPaymentResult();
+	}
 
 	public void setFound(int setNumber){
 		found = setNumber;

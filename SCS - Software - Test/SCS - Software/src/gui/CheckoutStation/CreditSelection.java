@@ -80,6 +80,18 @@ public class CreditSelection extends JFrame {
 		contentPane.add(btnTap);
 		
 		JButton btnSwipe = new JButton("Swipe");
+		btnSwipe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.makeSwipePayment(result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				checkoutScreen.setVisible(true);
+				dispose();
+				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
+			}
+		});
 		contentPane.add(btnSwipe);
 		
 		JButton btnInsert = new JButton("Insert");
