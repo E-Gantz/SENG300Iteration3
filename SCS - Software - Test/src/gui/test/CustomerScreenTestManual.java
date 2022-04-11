@@ -32,7 +32,7 @@ import SCSSoftware.ProductInventory;
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
 
-public class CustomerScreenTest {
+public class CustomerScreenTestManual {
     private TouchScreen screen;
     JFrame frame;
     private volatile int found;
