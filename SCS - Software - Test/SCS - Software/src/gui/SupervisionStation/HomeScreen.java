@@ -25,8 +25,9 @@ public class HomeScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DataPasser basic = new DataPasser();
-					LoginScreen lFrame = new LoginScreen(basic);
+					SupervisionDataPasser basic = new SupervisionDataPasser();
+					DataPasser basic2 = new DataPasser();
+					LoginScreen lFrame = new LoginScreen(basic2,basic);
 					HomeScreen frame = new HomeScreen(basic,lFrame);
 
 					frame.setVisible(true);
@@ -40,7 +41,7 @@ public class HomeScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public HomeScreen(DataPasser dataPass, LoginScreen loginFrame) {
+	public HomeScreen(SupervisionDataPasser dataPass, LoginScreen loginFrame) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
@@ -53,6 +54,8 @@ public class HomeScreen extends JFrame {
 		
 		
 // This code can be copied and pasted to add additional tabs for more station, just use find and replace on the number		
+		
+		int stationId = 1; 
 		JPanel Station1 = new JPanel();
 		tabbedPane.addTab("Station1", null, Station1, null);
 		Station1.setLayout(new GridLayout(0, 5, 0, 0));
@@ -74,6 +77,11 @@ public class HomeScreen extends JFrame {
 		
 		JButton btnStation1Shutdown = new JButton("Shutdown");
 		Station1.add(btnStation1Shutdown);
+		btnStation1Shutdown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dataPass.shutdownStation(stationId);
+			}
+		});
 		
 		JButton btnStation1AddPaper = new JButton("Add paper");
 		Station1.add(btnStation1AddPaper);
@@ -111,6 +119,11 @@ public class HomeScreen extends JFrame {
 		
 		JButton btnStation2Shutdown = new JButton("Shutdown");
 		Station2.add(btnStation2Shutdown);
+		btnStation2Shutdown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dataPass.shutdownStation(stationId);
+			}
+		});
 		
 		JButton btnStation2AddPaper = new JButton("Add paper");
 		Station2.add(btnStation2AddPaper);
@@ -145,6 +158,11 @@ public class HomeScreen extends JFrame {
 		
 		JButton btnStation3Shutdown = new JButton("Shutdown");
 		Station3.add(btnStation3Shutdown);
+		btnStation3Shutdown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dataPass.shutdownStation(stationId);
+			}
+		});
 		
 		JButton btnStation3AddPaper = new JButton("Add paper");
 		Station3.add(btnStation3AddPaper);
@@ -179,6 +197,11 @@ public class HomeScreen extends JFrame {
 		
 		JButton btnStation4Shutdown = new JButton("Shutdown");
 		Station4.add(btnStation4Shutdown);
+		btnStation4Shutdown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dataPass.shutdownStation(stationId);
+			}
+		});
 		
 		JButton btnStation4AddPaper = new JButton("Add paper");
 		Station4.add(btnStation4AddPaper);

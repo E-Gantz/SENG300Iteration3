@@ -28,7 +28,6 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
