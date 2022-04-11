@@ -16,6 +16,14 @@ import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.EmptyException;
 import org.lsmr.selfcheckout.devices.OverloadException;
 
+/**
+ * This class is responsible for conducting cash payments (Coin & Banknote).
+ * This class will consolidate the total number of coins & banknotes inserted
+ * from BanknoteRunner & CoinRunner and then verify if it's total matches with
+ * what the total of the transaction. If the total inserted money is greater than the transaction amount, change is then 
+ * calculated and dispensed.
+ * 
+ */
 public class PaysWithCash {
 
 	private CoinRunner coinrunner;
@@ -27,6 +35,17 @@ public class PaysWithCash {
 	private BanknoteSlot banknoteOutputSlot;
 	private CoinTray coinTray;
 
+	/**
+	 * Constructs the PaysWithCash class by taking in the various coin & banknote hardware classes as arguments to validate
+	 * currency, denomination and where to store the coin in the machine and to obtain change to be given back.
+	 * 
+	 * @param coinrunner 
+	 * @param banknoteRunner
+	 * @param banknoteDispenser
+	 * @param coinDispenser
+	 * @param banknoteOutputSlot
+	 * @param coinTray
+	 */
 	public PaysWithCash(CoinRunner coinrunner, BanknoteRunner banknoteRunner,
 			Map<Integer, BanknoteDispenser> banknoteDispenser, Map<BigDecimal, CoinDispenser> coinDispenser,
 			BanknoteSlot banknoteOutputSlot, CoinTray coinTray) {
@@ -38,6 +57,12 @@ public class PaysWithCash {
 		this.coinTray = coinTray;
 	}
 
+	/**
+	 * This method will consolidate the total number of coins + total number of banknotes into one and returns
+	 * a BigDecimal value
+	 * 
+	 * @Return totalValue
+	 */
 	public BigDecimal sumCoinBanknote() {
 		BigDecimal totalCoins = coinrunner.sumCoins();
 		BigDecimal totalBanknotes = banknoterunner.sumBanknotes();
@@ -46,6 +71,11 @@ public class PaysWithCash {
 		return totalValue;
 	}
 
+	/**
+	 * This method updates the totalValue with what the customer has paid and returns the new totalValue
+	 * 
+	 * @Return totalValue
+	 */
 	public BigDecimal getChange() {
 		chargedTotal = banknoterunner.getCheckoutTotal();
 
@@ -54,6 +84,14 @@ public class PaysWithCash {
 		return totalValue;
 	}
 
+	/**
+	 * This method calculates how change is dispensed back to the customer in coins. High to low values are added to the array to
+	 * determine the order it is dispensed, and then deducted and looped back until the totalValue is 0. Change is then
+	 * dispensed from the arraylist based on the value that is contained. Upon success, this method will return the total
+	 * amount of change given as a BigDecimal.
+	 * 
+	 * @Return changeReturned
+	 */
 	public BigDecimal emitCoins() throws OverloadException, DisabledException {
 		for (CoinDispenser dispenser : coindispenser.values()) {
 			dispenser.unload();
@@ -158,6 +196,14 @@ public class PaysWithCash {
 		return changeReturned;
 	}
 
+	/**
+	 * This method calculates how change is dispensed back to the customer in banknotes. High to low values are added to the array to
+	 * determine the order it is dispensed, and then deducted and looped back until the totalValue is 0. Change is then
+	 * dispensed from the arraylist based on the value that is contained. Upon success, this method will return the total
+	 * amount of change given as a BigDecimal.
+	 * 
+	 * @Return changeReturned
+	 */
 	public BigDecimal emitBanknotes() throws OverloadException, DisabledException {
 		BigDecimal changeReturned = BigDecimal.ZERO;
 		List<Banknote> listOfNotes = new ArrayList<Banknote>();
@@ -245,6 +291,11 @@ public class PaysWithCash {
 		return changeReturned;
 	}
 
+	/**
+	 * This method updates how much total change has been returned and returns a BigDecimal
+	 * 
+	 * @Return currentTotal
+	 */
 	public BigDecimal emitChange() throws OverloadException, DisabledException {
 		BigDecimal currentTotal = BigDecimal.ZERO;
 		currentTotal = currentTotal.add(emitBanknotes());
