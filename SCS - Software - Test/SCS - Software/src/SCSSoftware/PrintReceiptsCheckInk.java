@@ -8,15 +8,24 @@ import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 
-// Station detects that the ink in a receipt printer is low.
+/**
+ * facilitates the system detecting that the printer is out of ink
+ */
 public class PrintReceiptsCheckInk {
 	private ReceiptPrinter printer;
 
+	/**
+	 * constructor
+	 * @param printer
+	 * the self checkout system's printer
+	 */
 	public PrintReceiptsCheckInk(ReceiptPrinter printer) {
 		this.printer = printer;
 	}
 
-	// check the printer status, if empty judge the message
+	/**
+	 * @return true if the printer is out of ink
+	 */
 	public boolean isOutOfInk(){
 		boolean flag = false;
 		try {

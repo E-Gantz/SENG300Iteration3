@@ -5,7 +5,10 @@ import java.math.BigDecimal;
 import org.lsmr.selfcheckout.NullPointerSimulationException;
 import org.lsmr.selfcheckout.devices.BarcodeScanner;
 
-//represents a "pay now" button that transitions the customer from "scanning mode" to "payment mode"
+/**
+ * Represents a checkout state, when true checkout is possible, when false checkout is not possible.
+ * includes Price related methods for use by payment systems.
+ */
 public class Checkout {
 	boolean state;
 	ProductCart pcart;
@@ -13,6 +16,15 @@ public class Checkout {
 	BarcodeScanner handScanner;
 	private BigDecimal amountpaid;
 	
+	/**
+	 * constructs a checkout object
+	 * @param mainscanner
+	 * The main scanner of the self checkout system
+	 * @param handScanner
+	 * The handheld scanner of the self checkout system
+	 * @param pcart
+	 * The users virtual cart
+	 */
 	public Checkout(BarcodeScanner mainscanner, BarcodeScanner handScanner, ProductCart pcart) {
 		this.scanner = mainscanner;
 		this.handScanner = handScanner;
@@ -41,26 +53,43 @@ public class Checkout {
 		state = true;
 	}
 	
-	//disables 'checkout mode' to go back to adding items
-	//this would be executed if the user cancels checkout so they can add more items.
+	/**
+	 * changes the state to disable checkout, and to re-enable scanning and adding items
+	 */
 	public void disable() {
 		scanner.enable();
 		handScanner.enable();
 		state = false;
 	}
 	
+	/**
+	 * gets the current state of checkout
+	 * @return The current setting of the state
+	 */
 	public boolean getState() {
 		return this.state;
 	}
 	
+	/**
+	 * gets the total price of all items in the cart
+	 * @return the current total price of the cart
+	 */
 	public BigDecimal getTotalPrice() {
 		return this.pcart.getTotalPrice();
 	}
 	
+	/**
+	 * sets the amount of money paid so far in the current transaction
+	 * @param amount of money paid
+	 */
 	public void setAmountPaid(BigDecimal amount) {
 		this.amountpaid = amount;
 	}
 	
+	/**gets the amount of money paid so far in the current transaction
+	 * 
+	 * @return amount of money paid
+	 */
 	public BigDecimal getAmountPaid() {
 		return this.amountpaid;
 	}
