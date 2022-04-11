@@ -25,19 +25,6 @@ public class StartScreen extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DataPasser basic = new DataPasser();
-					StartScreen frame = new StartScreen(basic);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -56,6 +43,7 @@ public class StartScreen extends JFrame {
 					scanScreen = new ScanningScreen(dataPass);
 					scanScreen.setVisible(true);
 					setVisible(false);
+					dataPass.setFound(1);
 			}
 		});
 		contentPane.add(btnStartButton, BorderLayout.CENTER);

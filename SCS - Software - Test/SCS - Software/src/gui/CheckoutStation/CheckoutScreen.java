@@ -30,23 +30,17 @@ public class CheckoutScreen extends JFrame {
 	public JLabel lblTotal;
 	public CardScanScreen cardScreen;
 	public CoinSelection coinScreen;
+	public JButton btnGoToScanning;
+	public JButton btnGoToAddBags;
+	public JButton btnGoToMembership;
+	public JButton btnEnterCoin;
+	public JButton btnAddBanknote;
+	public JButton btnPayWithCard;
+	
+	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DataPasser basic = new DataPasser();
-					ScanningScreen ssTest = new ScanningScreen(basic);				
-					CheckoutScreen frame = new CheckoutScreen(basic, ssTest);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -65,9 +59,10 @@ public class CheckoutScreen extends JFrame {
 		contentPane.add(panel, BorderLayout.WEST);
 		panel.setLayout(new GridLayout(3, 0, 0, 0));
 		
-		JButton btnGoToScanning = new JButton("Go Back");
+		btnGoToScanning = new JButton("Go Back");
 		btnGoToScanning.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.setFound(6);
 				scanScreen.setVisible(true);
 				setVisible(false);
 				dispose();
@@ -77,9 +72,10 @@ public class CheckoutScreen extends JFrame {
 		btnGoToScanning.setForeground(Color.YELLOW);
 		panel.add(btnGoToScanning);
 		
-		JButton btnGoToAddBags = new JButton("Add Plastic Bags");
+		btnGoToAddBags = new JButton("Add Plastic Bags");
 		btnGoToAddBags.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.setFound(9);
 				plasticBagScreen = new AddBagsScreen(dataPass, me);
 				setVisible(false);
 				plasticBagScreen.setVisible(true);
@@ -87,7 +83,7 @@ public class CheckoutScreen extends JFrame {
 		});
 		panel.add(btnGoToAddBags);
 		
-		JButton btnGoToMembership = new JButton("Enter Membership");
+		btnGoToMembership = new JButton("Enter Membership");
 		btnGoToMembership.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				memberScreen = new MembershipCardScreen(dataPass, me);
@@ -114,7 +110,7 @@ public class CheckoutScreen extends JFrame {
 		JLabel lblPaymentMethod = new JLabel("<html>Choose a payment<br> method or insert coins:</html>");
 		panel_payment.add(lblPaymentMethod);
 		
-		JButton btnEnterCoin = new JButton("Add Coins");
+		btnEnterCoin = new JButton("Add Coins");
 		btnEnterCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				coinScreen = new CoinSelection(dataPass, me);
@@ -124,7 +120,7 @@ public class CheckoutScreen extends JFrame {
 		});
 		panel_payment.add(btnEnterCoin);
 		
-		JButton btnAddBanknote = new JButton("Add20Banknote");
+		btnAddBanknote = new JButton("Add20Banknote");
 		btnAddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -141,7 +137,7 @@ public class CheckoutScreen extends JFrame {
 		});
 		panel_payment.add(btnAddBanknote);
 		HashMap<String,HashMap<String,String>>paymentResult = new HashMap<String,HashMap<String,String>>();
-		JButton btnPayWithCard = new JButton("Card");
+		btnPayWithCard = new JButton("Card");
 		btnPayWithCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 

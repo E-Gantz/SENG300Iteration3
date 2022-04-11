@@ -19,6 +19,12 @@ import javax.swing.JSplitPane;
 public class CoinSelection extends JFrame {
 
 	private JPanel contentPane;
+	public JButton btnClose;
+	public JButton btnNickel;
+	public JButton btnDime;
+	public JButton btnQuarters;
+	public JButton btnLoonie;
+	public JButton btnToonie;
 
 	/**
 	 * Launch the application.
@@ -46,9 +52,10 @@ public class CoinSelection extends JFrame {
 		JPanel panel = new JPanel();
 		splitPane.setLeftComponent(panel);
 		
-		JButton btnClose = new JButton("Close");
+		btnClose = new JButton("Close");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.setFound(8);
 				setVisible(false);
 				dispose();
 			}
@@ -59,7 +66,7 @@ public class CoinSelection extends JFrame {
 		splitPane.setRightComponent(panel_1);
 		panel_1.setLayout(new GridLayout(0, 5, 0, 0));
 		
-		JButton btnNickel = new JButton("Nickel");
+		btnNickel = new JButton("Nickel");
 		btnNickel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -74,7 +81,7 @@ public class CoinSelection extends JFrame {
 		});
 		panel_1.add(btnNickel);
 		
-		JButton btnDime = new JButton("Dime");
+		btnDime = new JButton("Dime");
 		btnDime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -89,10 +96,10 @@ public class CoinSelection extends JFrame {
 		});
 		panel_1.add(btnDime);
 		
-		JButton btnQuarters = new JButton("Quarter");
+		btnQuarters = new JButton("Quarter");
 		panel_1.add(btnQuarters);
 		
-		JButton btnLoonie = new JButton("Loonie");
+		btnLoonie = new JButton("Loonie");
 		btnLoonie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -107,7 +114,7 @@ public class CoinSelection extends JFrame {
 		});
 		panel_1.add(btnLoonie);
 		
-		JButton btnToonie = new JButton("Toonie");
+		btnToonie = new JButton("Toonie");
 		btnToonie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
