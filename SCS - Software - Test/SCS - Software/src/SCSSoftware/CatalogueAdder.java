@@ -22,5 +22,13 @@ public class CatalogueAdder {
 	public void addItem(PriceLookupCode code) throws OverloadException {
 		pluAdder.addItem(code.toString());
 	}
+	
+	public void attendantAddItem(Barcode code) {
+		bcAdder.barcodeScanned(bcAdder.mainScanner, code);
+	}
+	
+	public void attendantAddItem(PriceLookupCode code) throws OverloadException {
+		pluAdder.attendantAddItem(code.toString());
+	}
 
 }
