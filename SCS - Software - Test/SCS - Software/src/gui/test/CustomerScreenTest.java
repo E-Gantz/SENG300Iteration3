@@ -1,5 +1,10 @@
 package gui.test;
 
+<<<<<<< Updated upstream
+=======
+import org.lsmr.selfcheckout.PLUCodedItem;
+import org.lsmr.selfcheckout.PriceLookupCode;
+>>>>>>> Stashed changes
 import org.lsmr.selfcheckout.devices.*;
 import org.lsmr.selfcheckout.devices.observers.*;
 
@@ -21,7 +26,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.TouchScreenObserver;
+<<<<<<< Updated upstream
 
+=======
+import org.lsmr.selfcheckout.products.PLUCodedProduct;
+
+import SCSSoftware.ProductCart;
+import SCSSoftware.ProductInventory;
+>>>>>>> Stashed changes
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
 
@@ -45,7 +57,11 @@ public class CustomerScreenTest {
 		maxWeight = 99999;
 		sensitivity = 10;
 		scs = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+<<<<<<< Updated upstream
     	
+=======
+		
+>>>>>>> Stashed changes
         screen = scs.screen;
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

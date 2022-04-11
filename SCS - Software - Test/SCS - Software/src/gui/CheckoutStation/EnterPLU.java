@@ -6,12 +6,16 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.lsmr.selfcheckout.devices.OverloadException;
+
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.JSplitPane;
 import java.awt.GridLayout;
@@ -84,7 +88,25 @@ public class EnterPLU extends JFrame {
 		panel.add(btnEnterPLU);
 		btnEnterPLU.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String items = "";
+				String tempPrice = "";
 				dataPass.setPLUEntered(textFieldPLUEntry.getText());
+				try {
+					dataPass.addPLU();
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				for (int i = 0; i < dataPass.pcart.getItemNames().size(); i ++) {
+					items = items + dataPass.pcart.getItemNames().get(i);
+					items = items + "\n";
+				}
+				tempPrice = "$" + dataPass.pcart.getTotalPrice().toString();
+				
+				items = items + "\n" + tempPrice;
+				scanScreen.textReciept.setText(items);
+				
 				
 			}
 		});
