@@ -105,8 +105,9 @@ public class EnterPLU extends JFrame {
 				
 				items = items + "\n" + tempPrice;
 				scanScreen.textReciept.setText(items);
-				
-				
+				scanScreen.setVisible(true);
+				setVisible(false);
+				dispose();				
 			}
 		});
 		

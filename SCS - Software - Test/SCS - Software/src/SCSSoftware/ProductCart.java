@@ -59,7 +59,7 @@ public class ProductCart {
 
 	public void addToCartPLU(PLUCodedProduct prod, BigDecimal price, double weight) {
 		pluCart.add(prod);
-		String nameAndPrice = prod.getDescription() + " " + "$" + price.toPlainString();
+		String nameAndPrice = prod.getDescription() + " " + "$" + price.setScale(2, BigDecimal.ROUND_CEILING).toPlainString();
 		items.add(nameAndPrice);
 		totalPrice = totalPrice.add(price);
 		totalExpectedWeight += weight;

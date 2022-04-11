@@ -90,7 +90,7 @@ public class DataPasser {
 	public PLUCodedItem plitem1 = new PLUCodedItem(pl1, 2000);
 	public PLUCodedItem plitem2 = new PLUCodedItem(pl2, 3300);
 	public PLUCodedProduct plprod1 = new PLUCodedProduct(pl1, "Apples", new BigDecimal(1.00));
-	public PLUCodedProduct plprod2 = new PLUCodedProduct(pl2, "Oranges", new BigDecimal(0.11));
+	public PLUCodedProduct plprod2 = new PLUCodedProduct(pl2, "Oranges", new BigDecimal(2.58));
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
 
 	private BanknoteSlot bSlot;
@@ -272,6 +272,8 @@ public class DataPasser {
 		station.scanningArea.add(plitem1);
 		station.scanningArea.add(plitem2);
 		checkoutI.addFromPLU(PLUEntered);
+		station.scanningArea.remove(plitem1);
+		station.scanningArea.remove(plitem2);
 	}
 
 	public void addItem(PLUCodedItem apple) {
