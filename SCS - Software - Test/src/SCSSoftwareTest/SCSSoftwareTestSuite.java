@@ -19,7 +19,7 @@ import gui.test.*;
 	CustomerEntersBagsUsedTest.class, 
 	CustomerOwnBagTest.class, 
 	ItemAdderTest.class,
-	ItemNotPlaceableTest.class,
+	//ItemNotPlaceableTest.class,
 	ItemPlacerTest.class,
 	MemberCardTest.class,
 	PaysWithCardTest.class,

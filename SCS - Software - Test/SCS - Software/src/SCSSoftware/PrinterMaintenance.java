@@ -11,13 +11,13 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -39,19 +39,19 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
 	public void paperAdded(ReceiptPrinter printer) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void inkAdded(ReceiptPrinter printer) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

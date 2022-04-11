@@ -31,7 +31,8 @@ import SCSSoftware.CoinRunner;
 import SCSSoftware.ProductCart;
 
 /**
- * Tests for all events involving cash paymets (coin/banknote) within the selfcheckout machine
+ * Tests for all events involving cash paymets (coin/banknote) within the
+ * selfcheckout machine
  */
 public class PaysWithCashTest {
 
@@ -74,16 +75,18 @@ public class PaysWithCashTest {
 		this.bValidator = station.banknoteValidator;
 		this.coinDispensers = station.coinDispensers;
 
-		checkout = new Checkout(scanner,station.handheldScanner, pcart);
+		checkout = new Checkout(scanner, station.handheldScanner, pcart);
 
-        coinrunner = new CoinRunner(currency, banknoteDenom, coinDenom, checkout.getTotalPrice(), cSlot,
-                cStorage, cValidator);
+		coinrunner = new CoinRunner(currency, banknoteDenom, coinDenom, checkout.getTotalPrice(), cSlot, cStorage,
+				cValidator);
 		banknoteRunner = new BanknoteRunner(checkout.getTotalPrice(), bSlot, bStorage, bValidator);
 		paysWithCash = new PaysWithCash(coinrunner, banknoteRunner, station.banknoteDispensers, station.coinDispensers,
 				bOutput, cTray);
 	}
+
 	/**
-	 * Test to see if the sum of all coins and banknotes inserted match with expected value
+	 * Test to see if the sum of all coins and banknotes inserted match with
+	 * expected value
 	 */
 	@Test
 	public void testSumCoinBanknote() throws DisabledException, OverloadException {
@@ -94,7 +97,7 @@ public class PaysWithCashTest {
 		BigDecimal testSet = new BigDecimal(1.00);
 		assert (paysWithCash.sumCoinBanknote().doubleValue() == (testSet.add(BigDecimal.valueOf(5)).doubleValue()));
 	}
-	
+
 	/**
 	 * Test to see if inserted change matches with expected value
 	 */
@@ -111,8 +114,8 @@ public class PaysWithCashTest {
 	}
 
 	/**
-	 * Test to see change is given back properly based on total inserted coin & banknotes and the checkout total value
-	 * from the checkout classes
+	 * Test to see change is given back properly based on total inserted coin &
+	 * banknotes and the checkout total value from the checkout classes
 	 */
 	@Test
 	public void testEmitChange() throws DisabledException, OverloadException {

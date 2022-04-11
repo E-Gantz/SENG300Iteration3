@@ -20,8 +20,8 @@ import org.lsmr.selfcheckout.devices.OverloadException;
  * This class is responsible for conducting cash payments (Coin & Banknote).
  * This class will consolidate the total number of coins & banknotes inserted
  * from BanknoteRunner & CoinRunner and then verify if it's total matches with
- * what the total of the transaction. If the total inserted money is greater than the transaction amount, change is then 
- * calculated and dispensed.
+ * what the total of the transaction. If the total inserted money is greater
+ * than the transaction amount, change is then calculated and dispensed.
  * 
  */
 public class PaysWithCash {
@@ -36,10 +36,11 @@ public class PaysWithCash {
 	private CoinTray coinTray;
 
 	/**
-	 * Constructs the PaysWithCash class by taking in the various coin & banknote hardware classes as arguments to validate
-	 * currency, denomination and where to store the coin in the machine and to obtain change to be given back.
+	 * Constructs the PaysWithCash class by taking in the various coin & banknote
+	 * hardware classes as arguments to validate currency, denomination and where to
+	 * store the coin in the machine and to obtain change to be given back.
 	 * 
-	 * @param coinrunner 
+	 * @param coinrunner
 	 * @param banknoteRunner
 	 * @param banknoteDispenser
 	 * @param coinDispenser
@@ -58,8 +59,8 @@ public class PaysWithCash {
 	}
 
 	/**
-	 * This method will consolidate the total number of coins + total number of banknotes into one and returns
-	 * a BigDecimal value
+	 * This method will consolidate the total number of coins + total number of
+	 * banknotes into one and returns a BigDecimal value
 	 * 
 	 * @Return totalValue
 	 */
@@ -72,7 +73,8 @@ public class PaysWithCash {
 	}
 
 	/**
-	 * This method updates the totalValue with what the customer has paid and returns the new totalValue
+	 * This method updates the totalValue with what the customer has paid and
+	 * returns the new totalValue
 	 * 
 	 * @Return totalValue
 	 */
@@ -85,10 +87,12 @@ public class PaysWithCash {
 	}
 
 	/**
-	 * This method calculates how change is dispensed back to the customer in coins. High to low values are added to the array to
-	 * determine the order it is dispensed, and then deducted and looped back until the totalValue is 0. Change is then
-	 * dispensed from the arraylist based on the value that is contained. Upon success, this method will return the total
-	 * amount of change given as a BigDecimal.
+	 * This method calculates how change is dispensed back to the customer in coins.
+	 * High to low values are added to the array to determine the order it is
+	 * dispensed, and then deducted and looped back until the totalValue is 0.
+	 * Change is then dispensed from the arraylist based on the value that is
+	 * contained. Upon success, this method will return the total amount of change
+	 * given as a BigDecimal.
 	 * 
 	 * @Return changeReturned
 	 */
@@ -197,10 +201,12 @@ public class PaysWithCash {
 	}
 
 	/**
-	 * This method calculates how change is dispensed back to the customer in banknotes. High to low values are added to the array to
-	 * determine the order it is dispensed, and then deducted and looped back until the totalValue is 0. Change is then
-	 * dispensed from the arraylist based on the value that is contained. Upon success, this method will return the total
-	 * amount of change given as a BigDecimal.
+	 * This method calculates how change is dispensed back to the customer in
+	 * banknotes. High to low values are added to the array to determine the order
+	 * it is dispensed, and then deducted and looped back until the totalValue is 0.
+	 * Change is then dispensed from the arraylist based on the value that is
+	 * contained. Upon success, this method will return the total amount of change
+	 * given as a BigDecimal.
 	 * 
 	 * @Return changeReturned
 	 */
@@ -292,7 +298,8 @@ public class PaysWithCash {
 	}
 
 	/**
-	 * This method updates how much total change has been returned and returns a BigDecimal
+	 * This method updates how much total change has been returned and returns a
+	 * BigDecimal
 	 * 
 	 * @Return currentTotal
 	 */

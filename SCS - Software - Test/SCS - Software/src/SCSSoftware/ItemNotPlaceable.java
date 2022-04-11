@@ -5,9 +5,8 @@ import org.lsmr.selfcheckout.devices.ElectronicScale;
 /**
  * represents if an item is placeable
  */
-public class ItemNotPlaceable{
-	
-	
+public class ItemNotPlaceable {
+
 	private double scaleLimit;
 	private boolean isPlaceable;
 
@@ -19,19 +18,18 @@ public class ItemNotPlaceable{
 	}
 
 	/**
-	 * Some Items are too big to be places on the scale, therefore item not needed to place on a scale
-	 * but required approval from attendance
-	 * @param scale
-	 * the bagging area scale from the self checkout system
-	 * @param expected
-	 * the expected weight of the most recently added item
+	 * Some Items are too big to be places on the scale, therefore item not needed
+	 * to place on a scale but required approval from attendance
+	 * 
+	 * @param scale    the bagging area scale from the self checkout system
+	 * @param expected the expected weight of the most recently added item
 	 * @return True if the item can be placed without overloading the scale
 	 */
-	public boolean CheckIfPlacable(ElectronicScale scale, double expected)  {
+	public boolean CheckIfPlacable(ElectronicScale scale, double expected) {
 		scaleLimit = scale.getWeightLimit();
-		if(expected > scaleLimit) {
+		if (expected > scaleLimit) {
 			return this.isPlaceable = false;
-		} else 
+		} else
 			return this.isPlaceable = true;
 	}
 
@@ -45,8 +43,8 @@ public class ItemNotPlaceable{
 
 	/**
 	 * sets the is placeable flag to the indicated value.
-	 * @param isPlaceable
-	 * the value to set the isPlaceable flag to
+	 * 
+	 * @param isPlaceable the value to set the isPlaceable flag to
 	 */
 	public void setPlaceable(boolean isPlaceable) {
 		this.isPlaceable = isPlaceable;

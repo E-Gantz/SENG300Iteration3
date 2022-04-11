@@ -28,10 +28,10 @@ public class CheckoutDoneTest {
 	private ProductCart pcart;
 	private Checkout checkout;
 	private CheckoutDone checkoutfinished;
-	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
-	public Numeral[] code2 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.two};
-	public Barcode bc1 = new Barcode(code1); //001
-	public Barcode bc2 = new Barcode(code2); //002
+	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
+	public Numeral[] code2 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.two };
+	public Barcode bc1 = new Barcode(code1); // 001
+	public Barcode bc2 = new Barcode(code2); // 002
 	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
 	public BarcodedItem item2 = new BarcodedItem(bc2, 4);
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
@@ -42,20 +42,20 @@ public class CheckoutDoneTest {
 	@Before
 	public void setUp() {
 		c = Currency.getInstance("CAD");
-		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
-						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
-		int [] bankNoteDenom = {5, 10, 20, 50, 100};
-		
+		BigDecimal[] coinArray = { new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+				new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00) };
+		int[] bankNoteDenom = { 5, 10, 20, 50, 100 };
+
 		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
 		scanner = station.mainScanner;
 		scale = station.baggingArea;
 		pcart = new ProductCart();
-		checkout = new Checkout(scanner,station.handheldScanner, pcart);
+		checkout = new Checkout(scanner, station.handheldScanner, pcart);
 		checkoutfinished = new CheckoutDone(checkout, pcart, scale);
 	}
 
 	@After
-	public void tearDown(){
+	public void tearDown() {
 		scanner = null;
 		scale = null;
 		pcart = null;
@@ -64,8 +64,8 @@ public class CheckoutDoneTest {
 		c = null;
 		station = null;
 	}
-	
-	@Test (expected = InvalidArgumentSimulationException.class)
+
+	@Test(expected = InvalidArgumentSimulationException.class)
 	public void PaymentNotEnough() {
 		checkout.disable();
 		checkout.setAmountPaid(new BigDecimal(5));
@@ -73,7 +73,7 @@ public class CheckoutDoneTest {
 		checkout.enable();
 		checkoutfinished.checkoutFinished();
 	}
-	
+
 	@Test
 	public void notInCheckout() {
 		checkout.disable();
@@ -82,7 +82,7 @@ public class CheckoutDoneTest {
 		checkoutfinished.checkoutFinished();
 		assertTrue(!(checkoutfinished.isAllDone()));
 	}
-	
+
 	@Test
 	public void PaymentEnough() {
 		checkout.disable();

@@ -16,8 +16,8 @@ public class PrintReceiptsCheckInk {
 
 	/**
 	 * constructor
-	 * @param printer
-	 * the self checkout system's printer
+	 * 
+	 * @param printer the self checkout system's printer
 	 */
 	public PrintReceiptsCheckInk(ReceiptPrinter printer) {
 		this.printer = printer;
@@ -26,21 +26,20 @@ public class PrintReceiptsCheckInk {
 	/**
 	 * @return true if the printer is out of ink
 	 */
-	public boolean isOutOfInk(){
+	public boolean isOutOfInk() {
 		boolean flag = false;
 		try {
 			printer.print('\t');
 		} catch (EmptyException e) {
 			// TODO Auto-generated catch block
 			// empty
-			if(e.toString().contains("no")&&e.toString().contains("ink")){
+			if (e.toString().contains("no") && e.toString().contains("ink")) {
 				flag = true;
-			}			
+			}
 		} catch (OverloadException e) {
 			// TODO Auto-generated catch block
 		}
 		return flag;
 	}
-
 
 }

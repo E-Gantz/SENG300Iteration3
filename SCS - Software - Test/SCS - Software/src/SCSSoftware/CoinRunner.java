@@ -16,8 +16,10 @@ import softwareObservers.CStorageUnitObserver;
 import softwareObservers.CValidatorObserver;
 
 /**
- * Instances of this class contain methods to calculate Coins that have been inserted into the machine in type BigDecimal. 
- * Coinrunner is able to insert a valid coin and then sum up all inserted coins for that transaction in the machine
+ * Instances of this class contain methods to calculate Coins that have been
+ * inserted into the machine in type BigDecimal. Coinrunner is able to insert a
+ * valid coin and then sum up all inserted coins for that transaction in the
+ * machine
  */
 
 public class CoinRunner {
@@ -36,28 +38,21 @@ public class CoinRunner {
 	private BigDecimal checkoutTotal;
 	private int[] banknoteDenominations;
 	private BigDecimal[] coinDenominations;
-	
+
 	/**
 	 * Constructs a CoinRunner.
 	 * 
-	 * @param currency
-	 *            The currency represented by the coin.
-	 * @param banknoteDenominations
-	 *            Array of banknote denomination in ints
-	 * @param coinDenominations
-	 *            Array of coin denominations in BigDecimal format 
-	 * @param checkoutTotal
-	 *            Total price of what is owed in BigDecimal format
-	 * @param cslot
-	 * 			  CoinSlot hardware representation
-	 * @param cStorage 
-	 * 			  CoinStorageUnit hardware representation
-	 * @param cValidator
-	 * 		      CoinValidator hardware representation
+	 * @param currency              The currency represented by the coin.
+	 * @param banknoteDenominations Array of banknote denomination in ints
+	 * @param coinDenominations     Array of coin denominations in BigDecimal format
+	 * @param checkoutTotal         Total price of what is owed in BigDecimal format
+	 * @param cslot                 CoinSlot hardware representation
+	 * @param cStorage              CoinStorageUnit hardware representation
+	 * @param cValidator            CoinValidator hardware representation
 	 */
 
 	public CoinRunner(Currency currency, int[] banknoteDenominations, BigDecimal[] coinDenominations,
-					  BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinValidator cValidator) {
+			BigDecimal checkoutTotal, CoinSlot cslot, CoinStorageUnit cStorage, CoinValidator cValidator) {
 		this.paidTotal = BigDecimal.ZERO;
 		this.checkoutTotal = checkoutTotal;
 		this.banknoteDenominations = banknoteDenominations;
@@ -83,6 +78,7 @@ public class CoinRunner {
 	public BigDecimal getCheckoutTotal() {
 		return this.checkoutTotal;
 	}
+
 	/**
 	 * Setter for CheckoutTotal
 	 */
@@ -98,6 +94,7 @@ public class CoinRunner {
 	public BigDecimal getPaidTotal() {
 		return this.paidTotal;
 	}
+
 	/**
 	 * Accessor for array containing all inserted coins
 	 * 
@@ -108,13 +105,16 @@ public class CoinRunner {
 	}
 
 	/**
-	 * Method which takes in a BigDecimal coin denomination to create a valid coin for checkout use 
+	 * Method which takes in a BigDecimal coin denomination to create a valid coin
+	 * for checkout use
 	 */
 	public void validCoin(BigDecimal value) {
 		this.validCoin = new Coin(Currency.getInstance("CAD"), value);
 	}
+
 	/**
-	 * Method which obtains the value of the coin and adds said value to the BigDecimal total of inserted coins in the checkout machine 
+	 * Method which obtains the value of the coin and adds said value to the
+	 * BigDecimal total of inserted coins in the checkout machine
 	 */
 	public void addValidCoin() {
 		this.validCoin = new Coin(currency, validCoin.getValue());
