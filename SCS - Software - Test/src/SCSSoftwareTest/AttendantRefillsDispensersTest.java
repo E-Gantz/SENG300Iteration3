@@ -5,10 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.Coin;
-import org.lsmr.selfcheckout.devices.BanknoteDispenser;
-import org.lsmr.selfcheckout.devices.CoinDispenser;
-import org.lsmr.selfcheckout.devices.OverloadException;
-import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
+import org.lsmr.selfcheckout.devices.*;
+import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
+import org.lsmr.selfcheckout.devices.observers.ReceiptPrinterObserver;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -140,5 +139,17 @@ public class AttendantRefillsDispensersTest {
             attendantRefillsDispensers.RefillBanknoteDispenser(banknoteDispenserFive, five, 201);
             fail("Exception not thrown when overloading banknote dispenser.");
         } catch (OverloadException ignored) {}
+    }
+
+    @Test
+    public void refilInkTest() throws OverloadException{
+        AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
+        attendantRefillsDispensers.addInk(10);
+    }
+
+    @Test
+    public void refilPaperTest() throws OverloadException {
+        AttendantRefillsDispensers attendantRefillsDispensers = new AttendantRefillsDispensers(selfCheckoutStation);
+        attendantRefillsDispensers.addPaper(10);
     }
 }

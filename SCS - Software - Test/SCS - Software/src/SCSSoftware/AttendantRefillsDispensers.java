@@ -35,4 +35,12 @@ public class AttendantRefillsDispensers{
             banknoteDispenser.load(banknotes);
         }
     }
+    public void addPaper(int units) throws OverloadException {
+        selfCheckoutStation.printer.addPaper(units);
+
+    }
+
+    public void addInk(int quanitiy) throws OverloadException {
+        selfCheckoutStation.printer.addInk(quanitiy);
+    }
 }

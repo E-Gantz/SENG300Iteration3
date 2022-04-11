@@ -7,11 +7,13 @@ import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.ReceiptPrinterObserver;
 
 public class PrinterMaintenance implements ReceiptPrinterObserver {
+	
+	private boolean outOfPaper;
+	private boolean outOfInk; 
 
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -19,39 +21,44 @@ public class PrinterMaintenance implements ReceiptPrinterObserver {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public PrinterMaintenance() {
+		this.outOfPaper = false; 
+		this.outOfInk = false; 
+	}
 
 	@Override
 	public void outOfPaper(ReceiptPrinter printer) {
-		try {
-			printer.addPaper(100);
-		} catch (OverloadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		this.outOfPaper = true; 
+
 	}
 
 	@Override
 	public void outOfInk(ReceiptPrinter printer) {
-		try {
-			printer.addInk(100);
-		} catch (OverloadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.outOfInk = true; 
+
 		
 	}
 
 	@Override
 	public void paperAdded(ReceiptPrinter printer) {
-		// TODO Auto-generated method stub
+		this.outOfPaper = false; 
 		
 	}
 
 	@Override
 	public void inkAdded(ReceiptPrinter printer) {
+		this.outOfInk = false; 
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public boolean getInkStatus() {
+		return this.outOfInk; 
+	}
+	
+	public boolean getPaperStatus() {
+		return this.outOfPaper;
 	}
 
 }
