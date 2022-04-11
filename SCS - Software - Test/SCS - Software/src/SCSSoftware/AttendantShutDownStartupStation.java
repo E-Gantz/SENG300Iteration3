@@ -14,6 +14,11 @@ import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.ElectronicScaleObserver;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
+/**
+ * This method allows the attendant to shutdown all hardware within a selfcheckout station from the supervision
+ * station
+ * 
+ */
 public class AttendantShutDownStartupStation{
 
 private SelfCheckoutStation station;
@@ -25,17 +30,27 @@ private boolean attendantStationShutDown = false;
 private boolean stationStartup = false;
 private boolean attendantStationStartup = false;
 	
-	// Constructor takes an individual scs that needs to be shut down
+	/** Constructor takes an individual scs that needs to be shut down
+	 * 
+	 * @param scs
+	 * @param ss
+	 */
 	public AttendantShutDownStartupStation(SelfCheckoutStation scs, SupervisionStation ss) {
 		this.station = scs;
 		this.attendantStation = ss;
 	}	
 	
-	// Constructor takes the supervision station that needs to be shut down
+	/** Constructor takes the supervision station that needs to be shut down
+	 * 
+	 * @param ss
+	 */
 	public AttendantShutDownStartupStation(SupervisionStation ss) {
 		this.attendantStation = ss;
 	}
-	
+	/**
+	 * This method detaches all selfcheckout hardware involving any hardware related to a checkout and payment
+	 * 
+	 */
 	public void shutDownStation() {
 	
 		// Detaching all observers from the selfcheckout station
@@ -85,7 +100,10 @@ private boolean attendantStationStartup = false;
 		}
 		
 	}
-	
+	/**
+	 * This method detaches the attendant keyboard & screen hardware 
+	 * 
+	 */
 	public void shutDownAttendantStation() {
 		attendantStation.keyboard.detachAll();
 		attendantStation.screen.detachAll();
@@ -96,7 +114,10 @@ private boolean attendantStationStartup = false;
 		attendantStationShutDown = true;
 	}
 	
-	
+	/**
+	 * This method re-enables to the user selfcheckout machine
+	 * 
+	 */
 	public void startupStation() {
 		// Enable all the devices 
 		station.baggingArea.enable();
@@ -121,7 +142,10 @@ private boolean attendantStationStartup = false;
 		stationStartup = true;
 		attendantStation.add(station);
 	}
-	
+	/**
+	 * This method re-enables to the attendant station keyboard & screen
+	 * 
+	 */
 	public void startupAttendantStation() {
 		
 		attendantStation.keyboard.enable();
@@ -129,19 +153,42 @@ private boolean attendantStationStartup = false;
 		
 		attendantStationStartup = true;
 	}
-	
+	/**
+	 * This getter method returns a true of false value whether the selfcheckout station is shutdown or not
+	 * 
+	 * @return stationShutDown
+	 * 
+	 */
 	public boolean getStationShutDown() {
 		return stationShutDown;
 	}
 	
+	/**
+	 * This getter method returns a true of false value whether the Attendant station is shutdown or not
+	 * 
+	 * @return attendantStationShutDown
+	 * 
+	 */
 	public boolean getAttendantStationShutDown() {
 		return attendantStationShutDown;
 	}
 	
+	/**
+	 * This getter method returns a true of false value whether the selfcheckout station starting up
+	 * 
+	 * @return stationStartup
+	 * 
+	 */
 	public boolean getStationStartup() {
 		return stationStartup;
 	}
 	
+	/**
+	 * This getter method returns a true of false value whether the Attendant station starting up
+	 * 
+	 * @return attendantStationStartup
+	 * 
+	 */
 	public boolean getAttendantStationStartup() {
 		return attendantStationStartup;
 	}

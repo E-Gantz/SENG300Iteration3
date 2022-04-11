@@ -20,6 +20,7 @@ public class WeightCheckInBaggingarea {
 	 * the user's virtual cart
 	 */
 	public WeightCheckInBaggingarea(ProductCart pcart) {
+
 		this.pcart = pcart;
 		weightDiscrepency = 0;
 	}
@@ -38,22 +39,28 @@ public class WeightCheckInBaggingarea {
 		return flag;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * 
 	 * @param attendantData
 	 * @param weight
 	 * @return true if the weight is approved
 	 */
+=======
+>>>>>>> e9677c88d3a419beebf75fe0489127f1d9682f5e
 	public boolean approveWeight(AttendantData attendantData, double weight){
 		if(attendantData.getCurrentUser() == null) return false;
 		weightDiscrepency = weight - this.pcart.getTotalExpectedWeight();
 		return true;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * 
 	 * @return the discrepenacy in the weight
 	 */
+=======
+>>>>>>> e9677c88d3a419beebf75fe0489127f1d9682f5e
 	public double getWeightDiscrepency(){
 		return weightDiscrepency;
 	}

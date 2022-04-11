@@ -22,23 +22,15 @@ public class ScanningScreen extends JFrame {
 	public EnterPLU pluScreen;
 	public ProductLookupScreen productLookupScreen;
 	public JTextArea textReciept;
+	public JButton btnFinishScan;
+	public JButton btnEnterPLU;
+	public JButton btnProductLookup;
+	public JButton btnAddBags;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DataPasser basic = new DataPasser();
-					ScanningScreen frame = new ScanningScreen(basic);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
@@ -57,11 +49,11 @@ public class ScanningScreen extends JFrame {
 		textReciept = new JTextArea();
 		contentPane.add(textReciept, BorderLayout.CENTER);
 		
-		JButton btnFinishScan = new JButton("Checkout");
+		btnFinishScan = new JButton("Checkout");
 		btnFinishScan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				checkoutScreen = new CheckoutScreen(dataPass, me);
-				
+				dataPass.setFound(4);
 				
 				setVisible(false);
 				checkoutScreen.setVisible(true);
@@ -77,18 +69,18 @@ public class ScanningScreen extends JFrame {
 		splitPane.setRightComponent(panel);
 		panel.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JButton btnEnterPLU = new JButton("<html>Enter <br>PLU Code</html>");
+		btnEnterPLU = new JButton("<html>Enter <br>PLU Code</html>");
 		btnEnterPLU.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pluScreen = new EnterPLU(dataPass, me);
 				setVisible(false);
 				pluScreen.setVisible(true);
-
+				dataPass.setFound(2);
 			}
 		});
 		panel.add(btnEnterPLU);
 		
-		JButton btnProductLookup = new JButton("<html>Product <br>Lookup</html>");
+		btnProductLookup = new JButton("<html>Product <br>Lookup</html>");
 		btnProductLookup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				productLookupScreen = new ProductLookupScreen(dataPass, me);
@@ -99,12 +91,13 @@ public class ScanningScreen extends JFrame {
 		
 		panel.add(btnProductLookup);
 		
-		JButton btnAddBags = new JButton("Add your bags");
+		btnAddBags = new JButton("Add your bags");
 		btnAddBags.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ownBagScreen = new AddOwnBag(dataPass, me);
 				setVisible(false);
 				ownBagScreen.setVisible(true);
+				dataPass.setFound(3);
 			}
 		});
 		splitPane.setLeftComponent(btnAddBags);

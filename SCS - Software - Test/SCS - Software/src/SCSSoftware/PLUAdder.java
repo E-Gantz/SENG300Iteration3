@@ -64,6 +64,7 @@ public class PLUAdder {
 		}
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Simulates the attendant adding an item to the users cart, disables the scanners, and starts the 5 seconds timer in the bagging area 
 	 * scale listener. Price is calculated by getting the weight placed on the scanning area scale and the price of the product per kg.
@@ -74,6 +75,8 @@ public class PLUAdder {
 	 * @throws InvalidArgumentSimulationException
 	 * If this method is called with no item sitting on the scanning area scale
 	 */
+=======
+>>>>>>> e9677c88d3a419beebf75fe0489127f1d9682f5e
 	public void attendantAddItem(String code) throws OverloadException {
 		PriceLookupCode plu = new PriceLookupCode(code);
 		double itemWeight = 0;

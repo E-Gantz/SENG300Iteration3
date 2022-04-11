@@ -14,6 +14,10 @@ import org.lsmr.selfcheckout.devices.observers.CardReaderObserver;
 import org.lsmr.selfcheckout.external.CardIssuer;
 import org.lsmr.selfcheckout.InvalidArgumentSimulationException;
 
+/**
+ * This class is responsible for conducting card based payments within the selfcheckout system.
+ * It handles Credit, Debit & GiftCard transactions
+ */
 public class PaysWithCard implements CardReaderObserver {
 
 	private String gettype;
@@ -21,17 +25,11 @@ public class PaysWithCard implements CardReaderObserver {
 	private String getcardholder;
 	private String getccv; 
 	private Checkout checkout;
-	
-	
-	private HashMap<String,CardIssuer> acceptedCardIssuers; // String key is first 4 digits for the bank identifier 
-	
-	
-	// we are assuming that all giftcards are swipe-able, and are one time use
-	private GiftCardDatabase giftcardDB; 					// database to keep track of gift cards 
+
+	private HashMap<String,CardIssuer> acceptedCardIssuers; 
+	private GiftCardDatabase giftcardDB; 				
 	private boolean cvvrequired;							
-
 	private BigDecimal transactionAmount;
-
 	private HashMap<String,HashMap<String,String>>paymentResult; 
 
 	public void cardInserted(CardReader reader) {
@@ -50,8 +48,14 @@ public class PaysWithCard implements CardReaderObserver {
 		// IGNORE
 	}
 	
-	/* This method gathers customer information from the card reader and assigns it to local attributes*/
-
+	/**
+	 * This method uses the card reader to pull CardData and determine what type of card it is. 
+	 * Valid information is then put into a hashmap for use in other methods based on whether if the card
+	 * is a giftcard or credit/debit.
+	 * 
+	 * @Param reader
+	 * @Param data 
+	 */
 	public void cardDataRead(CardReader reader, CardData data) {
 		
 		if(this.checkout.getState()) {
@@ -101,14 +105,24 @@ public class PaysWithCard implements CardReaderObserver {
 			
 		}
 	}
-	// HashMap getter method
 	
+	/**
+	 * This getter method returns the payment result as a hashmap
+	 * 
+	 * @Return paymentResult
+	 */
 	public HashMap<String,HashMap<String,String>> getPaymentResult()
 	{
 		return paymentResult;
 	}
 
-	
+	/**
+	 * This method is used for GiftCard payment and is takes in the GiftCard number as a parameter.
+	 * If the card number is valid, a transaction is conducted and the card database is updated.
+	 * Successful transactions result in a transaction ID
+	 * 
+	 * @Return transactionID
+	 */
 	private String useGiftCard(String cardNumber) {
 		String transactionID = null; 
 		
@@ -118,13 +132,10 @@ public class PaysWithCard implements CardReaderObserver {
 			BigDecimal zero = BigDecimal.ZERO;
 			int cmpRes = transactionAmount.compareTo(zero);
 			
-			//if transactionAmount < 0 then record the amount remaining in the gift card 
 			if (cmpRes == -1) {
 				BigDecimal remaining = transactionAmount.abs();
-				giftcardDB.changeBalanceRemaining(cardNumber, remaining);
-				
+				giftcardDB.changeBalanceRemaining(cardNumber, remaining);			
 			}  
-			// the gift card balance was fully used and we can change its status 
 			else {
 				
 				giftcardDB.changeStatusToRedeemed(cardNumber); 
@@ -137,6 +148,13 @@ public class PaysWithCard implements CardReaderObserver {
 		return transactionID; 	
 	}
 	
+	/**
+	 * This method is used for credit/debit payments by checking to see if the card is issued by a valid bank
+	 * and then awaits a response from the external card issuer. If the response is successful, a transaction ID is
+	 * returned
+	 * 
+	 * @Return transactionID
+	 */
 	private String makeTransaction() {
 		
 		String transactionID = null;
@@ -159,13 +177,16 @@ public class PaysWithCard implements CardReaderObserver {
 				}
 			}
 		} 
-			
 		return transactionID;  
-		
 	}
 	
-	
-	/* The constructor initializes the banking simulator classes and retrieves what is being charged to the customer from checkout */
+	/**
+	 * This method is used for credit/debit payments by checking to see if the card is issued by a valid bank
+	 * and then awaits a response from the external card issuer. If the response is successful, a transaction ID is
+	 * returned
+	 * 
+	 * @Return transactionID
+	 */
 	public PaysWithCard(Checkout checkout, GiftCardDatabase gcDB, BigDecimal amountToPay)
 	{	
 		//Remember to get transaction amount somewhere
@@ -176,8 +197,13 @@ public class PaysWithCard implements CardReaderObserver {
 		this.giftcardDB = gcDB;
 	}
 	
-	/* This method replaces every digit after the first four on a customers credit card with an X for receipt printing */
-
+	
+	/**
+	 * This method is used to print out the first four digits of the receipt and masks the rest of the remaining 
+	 * integers
+	 * 
+	 * @Return returnString
+	 */
 	public String receiptCardNum()
 	{
 		String[] stringParts = getnumber.split(""); 
@@ -188,6 +214,13 @@ public class PaysWithCard implements CardReaderObserver {
 		return returnString; 
 	}
 	
+	/**
+	 * This method adds new accepted card issuers into the hashmap
+	 * 
+	 * @Param cardIssuer
+	 * @Param cardIssuerDigits
+	 * 
+	 */
 	public void addAcceptedCardIssuer(CardIssuer cardIssuer, String cardIssuerDigits) {
 		acceptedCardIssuers.put(cardIssuerDigits, cardIssuer);
 	}

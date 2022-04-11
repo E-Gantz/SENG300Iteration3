@@ -12,6 +12,10 @@ import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
 import org.lsmr.selfcheckout.devices.BanknoteValidator;
 
+/**
+ * Instances of this class contain methods to calculate Banknotes that have been inserted into the machine in type int. 
+ * BanknoteRunner is able to insert a valid Banknote and then sum up all inserted Banknotes for that transaction in the machine
+ */	
 public class BanknoteRunner {
 	
 	// Initialize the observer and define the hardware so we have access to them throughout the class
@@ -32,7 +36,14 @@ public class BanknoteRunner {
 	// List of all banknotes that have been deposited and successfully validated
 	private ArrayList<Banknote> banknoteCart;
 	
-	// BanknoteRunner is passed the checkout's total along with the station
+	/**
+	 * Constructs BanknoteRunner with the related hardware classes
+	 * 
+	 * @param checkoutTotal
+	 * @param bslot
+	 * @param bStorage
+	 * @param bValidator
+	 */	
 	public BanknoteRunner(BigDecimal checkoutTotal, BanknoteSlot bslot, BanknoteStorageUnit bStorage, BanknoteValidator bValidator) {
 		this.noteSlot = bslot;
 		this.noteStorage = bStorage;
@@ -50,47 +61,86 @@ public class BanknoteRunner {
 		this.attachObservers();
 	}
 	
-	// Attach the observers to the hardware
+	/**
+	 * This method attachs the observers to the hardware
+	 */
 	private void attachObservers() {
 		noteSlot.attach(bSlotObserver);
 		noteStorage.attach(bStorageObserver);
 		noteValidator.attach(bValidatorObserver);
 	}
 	
-	// Getters for the checkout total. paid total, and the banknote cart
+	/**
+	 * Getters for the checkout total. paid total, and the banknote cart
+	 * 
+	 * @return checkoutTotal
+	 */
 	public BigDecimal getCheckoutTotal() {
 		return this.checkoutTotal;
 	}
 	
+	/**
+	 * Setter method to change the checkoutTotal for testing
+	 * 
+	 * @param t
+	 */
 	public void setCheckoutTotal(BigDecimal t) {
 		this.checkoutTotal = t;
 	}
 	
+	/**
+	 * Getter method to obtain the paid total 
+	 * 
+	 * @return paidTotal
+	 */
 	public BigDecimal getPaidTotal() {
 		return this.paidTotal;
 	}
 	
+	/**
+	 * Getter method to obtain the array of Banknotes
+	 * 
+	 * @return banknoteCart
+	 */
 	public ArrayList<Banknote> getBanknoteCart(){
 		return this.banknoteCart;
 	}
 
-	// Set the current valid note as the most recent valid note given from the validator
+	/**
+	 * This valid creates a valid banknote with the given denomination & currency
+	 * 
+	 * @param currency
+	 * @param value
+	 */
 	public void validNote(Currency currency, int value) {
 		this.validNote = new Banknote(currency, value);
 	}
 	
-	// Add the valid note to the banknote cart as well as the running total paid
+	/** 
+	 * Add the valid note to the banknote cart as well as the running total paid
+	 * 
+	 */
 	public void addValidNote() {
 		paidTotal = paidTotal.add(BigDecimal.valueOf(validNote.getValue()));
 		this.banknoteCart.add(validNote);
 		validNote = null;
 	}
 	
-	// Sum banknotes in the array
+	/** 
+	 * Sum Banknotes in the array
+	 * 
+	 * @return paidTotal
+	 */
 	public BigDecimal sumBanknotes() {
 		return this.getPaidTotal();
 	}
 	
+	/** 
+	 * Setter method to set the total InsertedBanknotes for testing
+	 * 
+	 * @param t
+	 * @return paidTotal
+	 */
 	public BigDecimal setInsertedBanknotes(BigDecimal t)
 	{
 		return this.paidTotal;

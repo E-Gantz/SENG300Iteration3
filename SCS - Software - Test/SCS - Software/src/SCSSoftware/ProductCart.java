@@ -41,7 +41,7 @@ public class ProductCart {
 		cart.add(prod);
 		String nameAndPrice = prod.getDescription() + " " + "$" + prod.getPrice().toPlainString();
 		items.add(nameAndPrice); // string added should look like "Milk $10" or something.
-		totalPrice = totalPrice.add(prod.getPrice());
+		totalPrice = totalPrice.add(prod.getPrice()).setScale(2, BigDecimal.ROUND_CEILING);;
 		totalExpectedWeight += prod.getExpectedWeight();
 		newestExpectedWeight = prod.getExpectedWeight();
 	}
@@ -93,7 +93,7 @@ public class ProductCart {
 	 */
 	public void addToCartPLU(PLUCodedProduct prod, BigDecimal price, double weight) {
 		pluCart.add(prod);
-		String nameAndPrice = prod.getDescription() + " " + "$" + price.toPlainString();
+		String nameAndPrice = prod.getDescription() + " " + "$" + price.setScale(2, BigDecimal.ROUND_CEILING).toPlainString();
 		items.add(nameAndPrice);
 		totalPrice = totalPrice.add(price);
 		totalExpectedWeight += weight;
@@ -122,7 +122,7 @@ public class ProductCart {
 	 * @return the total price of everything in the cart
 	 */
 	public BigDecimal getTotalPrice() {
-		return this.totalPrice;
+		return this.totalPrice.setScale(2, BigDecimal.ROUND_CEILING);
 	}
 	
 	/**
