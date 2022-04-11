@@ -30,4 +30,5 @@ public class ProductInventory {
 	public PLUCodedProduct getPLUinventory(PriceLookupCode code) {
 		return this.pluInventory.get(code);
 	}
+
 }

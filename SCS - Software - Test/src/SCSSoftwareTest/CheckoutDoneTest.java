@@ -50,7 +50,7 @@ public class CheckoutDoneTest {
 		scanner = station.mainScanner;
 		scale = station.baggingArea;
 		pcart = new ProductCart();
-		checkout = new Checkout(scanner, pcart);
+		checkout = new Checkout(scanner,station.handheldScanner, pcart);
 		checkoutfinished = new CheckoutDone(checkout, pcart, scale);
 	}
 
