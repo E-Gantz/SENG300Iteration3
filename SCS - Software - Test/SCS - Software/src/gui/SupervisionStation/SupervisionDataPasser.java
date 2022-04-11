@@ -26,12 +26,10 @@ public class SupervisionDataPasser {
 	
 	private SelfCheckoutStation stationInUse;
 	
-<<<<<<< HEAD
 	private AttendantShutDownStartupStation shutdownstartup;  
 	private AttendantRefillsDispensers refillDispensers; 
 	
 	public SupervisionDataPasser() {}
-=======
 	private AttendantRefillsDispensers attendentRefillsDispensers;
 	private final Currency CAD = Currency.getInstance(Locale.CANADA);
 	private Coin cent;
@@ -47,7 +45,7 @@ public class SupervisionDataPasser {
     private CoinDispenser coinDispenserQuarter;
     private CoinDispenser coinDispenserLoonie;
     private CoinDispenser coinDispenserToonie;
->>>>>>> 86806f01559310493c4134cbcb854249237fab4e
+
 	
 	public SupervisionDataPasser(SelfCheckoutStation s1, 
 								 SelfCheckoutStation s2, 
@@ -58,10 +56,9 @@ public class SupervisionDataPasser {
 		this.scs1 = s1; 
 		this.scs2 = s2; 
 		this.scs3 = s3; 
-<<<<<<< HEAD
 		this.scs4 = s4; 
 		this.superstation = svs; 
-=======
+
 		this.scs4 = s4;
 		BigDecimal[] coinDenominations = new BigDecimal[]{BigDecimal.valueOf(0.01), BigDecimal.valueOf(0.05), BigDecimal.valueOf(0.10), BigDecimal.valueOf(0.25), BigDecimal.valueOf(1.00), BigDecimal.valueOf(2.00)};
 		cent = new Coin(CAD, coinDenominations[0]);
@@ -70,7 +67,6 @@ public class SupervisionDataPasser {
 		quarter = new Coin(CAD, coinDenominations[3]);
 	 	loonie = new Coin(CAD, coinDenominations[4]);
 	  	toonie = new Coin(CAD, coinDenominations[5]);
->>>>>>> 86806f01559310493c4134cbcb854249237fab4e
 	}
 	
 	private void selectSCS(int i) {
@@ -87,7 +83,7 @@ public class SupervisionDataPasser {
 	}
 	
 	public void startStation(int stationId) {
-<<<<<<< HEAD
+
 		selectSCS(stationId); 
 	}
 	
@@ -118,17 +114,6 @@ public class SupervisionDataPasser {
 	}
 	
 	
-	
-	
-=======
-		selectSCS(stationId);
-		
-	}
-	
-	public void addInk(int stationID) {
-		selectSCS(stationID); 
-	}
-	
 	public void addCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
 		
@@ -158,7 +143,6 @@ public class SupervisionDataPasser {
 			attendentRefillsDispensers.RefillCoinDispenser(coinDispenserToonie, toonie, 10);
 		}		
 	}
->>>>>>> 86806f01559310493c4134cbcb854249237fab4e
 	
 	public void approveWeight(int stationID) {
 		selectSCS(stationID);

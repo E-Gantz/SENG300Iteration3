@@ -67,14 +67,14 @@ public class HomeScreen extends JFrame {
 			}
 		});
 		
-		JButton btnStation1AddInk = new JButton("Add Ink");
+		JButton btnStation1AddInk = new JButton("Refill Ink");
 		Station1.add(btnStation1AddInk);
 		btnStation1AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation1AddCoin = new JButton("Add Coin");
+		JButton btnStation1AddCoin = new JButton("Refill Coin");
 		Station1.add(btnStation1AddCoin);
 		btnStation1AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -92,33 +92,25 @@ public class HomeScreen extends JFrame {
 		Station1.add(btnStation1Shutdown);
 		btnStation1Shutdown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 				dataPass.shutdownStation(stationId);
-=======
->>>>>>> 86806f01559310493c4134cbcb854249237fab4e
+
 			}
 		});
 		
-		JButton btnStation1AddPaper = new JButton("Add paper");
+		JButton btnStation1AddPaper = new JButton("Refill paper");
 		Station1.add(btnStation1AddPaper);
 		btnStation1AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation1AddBanknote = new JButton("<html>Add <br>Banknote</html>");
+		JButton btnStation1AddBanknote = new JButton("<html>Refill <br>Banknote</html>");
 		Station1.add(btnStation1AddBanknote);
 		btnStation1AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation1RemoveBanknote = new JButton("<html>Remove<br>Banknote</html>");
-		Station1.add(btnStation1RemoveBanknote);
-		btnStation1RemoveBanknote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		
 		JButton btnStation1BlockStation = new JButton("<html>Block<br>Station</html>");
 		Station1.add(btnStation1BlockStation);
@@ -141,14 +133,14 @@ public class HomeScreen extends JFrame {
 			}
 		});
 		
-		JButton btnStation2AddInk = new JButton("Add Ink");
+		JButton btnStation2AddInk = new JButton("Refill Ink");
 		Station2.add(btnStation2AddInk);
 		btnStation2AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation2AddCoin = new JButton("Add Coin");
+		JButton btnStation2AddCoin = new JButton("Refill Coin");
 		Station2.add(btnStation2AddCoin);
 		btnStation2AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -166,33 +158,25 @@ public class HomeScreen extends JFrame {
 		Station2.add(btnStation2Shutdown);
 		btnStation2Shutdown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 				dataPass.shutdownStation(stationId);
-=======
->>>>>>> 86806f01559310493c4134cbcb854249237fab4e
+
 			}
 		});
 		
-		JButton btnStation2AddPaper = new JButton("Add paper");
+		JButton btnStation2AddPaper = new JButton("Refill paper");
 		Station2.add(btnStation2AddPaper);
 		btnStation2AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation2AddBanknote = new JButton("<html>Add <br>Banknote</html>");
+		JButton btnStation2AddBanknote = new JButton("<html>Refill <br>Banknote</html>");
 		Station2.add(btnStation2AddBanknote);
 		btnStation2AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation2RemoveBanknote = new JButton("<html>Remove<br>Banknote</html>");
-		Station2.add(btnStation2RemoveBanknote);
-		btnStation2RemoveBanknote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		
 		JButton btnStation2BlockStation = new JButton("<html>Block<br>Station</html>");
 		Station2.add(btnStation2BlockStation);
@@ -212,14 +196,14 @@ public class HomeScreen extends JFrame {
 			}
 		});
 		
-		JButton btnStation3AddInk = new JButton("Add Ink");
+		JButton btnStation3AddInk = new JButton("Refill Ink");
 		Station3.add(btnStation3AddInk);
 		btnStation3AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation3AddCoin = new JButton("Add Coin");
+		JButton btnStation3AddCoin = new JButton("Refill Coin");
 		Station3.add(btnStation3AddCoin);
 		btnStation3AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -237,33 +221,25 @@ public class HomeScreen extends JFrame {
 		Station3.add(btnStation3Shutdown);
 		btnStation3Shutdown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 				dataPass.shutdownStation(stationId);
-=======
->>>>>>> 86806f01559310493c4134cbcb854249237fab4e
+
 			}
 		});
 		
-		JButton btnStation3AddPaper = new JButton("Add paper");
+		JButton btnStation3AddPaper = new JButton("Refill paper");
 		Station3.add(btnStation3AddPaper);
 		btnStation3AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation3AddBanknote = new JButton("<html>Add <br>Banknote</html>");
+		JButton btnStation3AddBanknote = new JButton("<html>Refill <br>Banknote</html>");
 		Station3.add(btnStation3AddBanknote);
 		btnStation3AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation3RemoveBanknote = new JButton("<html>Remove<br>Banknote</html>");
-		Station3.add(btnStation3RemoveBanknote);
-		btnStation3RemoveBanknote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		
 		JButton btnStation3BlockStation = new JButton("<html>Block<br>Station</html>");
 		Station3.add(btnStation3BlockStation);
@@ -283,14 +259,14 @@ public class HomeScreen extends JFrame {
 			}
 		});
 		
-		JButton btnStation4AddInk = new JButton("Add Ink");
+		JButton btnStation4AddInk = new JButton("Refill Ink");
 		Station4.add(btnStation4AddInk);
 		btnStation4AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation4AddCoin = new JButton("Add Coin");
+		JButton btnStation4AddCoin = new JButton("Refill Coin");
 		Station4.add(btnStation4AddCoin);
 		btnStation4AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -308,33 +284,24 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4Shutdown);
 		btnStation4Shutdown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 				dataPass.shutdownStation(stationId);
-=======
->>>>>>> 86806f01559310493c4134cbcb854249237fab4e
 			}
 		});
 		
-		JButton btnStation4AddPaper = new JButton("Add paper");
+		JButton btnStation4AddPaper = new JButton("Refill paper");
 		Station4.add(btnStation4AddPaper);
 		btnStation4AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation4AddBanknote = new JButton("<html>Add <br>Banknote</html>");
+		JButton btnStation4AddBanknote = new JButton("<html>Refill <br>Banknote</html>");
 		Station4.add(btnStation4AddBanknote);
 		btnStation4AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnStation4RemoveBanknote = new JButton("<html>Remove<br>Banknote</html>");
-		Station4.add(btnStation4RemoveBanknote);
-		btnStation4RemoveBanknote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		
 		JButton btnStation4BlockStation = new JButton("<html>Block<br>Station</html>");
 		Station4.add(btnStation4BlockStation);
