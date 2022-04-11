@@ -31,7 +31,6 @@ import SCSSoftware.PaysWithCard;
 import SCSSoftware.ProductCart;
 import java.util.Calendar;
 
-}
 
 /**
  * This test is to ensure that all card payments are working as intended
@@ -72,8 +71,6 @@ public class PaysWithCardTest {
 	private String gc3Num;
 
 	private BigDecimal amtToPay;
-
-}
 
 	/**
 	 * Initializes different types of cards, authorized issuers for testing and adds
@@ -242,7 +239,7 @@ public class PaysWithCardTest {
 	@Test
 	public void testGiftCardCoverPartialWithRemainingLeft() throws IOException {
 		BigDecimal amtBefore = giftcardDB.getBalance(gc3Num);
-		Boolean swiped = false;s
+		Boolean swiped = false;
 		while (!swiped) {
 			try {
 				cardreader.swipe(giftCardXL);
