@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
@@ -76,6 +77,14 @@ public class CustomerScreenTest {
         screen.disable();
         screen.enable();
     }
+    
+    @Test
+    public void testStart() {
+    	StartScreen builtWindow = new StartScreen(dataPass);
+        frame = builtWindow;
+        builtWindow.btnStartButton.doClick();
+        assertEquals(1, dataPass.getFound());
+    }
 
     @Test
     public void testFrameAutomatic() {
@@ -123,7 +132,7 @@ public class CustomerScreenTest {
         // before you have a chance to interact with it. If you look at FrameDemo2,
         // which gets run as a standalone application, you will see that this is not
         // necessary.
-        while(found < 1) {
+        while(found < 999) {
         	found = dataPass.getFound();
         }
 
