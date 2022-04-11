@@ -145,7 +145,6 @@ public class DataPasser {
 		this.coinDispensers = station.coinDispensers;
 		this.creader = station.cardReader;
 
-		checkout = new Checkout(scanner, pcart);
 		this.itemplacer = new ItemPlacer(scanner, pcart, handheldscanner);
 
 		checkout = new Checkout(scanner, handheldscanner, pcart);
