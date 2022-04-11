@@ -2,10 +2,7 @@ package SCSSoftware;
 
 import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.Coin;
-import org.lsmr.selfcheckout.devices.BanknoteDispenser;
-import org.lsmr.selfcheckout.devices.CoinDispenser;
-import org.lsmr.selfcheckout.devices.OverloadException;
-import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
+import org.lsmr.selfcheckout.devices.*;
 
 import java.math.BigDecimal;
 
@@ -34,5 +31,14 @@ public class AttendantRefillsDispensers{
         for (int i = 0; i < amount; i++) {
             banknoteDispenser.load(banknotes);
         }
+    }
+    public void addPaper(int units) throws OverloadException {
+        selfCheckoutStation.printer.addPaper(units);
+
+
+    }
+
+    public void addInk(int quanitiy) throws OverloadException {
+        selfCheckoutStation.printer.addInk(quanitiy);
     }
 }

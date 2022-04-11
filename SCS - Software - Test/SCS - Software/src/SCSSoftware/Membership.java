@@ -10,6 +10,9 @@ import org.lsmr.selfcheckout.devices.CardReader;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.CardReaderObserver;
 
+/**
+ * This class handles transactions with memberships within the selfcheckoutstation 
+ */
 public class Membership implements CardReaderObserver{
 	private HashMap<String, MemberCard> members;
 	private MemberCard memberCard;
@@ -19,7 +22,12 @@ public class Membership implements CardReaderObserver{
 		this.memberCard = null;
 	}
 
-	
+	/**
+	 * This overwritten method takes in 2 parameters to determine if a card contains valid member data
+	 * 
+	 * @param reader
+	 * @param data
+	 */
 	@Override
 	public void cardDataRead(CardReader reader, CardData data) {
 		if (data.getType() != "Member") {
@@ -33,26 +41,30 @@ public class Membership implements CardReaderObserver{
 			//maybe tell customer their card was entered and move to next stage, which is probably adding their own bags.
 		}
 	}
-	
+	/**
+	 * This getter method returns a MemberCard object
+	 * @return memberCard
+	 */
 	public MemberCard getMemberCard() {
 		return this.memberCard;
 	}
 	
+	/**
+	 * This method takes in a manually entered number to search for the membercard in the hashamp
+	 * 
+	 * @param number
+	 */
 	public void manualEntry(String number) {
-		this.memberCard = members.get(number);//returns null if no card with that number exists.
+		this.memberCard = members.get(number);
 		if (memberCard == null){
 			throw new NullPointerException("There is no member with that membership number.");
 		}
-		//maybe tell customer their card was entered and move to next stage, which is probably adding their own bags.
 	}
-	
-	
 	
 	@Override
 	public void cardSwiped(CardReader reader) {
 		// this just announces something was swiped, not sure if its useful
 	}
-	
 	
 	
 	@Override
