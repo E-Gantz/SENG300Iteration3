@@ -14,6 +14,11 @@ import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.ElectronicScaleObserver;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
+/**
+ * This method allows the attendant to shutdown all hardware within a selfcheckout station from the supervision
+ * station
+ * 
+ */
 public class AttendantShutDownStartupStation{
 
 private SelfCheckoutStation station;
@@ -25,17 +30,27 @@ private boolean attendantStationShutDown = false;
 private boolean stationStartup = false;
 private boolean attendantStationStartup = false;
 	
-	// Constructor takes an individual scs that needs to be shut down
+	/** Constructor takes an individual scs that needs to be shut down
+	 * 
+	 * @param scs
+	 * @param ss
+	 */
 	public AttendantShutDownStartupStation(SelfCheckoutStation scs, SupervisionStation ss) {
 		this.station = scs;
 		this.attendantStation = ss;
 	}	
 	
-	// Constructor takes the supervision station that needs to be shut down
+	/** Constructor takes the supervision station that needs to be shut down
+	 * 
+	 * @param ss
+	 */
 	public AttendantShutDownStartupStation(SupervisionStation ss) {
 		this.attendantStation = ss;
 	}
-	
+	/**
+	 * This method detaches all selfcheckout hardware involving any hardware related to 
+	 * 
+	 */
 	public void shutDownStation() {
 	
 		// Detaching all observers from the selfcheckout station
