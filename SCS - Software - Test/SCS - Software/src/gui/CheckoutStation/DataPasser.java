@@ -34,6 +34,8 @@ import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
 import SCSSoftware.CoinRunner;
+import SCSSoftware.CustomerEntersBagsUsed;
+import SCSSoftware.GiftCardDatabase;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
@@ -44,6 +46,7 @@ import SCSSoftware.Checkout;
 import SCSSoftware.CheckoutInterface;
 import SCSSoftware.CoinRunner;
 import SCSSoftware.ItemPlacer;
+import SCSSoftware.PaysWithCard;
 import SCSSoftware.PaysWithCash;
 import SCSSoftware.ProductCart;
 import SCSSoftware.ProductInventory;
@@ -59,18 +62,12 @@ public class DataPasser {
 	private String PlasticBags;
 	private String displayReciept;
 	public SelfCheckoutStation station;
-	public BigDecimal totalPaid;
 	public CheckoutInterface checkoutInterface;
-	public ProductInventory inventory;
 
 	public Numeral[] code001 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
 	public Barcode pockyAppleBC = new Barcode(code001);
 	public BarcodedProduct pockyApples = new BarcodedProduct(pockyAppleBC, "Pocky Flavoured Apples", BigDecimal.TEN, 1);
 
-	private BarcodeScanner scanner;
-	public BanknoteRunner banknoteRunner;
-	public ProductCart pcart;
-	private Checkout checkout;
 	private CustomerEntersBagsUsed bagsUsed;
 	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
 	public Barcode bc1 = new Barcode(code1); // 001
@@ -94,9 +91,6 @@ public class DataPasser {
 	public PLUCodedItem plitem2 = new PLUCodedItem(pl2, 3300);
 	public PLUCodedProduct plprod1 = new PLUCodedProduct(pl1, "Apples", new BigDecimal(1.00));
 	public PLUCodedProduct plprod2 = new PLUCodedProduct(pl2, "Oranges", new BigDecimal(0.11));
-	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
-	public Barcode bc1 = new Barcode(code1); // 001
-	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
 
 	private BanknoteSlot bSlot;
