@@ -72,6 +72,8 @@ public class MembershipCardScreen extends JFrame {
 		btnEnterMembership.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dataPass.setMembershipID(textFieldMembershipID.getText());
+				checkoutScreen.setVisible(true);
+				dispose();
 				
 			}
 		});

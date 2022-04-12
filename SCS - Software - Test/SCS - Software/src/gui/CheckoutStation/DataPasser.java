@@ -132,7 +132,7 @@ public class DataPasser {
 
 	public DataPasser() {};
 
-	public String paidString;
+	public String paidString = "$0.00";
 
 	public DataPasser(SelfCheckoutStation scs, Card cardToUse, GiftCardDatabase giftDB) {
 		Coin.DEFAULT_CURRENCY = Currency.getInstance("CAD");
