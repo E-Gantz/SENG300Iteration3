@@ -60,7 +60,8 @@ public class DebitSelection extends JFrame {
 				checkoutScreen.setVisible(true);
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
 				checkoutScreen.checkPaid();
-				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+//				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				dataPass.paidString = dataPass.totalAmount;
 				checkoutScreen.checkPaid();
 				dispose();
 			}
@@ -78,7 +79,8 @@ public class DebitSelection extends JFrame {
 				checkoutScreen.setVisible(true);
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
 				checkoutScreen.checkPaid();
-				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+//				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				dataPass.paidString = dataPass.totalAmount;
 				checkoutScreen.checkPaid();
 				dispose();
 			}

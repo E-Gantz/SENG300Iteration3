@@ -77,6 +77,7 @@ public class BanknoteSelection extends JFrame{
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});
@@ -94,6 +95,7 @@ public class BanknoteSelection extends JFrame{
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});
@@ -111,6 +113,7 @@ public class BanknoteSelection extends JFrame{
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});
@@ -128,6 +131,7 @@ public class BanknoteSelection extends JFrame{
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});

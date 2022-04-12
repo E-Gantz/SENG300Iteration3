@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import org.lsmr.selfcheckout.devices.DisabledException;
 import org.lsmr.selfcheckout.devices.OverloadException;
 
+import SCSSoftware.ProductCart;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -18,6 +20,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
@@ -105,8 +108,9 @@ public class CheckoutScreen extends JFrame {
 		lblTotal = new JLabel("Total: $0");
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_payment.add(lblTotal);
-
-		lblTotal.setText("Total: $" + dataPass.pcart.getTotalPrice().toString());
+		
+		dataPass.totalAmount = dataPass.pcart.getTotalPrice().toString();  
+		lblTotal.setText("Total: $" + dataPass.totalAmount);
 		dataPass.totalAmount = dataPass.pcart.getTotalPrice().toString();
 
 		lblPaid = new JLabel("Paid: $0");
@@ -157,9 +161,12 @@ public class CheckoutScreen extends JFrame {
 
 	public void checkPaid(){
 		if (dataPasse.thankMode == true) {
-			if (Double.parseDouble(dataPasse.paidString.substring(2)) >= Double.parseDouble(dataPasse.totalAmount)) {
+			System.out.println(dataPasse.paidString);
+			System.out.println(dataPasse.totalAmount);
+			if (Double.parseDouble(dataPasse.paidString) >= Double.parseDouble(dataPasse.totalAmount)) {
 				thankYou = new ThanksScreen(dataPasse);
 				thankYou.setVisible(true);
+				dataPasse.reset();
 				setVisible(false);
 				dispose();
 			}

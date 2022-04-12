@@ -77,6 +77,7 @@ public class CoinSelection extends JFrame {
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});
@@ -93,6 +94,7 @@ public class CoinSelection extends JFrame {
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});
@@ -112,6 +114,7 @@ public class CoinSelection extends JFrame {
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});
@@ -128,6 +131,7 @@ public class CoinSelection extends JFrame {
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});
@@ -142,6 +146,7 @@ public class CoinSelection extends JFrame {
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				checkout.checkPaid();
 				dispose();
 			}
 		});

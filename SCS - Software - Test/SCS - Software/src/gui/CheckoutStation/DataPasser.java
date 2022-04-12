@@ -62,7 +62,6 @@ public class DataPasser {
 	private String PlasticBags;
 	private String displayReciept;
 	public SelfCheckoutStation station;
-	public CheckoutInterface checkoutInterface;
 	public boolean thankMode;
 	public String totalAmount;
 
@@ -132,7 +131,7 @@ public class DataPasser {
 
 	public DataPasser() {};
 
-	public String paidString = "$0.00";
+	public String paidString = "0.00";
 
 	public DataPasser(SelfCheckoutStation scs, Card cardToUse, GiftCardDatabase giftDB) {
 		Coin.DEFAULT_CURRENCY = Currency.getInstance("CAD");
@@ -171,8 +170,6 @@ public class DataPasser {
 		this.payCard = cardToUse;
 		this.pwc = new PaysWithCard(this.checkout,this.giftDB,this.checkout.getTotalPrice());
 		inventory.addInventory(pockyAppleBC, pockyApples);
-		checkoutInterface = new CheckoutInterface(inventory, pcart, scs);
-
 	}
 
 	public void addToonie() throws DisabledException, OverloadException {
@@ -341,12 +338,35 @@ public class DataPasser {
 		return checkout.getTotalPrice();
 	}
 	public void addLookupProduct(Barcode barcode) {
-		checkoutInterface.addFromCatalogue(barcode);
+		checkoutI.addFromCatalogue(barcode);
 	}
 
 	public void removeDangling() {
 		bSlot.removeDanglingBanknotes();
 		
 	}
+	public void reset() {
+		pcart = new ProductCart();
+		this.itemplacer = new ItemPlacer(scanner, pcart, handheldscanner);
+
+		checkout = new Checkout(scanner, handheldscanner, pcart);
+		inventory = new ProductInventory();
+		inventory.addInventory(bc1, prod1);
+		inventory.addInventory(bc0, prod0);
+		inventory.addPLUinventory(pl1, plprod1);
+		inventory.addPLUinventory(pl2, plprod2);
+		checkoutI = new CheckoutInterface(inventory, this.pcart, this.station);
+
+        coinrunner = new CoinRunner(currency, banknoteDenom, coinDenom, checkout.getTotalPrice(), cSlot,
+                cStorage, cValidator);
+		banknoteRunner = new BanknoteRunner(checkout.getTotalPrice(), bSlot, bStorage, bValidator);
+		paysWithCash = new PaysWithCash(coinrunner, banknoteRunner, station.banknoteDispensers, station.coinDispensers,
+				bOutput, cTray);
+		totalPaid = new BigDecimal(0);
+		this.pwc = new PaysWithCard(this.checkout,this.giftDB,this.checkout.getTotalPrice());
+		inventory.addInventory(pockyAppleBC, pockyApples);
+	}
+	
+	
 
 }

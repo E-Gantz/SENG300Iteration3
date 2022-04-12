@@ -78,6 +78,7 @@ public class DebitPin extends JFrame {
 					dataPass.makeInsertPayment(new HashMap<String, HashMap<String, String>>(), textFieldPinEntry.getText());
 					setVisible(false);
 					debitSelection.setVisible(true);
+					dataPass.paidString = dataPass.totalAmount;
 					debitScreen.checkout.checkPaid();
 					
 				} catch (Exception e1) {}

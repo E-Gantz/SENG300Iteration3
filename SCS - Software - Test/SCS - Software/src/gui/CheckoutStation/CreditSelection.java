@@ -74,7 +74,8 @@ public class CreditSelection extends JFrame {
 				}
 				checkoutScreen.setVisible(true);
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
-				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+//				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				dataPass.paidString = dataPass.totalAmount;
 				checkoutScreen.checkPaid();
 				dispose();
 			}
@@ -94,7 +95,8 @@ public class CreditSelection extends JFrame {
 
 				
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
-				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+//				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				dataPass.paidString = dataPass.totalAmount;
 				checkoutScreen.checkPaid();
 				dispose();
 			}
