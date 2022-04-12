@@ -59,11 +59,7 @@ public class SupervisionTest {
 		maxWeight = 99999;
 		sensitivity = 10;
 		scs = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
-    	s1 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
-    	s2 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
-    	s3 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
-    	s4 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
-
+    	
         screen = scs.screen;
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

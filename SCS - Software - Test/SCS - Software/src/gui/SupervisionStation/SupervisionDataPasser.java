@@ -183,7 +183,7 @@ public class SupervisionDataPasser {
 		tenDisp = stationInUse.station.banknoteDispensers.get(ten.getValue());
 		twentyDisp = stationInUse.station.banknoteDispensers.get(twenty.getValue());
 		fiftyDisp = stationInUse.station.banknoteDispensers.get(fifty.getValue());
-		hundredDisp = stationInUse.station.banknoteDispensers.get(hundred.getValue());
+		//hundredDisp = stationInUse.station.banknoteDispensers.get(hundred.getValue());
 
 		while(fiveDisp.size() < fiveDisp.getCapacity()) {
 			attendantRefillsDispensers.RefillBanknoteDispenser(fiveDisp,five,1);
