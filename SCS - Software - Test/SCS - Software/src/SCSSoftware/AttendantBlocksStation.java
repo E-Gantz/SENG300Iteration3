@@ -9,8 +9,7 @@ public class AttendantBlocksStation {
 	private ArrayList<SelfCheckoutStation> scsList;
 	private ArrayList<SelfCheckoutStation> blockList;
 	
-	public AttendantBlocksStation(ArrayList<SelfCheckoutStation> scslist) {
-		this.scsList =  scslist;
+	public AttendantBlocksStation() {
 		this.blockList = new ArrayList<SelfCheckoutStation>();
 	}
 	

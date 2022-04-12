@@ -135,11 +135,10 @@ public class SupervisionDataPasser {
 
 	public void startStation(int stationId) {
 
-//		stationInUse = new SelfCheckoutStation(CAD,banknoteDenominations,coinDemons,MAXWEIGHT,SCALESENSITIVITY);
 		shutdownstartup = new AttendantShutDownStartupStation(this.superstation);
 		shutdownstartup.startupAttendantStation();
-		SelfCheckoutStation scs = shutdownstartup.getStationStartedUp();
-		SelfCheckoutRunner scsn = new SelfCheckoutRunner(scs,currency);
+		shutdownstartup.startupStation(currency,banknoteDenominations,coinDemons,MAXWEIGHT,SCALESENSITIVITY);
+		SelfCheckoutRunner scsn = new SelfCheckoutRunner(stationInUse.station,CAD);
 		setSCS(stationId, scsn);
 	}
 
@@ -192,16 +191,14 @@ public class SupervisionDataPasser {
 		while(fiftyDisp.size() < fiftyDisp.getCapacity()) {
 			attendentRefillsDispensers.RefillBanknoteDispenser(fiftyDisp,fifty,1);
 		}
-		while(hundredDisp.size() < hundredDisp.getCapacity()) {
-			attendentRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
-		}
 
 	}
 
 
 	public void blockStation(int stationId) {
 		selectSCS(stationId);
-		attendantBlocksStations.addToBlockList(this.stationInUse.station);
+		attendantBlocksStations = new AttendantBlocksStation();
+		attendantBlocksStations.blockSCS(this.stationInUse.station);
 	}
 	
 	public void setPLUEntered(String text) {

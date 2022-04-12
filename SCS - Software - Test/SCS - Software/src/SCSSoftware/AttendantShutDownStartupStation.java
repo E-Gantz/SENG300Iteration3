@@ -1,6 +1,8 @@
 package SCSSoftware;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -123,8 +125,9 @@ public class AttendantShutDownStartupStation {
 	 * This method re-enables to the user selfcheckout machine
 	 *
 	 */
-	public void startupStation() {
+	public void startupStation(Currency c, int[] banknoteDenom, BigDecimal[] coinDenoms, int weight, int scaleSens) {
 		// Enable all the devices
+		station = new SelfCheckoutStation(c,banknoteDenom,coinDenoms,weight,scaleSens);
 		station.baggingArea.enable();
 		station.scanningArea.enable();
 		station.screen.enable();

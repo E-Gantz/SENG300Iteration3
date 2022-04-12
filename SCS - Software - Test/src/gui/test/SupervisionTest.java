@@ -68,6 +68,14 @@ public class SupervisionTest {
     	s2 = new SelfCheckoutRunner(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
     	s3 = new SelfCheckoutRunner(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
     	s4 = new SelfCheckoutRunner(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	
+    	s1.setupCheckoutObjects();
+    	s2.setupCheckoutObjects();
+    	s3.setupCheckoutObjects();
+    	s4.setupCheckoutObjects();
+    	
+    	
+    	
         screen = scs.screen;
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
