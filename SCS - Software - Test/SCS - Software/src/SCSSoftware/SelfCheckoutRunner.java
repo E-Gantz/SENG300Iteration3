@@ -25,17 +25,17 @@ public class SelfCheckoutRunner {
 	
 	private BigDecimal checkoutTotal;
 	private Currency currency; 
-	private int[] coinDenominations; 
-	private BigDecimal[] banknoteDenominations; 
+	private int[] banknoteDenominations; 
+	private BigDecimal[] coinDenominations; 
 	private int weight;
 	private int scaleSens;
 	private GiftCardDatabase giftDB;
 	private DataPasser guiConnection;
 	
 	
-	public SelfCheckoutRunner(Currency c, int[] coinDenoms, BigDecimal[] banknoteDenom, int weight, int scaleSens) {
+	public SelfCheckoutRunner(Currency c, int[] banknoteDenom, BigDecimal[] coinDenoms, int weight, int scaleSens) {
 
-		this.station = new SelfCheckoutStation(c,coinDenoms,banknoteDenom,weight,scaleSens);
+		this.station = new SelfCheckoutStation(c,banknoteDenom, coinDenoms,weight,scaleSens);
 		printerMaintainer = new PrinterMaintenance();
 		this.station.printer.attach(printerMaintainer);
 		this.banknoteDenominations = banknoteDenom;
@@ -43,9 +43,21 @@ public class SelfCheckoutRunner {
 		this.currency = c; 
 		this.weight = weight; 
 		this.scaleSens = scaleSens;
+	
 		
-//		guiConnection = new DataPasser(this.station,);
-		
+	}
+	
+	public SelfCheckoutRunner(SelfCheckoutStation scs, Currency c) {
+		this.station = scs;
+		printerMaintainer = new PrinterMaintenance();
+		this.station.printer.attach(printerMaintainer);
+		this.banknoteDenominations = scs.banknoteDenominations;
+		BigDecimal[] cArray = new BigDecimal[scs.coinDenominations.size()];
+		scs.coinDenominations.toArray(cArray);
+		this.coinDenominations = cArray;
+		this.currency = c; 
+		this.weight = weight; 
+		this.scaleSens = scaleSens;
 	}
 	
 	public void setupCheckoutObjects() {
@@ -72,12 +84,13 @@ public class SelfCheckoutRunner {
 			return;
 		checkoutTotal = checkout.getTotalPrice();
 		crunner = new CoinRunner(currency,
-								 coinDenominations,
 								 banknoteDenominations,
+								 coinDenominations,
 								 checkoutTotal,
 								 this.station.coinSlot,
 								 this.station.coinStorage,
 								 this.station.coinValidator);
+		
 		brunner = new BanknoteRunner(checkoutTotal,
 									 this.station.banknoteInput,
 									 this.station.banknoteStorage,

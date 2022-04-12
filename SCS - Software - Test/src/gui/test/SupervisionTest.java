@@ -25,6 +25,7 @@ import org.lsmr.selfcheckout.devices.observers.TouchScreenObserver;
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
 import gui.SupervisionStation.LoginScreen;
+import gui.SupervisionStation.SupervisionDataPasser;
 
 public class SupervisionTest {
     private TouchScreen screen;
@@ -37,6 +38,7 @@ public class SupervisionTest {
 	private int maxWeight;
 	private int sensitivity;
 	private DataPasser dataPass;
+	private SupervisionDataPasser superDataPass;
 	
 // Supervision Setup Variables
 	private SupervisionStation mySupervision;
@@ -67,6 +69,7 @@ public class SupervisionTest {
         
                
         dataPass = new DataPasser();
+        superDataPass = new SupervisionDataPasser();
         
     }
 
@@ -114,7 +117,7 @@ public class SupervisionTest {
          
             public void run() {
             	// Creating a local version and then equating them allows us to test automatically
-            	aLoginScreen = new LoginScreen(dataPass);
+            	aLoginScreen = new LoginScreen(dataPass,superDataPass);
             	sFrame = aLoginScreen;
             	sFrame.setVisible(true);
             }

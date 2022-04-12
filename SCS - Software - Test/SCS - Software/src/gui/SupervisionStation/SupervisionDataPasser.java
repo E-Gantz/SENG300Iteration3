@@ -10,24 +10,33 @@ import org.lsmr.selfcheckout.Coin;
 import org.lsmr.selfcheckout.devices.BanknoteDispenser;
 import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.OverloadException;
+import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.devices.SupervisionStation;
 
 import SCSSoftware.AttendantBlocksStation;
 import SCSSoftware.AttendantRefillsDispensers;
 import SCSSoftware.AttendantShutDownStartupStation;
+import SCSSoftware.SelfCheckoutRunner;
 
 
 public class SupervisionDataPasser {
 
-	private SelfCheckoutStation scs1; 
-	private SelfCheckoutStation scs2; 
-	private SelfCheckoutStation scs3; 
-	private SelfCheckoutStation scs4; 
+//	private SelfCheckoutStation scs1; 
+//	private SelfCheckoutStation scs2; 
+//	private SelfCheckoutStation scs3; 
+//	private SelfCheckoutStation scs4;
+	
+	private SelfCheckoutRunner scs1; 
+	private SelfCheckoutRunner scs2; 
+	private SelfCheckoutRunner scs3; 
+	private SelfCheckoutRunner scs4; 
+	
+	
 	
 	private SupervisionStation superstation;
 	
-	private SelfCheckoutStation stationInUse;
+	private SelfCheckoutRunner stationInUse;
 	
 	private AttendantShutDownStartupStation shutdownstartup;  
 	
@@ -61,33 +70,40 @@ public class SupervisionDataPasser {
     private BanknoteDispenser fiftyDisp;
     private BanknoteDispenser hundredDisp;
     
+    private Currency currency;  
     private int[] banknoteDenominations;
-    private BigDecimal[] coinDemons;
+//    private BigDecimal[] coinDemons;
     
-    private final int MAXWEIGHT = 1000; 
-    private final int SCALESENSITIVITY = 1;
+//    private int defaultWeight; 
+//    private int defaultSens;
 	
-	public SupervisionDataPasser(SelfCheckoutStation s1, 
-								 SelfCheckoutStation s2, 
-								 SelfCheckoutStation s3,
-								 SelfCheckoutStation s4,
-								 SupervisionStation svs) {
+	public SupervisionDataPasser(SelfCheckoutRunner s1, 
+			SelfCheckoutRunner s2, 
+			SelfCheckoutRunner s3,
+			SelfCheckoutRunner s4,
+			SupervisionStation svs,
+			Currency c) {
 		
 		this.scs1 = s1; 
 		this.scs2 = s2; 
 		this.scs3 = s3; 
 		this.scs4 = s4; 
 		this.superstation = svs; 
+		
+		currency = c; 
+//		this.defaultWeight = defaultWeight; 
+//		this.defaultSens = defaultSens;
+		
 
-		List<BigDecimal> coinDenominations =scs1.coinDenominations;
+		List<BigDecimal> coinDenominations =scs1.station.coinDenominations;
 	    nickel = new Coin(CAD, coinDenominations.get(0));
 		dime = new Coin(CAD, coinDenominations.get(1));
 		quarter = new Coin(CAD, coinDenominations.get(2));
 	 	loonie = new Coin(CAD, coinDenominations.get(3));
 	  	toonie = new Coin(CAD, coinDenominations.get(4));
-	  	coinDemons =(BigDecimal[])coinDenominations.toArray();
+//	  	coinDemons =(BigDecimal[])coinDenominations.toArray();
 	  	
-	  	banknoteDenominations = scs1.banknoteDenominations;
+	  	banknoteDenominations = scs1.station.banknoteDenominations;
 	  	five = new Banknote(CAD,banknoteDenominations[0]);
 	  	ten = new Banknote(CAD,banknoteDenominations[1]);
 	  	twenty = new Banknote(CAD,banknoteDenominations[2]);
@@ -108,52 +124,66 @@ public class SupervisionDataPasser {
 		}
 	}
 	
-	private void setSCS(int i) {
+	private void setSCS(int i, SelfCheckoutRunner scs) {
 		if (i == 1) {
-			this.scs1 = this.stationInUse;
+			this.scs1 = scs;
 		} else if (i==2) {
-			this.scs2 = this.stationInUse; 
+			this.scs2 = scs; 
 		} else if (i==3) {
-			this.scs3 = this.stationInUse; 
+			this.scs3 = scs; 
 		} else if (i==4) {
-			this.scs4 = this.stationInUse;
+			this.scs4 = scs;
 		}
 	}
 	
 	public void startStation(int stationId) {
 
-		stationInUse = new SelfCheckoutStation(CAD,banknoteDenominations,coinDemons,MAXWEIGHT,SCALESENSITIVITY);
-		shutdownstartup = new AttendantShutDownStartupStation(this.stationInUse,this.superstation);
+//		stationInUse = new SelfCheckoutStation(CAD,banknoteDenominations,coinDemons,MAXWEIGHT,SCALESENSITIVITY);
+		shutdownstartup = new AttendantShutDownStartupStation(this.superstation);
 		shutdownstartup.startupAttendantStation();
-		setSCS(stationId);
+		SelfCheckoutStation scs = shutdownstartup.getStationStartedUp();
+		SelfCheckoutRunner scsn = new SelfCheckoutRunner(scs,currency);
+		setSCS(stationId, scsn);
 	}
 	
 	public void shutdownStation(int stationId) {
 		selectSCS(stationId);
-		shutdownstartup = new AttendantShutDownStartupStation(this.stationInUse,this.superstation);
+		shutdownstartup = new AttendantShutDownStartupStation(this.stationInUse.station,this.superstation);
 		shutdownstartup.shutDownStation();
 	}
 	
 	public void addInk(int stationId) throws OverloadException {
 		selectSCS(stationId); 
-		int inkToAdd = 1000;
-		attendantRefillsDispensers.addInk(inkToAdd);
+		
+		// if true then the ink is empty
+		if(stationInUse.printerMaintainer.getInkStatus()) {
+			attendantRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
+			int maxInk = ReceiptPrinter.MAXIMUM_INK;
+			attendantRefillsDispensers.addInk(maxInk);
+		}
+		
+		
 	}
 	
 	public void addPaper(int stationId) throws OverloadException {
-		selectSCS(stationId);
-		int paperToAdd = 100;
-		attendantRefillsDispensers.addPaper(paperToAdd);
+		selectSCS(stationId); 
+		
+		// if true then the paper is empty 
+		if(stationInUse.printerMaintainer.getPaperStatus()) {
+			attendantRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
+			int maxPaper = ReceiptPrinter.MAXIMUM_PAPER;
+			attendantRefillsDispensers.addInk(maxPaper);
+		}
 	}
 	
 	public void refillBankNote(int stationId) throws OverloadException{
 		selectSCS(stationId);
-		
-		fiveDisp = stationInUse.banknoteDispensers.get(five.getValue());
-		tenDisp = stationInUse.banknoteDispensers.get(ten.getValue());
-		twentyDisp = stationInUse.banknoteDispensers.get(twenty.getValue());
-		fiftyDisp = stationInUse.banknoteDispensers.get(fifty.getValue());
-		hundredDisp = stationInUse.banknoteDispensers.get(hundred.getValue());
+		attendantRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
+		fiveDisp = stationInUse.station.banknoteDispensers.get(five.getValue());
+		tenDisp = stationInUse.station.banknoteDispensers.get(ten.getValue());
+		twentyDisp = stationInUse.station.banknoteDispensers.get(twenty.getValue());
+		fiftyDisp = stationInUse.station.banknoteDispensers.get(fifty.getValue());
+		hundredDisp = stationInUse.station.banknoteDispensers.get(hundred.getValue());
 		
 		while(fiveDisp.size() < fiveDisp.getCapacity()) {
 			attendantRefillsDispensers.RefillBanknoteDispenser(fiveDisp,five,1);
@@ -176,18 +206,18 @@ public class SupervisionDataPasser {
 	
 	public void blockStation(int stationId) {
 		selectSCS(stationId);
-		attendantBlocksStations.addToBlockList(this.stationInUse);
+		attendantBlocksStations.addToBlockList(this.stationInUse.station);
 	}
 	
 	
 	public void refillCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
 		
-        coinDispenserNickel = stationInUse.coinDispensers.get(nickel.getValue());
-        coinDispenserDime = stationInUse.coinDispensers.get(dime.getValue());
-        coinDispenserQuarter = stationInUse.coinDispensers.get(quarter.getValue());
-        coinDispenserLoonie = stationInUse.coinDispensers.get(loonie.getValue());
-        coinDispenserToonie = stationInUse.coinDispensers.get(toonie.getValue());
+        coinDispenserNickel = stationInUse.station.coinDispensers.get(nickel.getValue());
+        coinDispenserDime = stationInUse.station.coinDispensers.get(dime.getValue());
+        coinDispenserQuarter = stationInUse.station.coinDispensers.get(quarter.getValue());
+        coinDispenserLoonie = stationInUse.station.coinDispensers.get(loonie.getValue());
+        coinDispenserToonie = stationInUse.station.coinDispensers.get(toonie.getValue());
         
         while (coinDispenserNickel.hasSpace()) {
         	attendantRefillsDispensers.RefillCoinDispenser(coinDispenserNickel, nickel, 1);
@@ -210,18 +240,17 @@ public class SupervisionDataPasser {
 	public void approveWeight(int stationID) {
 		selectSCS(stationID);
 		
-		
 	}
 	
 	public void emptiesCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
 		
-        attendantRefillsDispensers.emptyCoinStorageUnit(this.stationInUse.coinStorage);
+        attendantRefillsDispensers.emptyCoinStorageUnit(this.stationInUse.station.coinStorage);
 	}
 	
 	public void emptiesBanknote(int stationID) throws OverloadException {
 		selectSCS(stationID);
 		
-        attendantRefillsDispensers.emptyBanknoteStorageUnit(this.stationInUse.banknoteStorage);
+        attendantRefillsDispensers.emptyBanknoteStorageUnit(this.stationInUse.station.banknoteStorage);
 	}
 }
