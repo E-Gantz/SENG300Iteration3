@@ -71,7 +71,6 @@ public class ProductCart {
 		boolean ismodified = false;
 		Iterator<BarcodedProduct> iterator = cart.iterator();
 		Iterator<String> iterator2 = items.iterator();
-		totalPrice = new BigDecimal(0);
 		while (iterator.hasNext()) {
 			if (cart.contains(iterator.next())) {
 				iterator.remove();

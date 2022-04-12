@@ -86,7 +86,7 @@ public class AddBagsScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String bags = textFieldPBagEntry.getText();
 				dataPass.setPlasticBags(bags);
-				System.out.println(dataPass.getCheckoutPrice()); 
+				System.out.println(dataPass.getCheckoutPrice());
 				System.out.println(BigDecimal.valueOf(Double.parseDouble(bags) * 0.05));
 				checkScreen.updateLblTotal((dataPass.getCheckoutPrice()) + "");
 				checkScreen.setVisible(true);
@@ -97,7 +97,7 @@ public class AddBagsScreen extends JFrame {
 		
 		JPanel panelTenKey = new JPanel();
 		splitPane.setRightComponent(panelTenKey);
-		panelTenKey.setLayout(new GridLayout(4, 4, 0, 0)); 
+		panelTenKey.setLayout(new GridLayout(4, 4, 0, 0));
 		
 		btnTouch8 = new JButton("8");
 		btnTouch8.addActionListener(new ActionListener() {

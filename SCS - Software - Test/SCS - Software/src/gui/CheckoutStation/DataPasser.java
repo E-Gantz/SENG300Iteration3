@@ -63,8 +63,6 @@ public class DataPasser {
 	private String displayReciept;
 	public SelfCheckoutStation station;
 	public CheckoutInterface checkoutInterface;
-	public boolean thankMode;
-	public String totalAmount;
 
 	public Numeral[] code001 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
 	public Barcode pockyAppleBC = new Barcode(code001);
@@ -79,7 +77,6 @@ public class DataPasser {
 	public BarcodedItem item0 = new BarcodedItem(bc0, 0.05);
 	public BarcodedProduct prod0 = new BarcodedProduct(bc0, "Plastic Bag", BigDecimal.valueOf(0.05), 0.01);
 	public BigDecimal totalPaid;
-	
 
 	private BarcodeScanner scanner;
 	private BarcodeScanner handheldscanner;
@@ -110,7 +107,7 @@ public class DataPasser {
 	private PaysWithCash paysWithCash;
 	public Map<BigDecimal, CoinDispenser> coinDispensers;
 	private CoinStorageUnit cStorage;
-	public CoinRunner coinrunner;
+	private CoinRunner coinrunner;
 	public ItemPlacer itemplacer;
 	Coin toonie = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(2.00));
 	Coin quarter = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.25));
@@ -120,11 +117,11 @@ public class DataPasser {
 	Banknote twentyBill = new Banknote(Currency.getInstance("CAD"), 20);
 
 	private PaysWithCard pwc;
-	public GiftCardDatabase giftDB;
+	private GiftCardDatabase giftDB;
 	private CardReader creader;
 
 
-	public Card payCard;
+	private Card payCard;
 
 
 	public DataPasser() {};

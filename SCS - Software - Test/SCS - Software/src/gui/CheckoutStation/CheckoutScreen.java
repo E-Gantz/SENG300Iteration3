@@ -36,8 +36,6 @@ public class CheckoutScreen extends JFrame {
 	public JButton btnEnterCoin;
 	public JButton btnAddBanknote;
 	public JButton btnPayWithCard;
-	public DataPasser dataPasse;
-	public ThanksScreen thankYou;
 	
 	
 	/**
@@ -49,7 +47,6 @@ public class CheckoutScreen extends JFrame {
 	 */
 	public CheckoutScreen(DataPasser dataPass, ScanningScreen scanScreen) {
 		CheckoutScreen me = this;
-		dataPasse = dataPass;
 		setTitle("CartMart Checkout");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 450);
@@ -106,7 +103,6 @@ public class CheckoutScreen extends JFrame {
 		panel_payment.add(lblTotal);
 		
 		lblTotal.setText("Total: $" + dataPass.pcart.getTotalPrice().toString());
-		dataPass.totalAmount = dataPass.pcart.getTotalPrice().toString();
 		
 		lblPaid = new JLabel("Paid: $0");
 		panel_payment.add(lblPaid);
@@ -148,30 +144,17 @@ public class CheckoutScreen extends JFrame {
 				cardScreen = new CardScanScreen(dataPass, me, paymentResult);
 				cardScreen.setVisible(true);				
 				setVisible(false);
-				checkPaid();
 			}
 		});
 		panel_payment.add(btnPayWithCard);
 	}
 
 	public void updateLblPaid(String paid){
-		lblPaid.setText("Paid:" + paid); 
+		lblPaid.setText("Paid:" + paid);
 	}
 	
 	public void updateLblTotal(String paid){
 		lblTotal.setText("Total:" + paid);
-	}
-	
-	public void checkPaid(){
-		if (dataPasse.thankMode == true) {
-			if (Double.parseDouble(dataPasse.paidString) >= Double.parseDouble(dataPasse.totalAmount)) {
-				thankYou = new ThanksScreen(dataPasse);
-				thankYou.setVisible(true);
-				setVisible(false);
-				dispose();
-			}
-			
-		}
 	}
 	
 }
