@@ -206,7 +206,7 @@ public class SupervisionDataPasser {
 
 	public void refillCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
-
+		attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
         coinDispenserNickel = stationInUse.station.coinDispensers.get(nickel.getValue());
         coinDispenserDime = stationInUse.station.coinDispensers.get(dime.getValue());
         coinDispenserQuarter = stationInUse.station.coinDispensers.get(quarter.getValue());
@@ -230,6 +230,10 @@ public class SupervisionDataPasser {
         }
 
 	}
+	
+	public void attendantAddsItem(int stationID) {
+		selectSCS(stationID);
+	}
 
 	public void approveWeight(int stationID) {
 		selectSCS(stationID);
@@ -238,13 +242,13 @@ public class SupervisionDataPasser {
 
 	public void emptiesCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
-
+		attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
         attendentRefillsDispensers.emptyCoinStorageUnit(this.stationInUse.station.coinStorage);
 	}
 
 	public void emptiesBanknote(int stationID) throws OverloadException {
 		selectSCS(stationID);
-
+		attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
         attendentRefillsDispensers.emptyBanknoteStorageUnit(this.stationInUse.station.banknoteStorage);
 	}
 }
