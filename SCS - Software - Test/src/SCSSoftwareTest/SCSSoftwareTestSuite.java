@@ -12,6 +12,7 @@ import gui.test.*;
 	AttendantShutDownStartupTest.class,
 	AttendantTest.class, 
 	BanknoteRunnerTest.class, 
+	BlockStationsTest.class,
 	CatalogueAdderTest.class, 
 	CheckoutDoneTest.class, 
 	CheckoutTest.class, 
