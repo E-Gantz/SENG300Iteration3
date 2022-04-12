@@ -73,7 +73,7 @@ public class BanknoteSelection extends JFrame{
 					dataPass.addFive();
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Please remove the note from the slot and re-insert");
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -89,7 +89,7 @@ public class BanknoteSelection extends JFrame{
 					dataPass.addTen();
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Please remove the note from the slot and re-insert");
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -105,7 +105,7 @@ public class BanknoteSelection extends JFrame{
 					dataPass.addTwenty();
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Please remove the note from the slot and re-insert");
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -121,7 +121,7 @@ public class BanknoteSelection extends JFrame{
 					dataPass.addFifty();
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Please remove the note from the slot and re-insert");
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -137,7 +137,7 @@ public class BanknoteSelection extends JFrame{
 					dataPass.addHundred();
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Please remove the note from the slot and re-insert");
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
