@@ -62,49 +62,7 @@ public class CustomerScreenTestManual {
 
         dataPass = new DataPasser(scs, testCard, giftcardDB);
     }
-
-    @Test
-    public void testBasic() {
-        screen.attach(new TouchScreenObserver() {
-            @Override
-            public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {}
-
-            @Override
-            public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {}
-        });
-        screen.detach(null);
-        screen.detachAll();
-        screen.disable();
-        screen.enable();
-    }
-    
-    @Test
-    public void testStart() {
-    	StartScreen builtWindow = new StartScreen(dataPass);
-        frame = builtWindow;
-        builtWindow.btnStartButton.doClick();
-        assertEquals(1, dataPass.getFound());
-    }
-
-    @Test
-    public void testFrameAutomatic() {
-        JFrame f = screen.getFrame();
-        JButton button = new JButton("foo");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                found++;
-            }
-        });
-
-        f.add(button);
-
-        screen.setVisible(false);
-        button.doClick();
-
-        assertEquals(1, found);
-    }
-
+	
     // Note that this is not a proper automated test. An automated test does not
     // force user interaction. Trust me: clicking repeatedly on buttons is tedious
     // and error-prone. When you suddenly discover a bug on your hundredth attempt,
