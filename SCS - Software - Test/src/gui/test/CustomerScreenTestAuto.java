@@ -49,10 +49,10 @@ public class CustomerScreenTestAuto {
         found = 0;
         testCard = new Card("4040111177778888","","","","", false,false);
 
-        dataPass = new DataPasser(scs, testCard, giftcardDB);
+        dataPass = new DataPasser(scs, testCard, giftcardDB); 
         builtWindow = new StartScreen(dataPass);
         frame = builtWindow;
-    }
+    } 
 
     @Test
     public void testBasic() {

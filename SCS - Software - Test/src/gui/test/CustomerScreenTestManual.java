@@ -61,8 +61,9 @@ public class CustomerScreenTestManual {
         testCard = new Card("4040111177778888","","","","", false,false);
 
         dataPass = new DataPasser(scs, testCard, giftcardDB);
+        dataPass.thankMode= true;
     }
-	
+
     // Note that this is not a proper automated test. An automated test does not
     // force user interaction. Trust me: clicking repeatedly on buttons is tedious
     // and error-prone. When you suddenly discover a bug on your hundredth attempt,
