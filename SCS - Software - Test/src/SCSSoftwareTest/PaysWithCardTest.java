@@ -24,7 +24,6 @@ import org.lsmr.selfcheckout.external.CardIssuer;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import SCSSoftware.BankDeclinedException;
-import SCSSoftware.BankSimulator;
 import SCSSoftware.Checkout;
 import SCSSoftware.GiftCardDatabase;
 import SCSSoftware.PaysWithCard;
