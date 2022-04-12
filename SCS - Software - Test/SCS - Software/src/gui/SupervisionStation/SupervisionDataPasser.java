@@ -46,7 +46,7 @@ public class SupervisionDataPasser {
     private Banknote ten;
     private Banknote twenty;
     private Banknote fifty;
-    private Banknote hundred;
+    //private Banknote hundred;
     
     
     private CoinDispenser coinDispenserNickel;
@@ -73,7 +73,7 @@ public class SupervisionDataPasser {
 								 SelfCheckoutStation s4,
 								 SupervisionStation svs) {
 		
-		this.scs1 = s1; 
+		this.scs1 = s1;
 		this.scs2 = s2; 
 		this.scs3 = s3; 
 		this.scs4 = s4; 
@@ -85,14 +85,14 @@ public class SupervisionDataPasser {
 		quarter = new Coin(CAD, coinDenominations.get(2));
 	 	loonie = new Coin(CAD, coinDenominations.get(3));
 	  	toonie = new Coin(CAD, coinDenominations.get(4));
-	  	coinDemons =(BigDecimal[])coinDenominations.toArray();
+	  	coinDemons = coinDenominations.toArray(new BigDecimal[coinDenominations.size()]);
 	  	
 	  	banknoteDenominations = scs1.banknoteDenominations;
 	  	five = new Banknote(CAD,banknoteDenominations[0]);
 	  	ten = new Banknote(CAD,banknoteDenominations[1]);
 	  	twenty = new Banknote(CAD,banknoteDenominations[2]);
 	  	fifty = new Banknote(CAD,banknoteDenominations[3]);
-	  	hundred = new Banknote(CAD,banknoteDenominations[4]);
+	  	//hundred = new Banknote(CAD,banknoteDenominations[4]);
 	}
 	
 	private void selectSCS(int i) {
@@ -153,7 +153,7 @@ public class SupervisionDataPasser {
 		tenDisp = stationInUse.banknoteDispensers.get(ten.getValue());
 		twentyDisp = stationInUse.banknoteDispensers.get(twenty.getValue());
 		fiftyDisp = stationInUse.banknoteDispensers.get(fifty.getValue());
-		hundredDisp = stationInUse.banknoteDispensers.get(hundred.getValue());
+		//hundredDisp = stationInUse.banknoteDispensers.get(hundred.getValue());
 		
 		while(fiveDisp.size() < fiveDisp.getCapacity()) {
 			attendantRefillsDispensers.RefillBanknoteDispenser(fiveDisp,five,1);
@@ -167,9 +167,9 @@ public class SupervisionDataPasser {
 		while(fiftyDisp.size() < fiftyDisp.getCapacity()) {
 			attendantRefillsDispensers.RefillBanknoteDispenser(fiftyDisp,fifty,1);
 		}
-		while(hundredDisp.size() < hundredDisp.getCapacity()) {
-			attendantRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
-		}
+		//while(hundredDisp.size() < hundredDisp.getCapacity()) {
+			//attendantRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
+		//}
 		
 	}
 	

@@ -25,6 +25,7 @@ import org.lsmr.selfcheckout.devices.observers.TouchScreenObserver;
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
 import gui.SupervisionStation.LoginScreen;
+import gui.SupervisionStation.SupervisionDataPasser;
 
 public class SupervisionTest {
     private TouchScreen screen;
@@ -37,6 +38,11 @@ public class SupervisionTest {
 	private int maxWeight;
 	private int sensitivity;
 	private DataPasser dataPass;
+	private SupervisionDataPasser superDataPass;
+	private SelfCheckoutStation s1;
+	private SelfCheckoutStation s2;
+	private SelfCheckoutStation s3;
+	private SelfCheckoutStation s4;
 	
 // Supervision Setup Variables
 	private SupervisionStation mySupervision;
@@ -55,6 +61,10 @@ public class SupervisionTest {
 		maxWeight = 99999;
 		sensitivity = 10;
 		scs = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	s1 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	s2 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	s3 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	s4 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
     	
         screen = scs.screen;
         frame = screen.getFrame();
@@ -67,7 +77,7 @@ public class SupervisionTest {
         
                
         dataPass = new DataPasser();
-        
+        superDataPass = new SupervisionDataPasser(s1, s2, s3, s4, mySupervision);
     }
 
     @Test
@@ -114,7 +124,7 @@ public class SupervisionTest {
          
             public void run() {
             	// Creating a local version and then equating them allows us to test automatically
-            	aLoginScreen = new LoginScreen(dataPass);
+            	aLoginScreen = new LoginScreen(dataPass, superDataPass);
             	sFrame = aLoginScreen;
             	sFrame.setVisible(true);
             }
