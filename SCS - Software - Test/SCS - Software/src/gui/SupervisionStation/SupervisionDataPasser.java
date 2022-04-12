@@ -7,16 +7,20 @@ import java.util.Locale;
 
 import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.Coin;
+import org.lsmr.selfcheckout.PLUCodedItem;
+import org.lsmr.selfcheckout.PriceLookupCode;
 import org.lsmr.selfcheckout.devices.BanknoteDispenser;
 import org.lsmr.selfcheckout.devices.CoinDispenser;
 import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.devices.SupervisionStation;
+import org.lsmr.selfcheckout.products.PLUCodedProduct;
 
 import SCSSoftware.AttendantBlocksStation;
 import SCSSoftware.AttendantRefillsDispensers;
 import SCSSoftware.AttendantShutDownStartupStation;
+import SCSSoftware.CheckoutInterface;
 import SCSSoftware.SelfCheckoutRunner;
 
 
@@ -68,6 +72,7 @@ public class SupervisionDataPasser {
     private Currency currency;
     private int[] banknoteDenominations;
     private BigDecimal[] coinDemons;
+    private String PLUEntered;
 
     private final int MAXWEIGHT = 1000;
     private final int SCALESENSITIVITY = 1;
@@ -201,7 +206,10 @@ public class SupervisionDataPasser {
 		selectSCS(stationId);
 		attendantBlocksStations.addToBlockList(this.stationInUse.station);
 	}
-
+	
+	public void setPLUEntered(String text) {
+		PLUEntered = text;
+	}
 
 	public void refillCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
@@ -245,5 +253,22 @@ public class SupervisionDataPasser {
 		selectSCS(stationID);
 
         attendentRefillsDispensers.emptyBanknoteStorageUnit(this.stationInUse.station.banknoteStorage);
+	}
+	
+	public void addProductToCart(int stationID) throws OverloadException {
+		selectSCS(stationID);
+		
+		CheckoutInterface cInt = new CheckoutInterface(this.stationInUse.productInventory, this.stationInUse.pcart, this.stationInUse.station);
+		cInt.addFromPLU(PLUEntered);
+	}
+	
+	public void removeProductFromCart(int stationID) throws OverloadException {
+		selectSCS(stationID);
+		PriceLookupCode PLU = new PriceLookupCode(PLUEntered);
+		
+		PLUCodedProduct prod = this.stationInUse.productInventory.getPLUinventory(PLU);
+		Double weight = this.stationInUse.station.scanningArea.getCurrentWeight();
+		
+		this.stationInUse.pcart.removeFromCartPLU(prod, prod.getPrice(), weight);
 	}
 }
