@@ -136,7 +136,6 @@ public class SupervisionTest {
         // necessary.
         while(loginID == null) {
         	loginID = dataPass.getEmployeeIDLogin();
-        	System.out.println(dataPass.getEmployeeIDLogin());
         }
 
         assertEquals("password", loginID);
