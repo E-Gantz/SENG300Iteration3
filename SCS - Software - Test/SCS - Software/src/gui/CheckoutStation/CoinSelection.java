@@ -75,8 +75,9 @@ public class CoinSelection extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				String total = "Paid: " + dataPass.paidString;
+				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				dispose();
 			}
 		});
 		panel_1.add(btnNickel);
@@ -90,8 +91,9 @@ public class CoinSelection extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				String total = "Paid: " + dataPass.paidString;
+				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				dispose();
 			}
 		});
 		panel_1.add(btnDime);
@@ -108,8 +110,9 @@ public class CoinSelection extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				String total = "Paid: " + dataPass.paidString;
+				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				dispose();
 			}
 		});
 		panel_1.add(btnLoonie);
@@ -123,9 +126,9 @@ public class CoinSelection extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				String total = "Paid: " + dataPass.paidString;
+				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
-	
+				dispose();	
 			}
 		});
 		panel_1.add(btnToonie);
@@ -137,8 +140,9 @@ public class CoinSelection extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				String total = "Paid: " + dataPass.paidString;
+				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
+				dispose();
 			}
 		});
 	}

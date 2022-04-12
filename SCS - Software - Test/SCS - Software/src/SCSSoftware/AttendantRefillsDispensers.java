@@ -3,14 +3,11 @@ package SCSSoftware;
 import org.lsmr.selfcheckout.Banknote;
 import org.lsmr.selfcheckout.Coin;
 import org.lsmr.selfcheckout.devices.BanknoteDispenser;
-import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
 import org.lsmr.selfcheckout.devices.CoinDispenser;
-import org.lsmr.selfcheckout.devices.CoinStorageUnit;
 import org.lsmr.selfcheckout.devices.OverloadException;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class AttendantRefillsDispensers{
     private SelfCheckoutStation selfCheckoutStation;
@@ -25,14 +22,6 @@ public class AttendantRefillsDispensers{
 
     public int getBanknoteDispenserSize(BanknoteDispenser banknoteDispenser) {
         return banknoteDispenser.size();
-    }
-    
-    public List<Coin> emptyCoinStorageUnit(CoinStorageUnit coinSU) {
-        return coinSU.unload();
-    }
-
-    public List<Banknote> emptyBanknoteStorageUnit(BanknoteStorageUnit banknoteSU) {
-        return banknoteSU.unload();
     }
 
     public void RefillCoinDispenser(CoinDispenser coinDispenser, Coin coins, int amount) throws OverloadException {

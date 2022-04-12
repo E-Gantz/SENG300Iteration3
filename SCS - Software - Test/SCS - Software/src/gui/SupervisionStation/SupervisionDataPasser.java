@@ -14,7 +14,6 @@ import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.devices.SupervisionStation;
 
-import SCSSoftware.AttendantBlocksStation;
 import SCSSoftware.AttendantRefillsDispensers;
 import SCSSoftware.AttendantShutDownStartupStation;
 import SCSSoftware.SelfCheckoutRunner;
@@ -41,8 +40,7 @@ public class SupervisionDataPasser {
 	private AttendantShutDownStartupStation shutdownstartup;
 
 	public SupervisionDataPasser() {}
-	private AttendantRefillsDispensers attendantRefillsDispensers;
-	private AttendantBlocksStation attendantBlocksStations;
+	private AttendantRefillsDispensers attendentRefillsDispensers;
 	private final Currency CAD = Currency.getInstance(Locale.CANADA);
 
     private Coin nickel;
@@ -55,7 +53,7 @@ public class SupervisionDataPasser {
     private Banknote ten;
     private Banknote twenty;
     private Banknote fifty;
-    //private Banknote hundred;
+    private Banknote hundred;
 
 
     private CoinDispenser coinDispenserNickel;
@@ -72,17 +70,16 @@ public class SupervisionDataPasser {
 
     private Currency currency;
     private int[] banknoteDenominations;
-//    private BigDecimal[] coinDemons;
+    private BigDecimal[] coinDemons;
 
-//    private int defaultWeight;
-//    private int defaultSens;
+    private final int MAXWEIGHT = 1000;
+    private final int SCALESENSITIVITY = 1;
 
-	public SupervisionDataPasser(SelfCheckoutRunner s1,
-			SelfCheckoutRunner s2,
-			SelfCheckoutRunner s3,
-			SelfCheckoutRunner s4,
-			SupervisionStation svs,
-			Currency c) {
+	public SupervisionDataPasser(SelfCheckoutStation s1,
+								 SelfCheckoutStation s2,
+								 SelfCheckoutStation s3,
+								 SelfCheckoutStation s4,
+								 SupervisionStation svs) {
 
 		this.scs1 = s1;
 		this.scs2 = s2;
@@ -101,14 +98,14 @@ public class SupervisionDataPasser {
 		quarter = new Coin(CAD, coinDenominations.get(2));
 	 	loonie = new Coin(CAD, coinDenominations.get(3));
 	  	toonie = new Coin(CAD, coinDenominations.get(4));
-//	  	coinDemons =(BigDecimal[])coinDenominations.toArray();
+	  	coinDemons =(BigDecimal[])coinDenominations.toArray();
 
-	  	banknoteDenominations = scs1.station.banknoteDenominations;
+	  	banknoteDenominations = scs1.banknoteDenominations;
 	  	five = new Banknote(CAD,banknoteDenominations[0]);
 	  	ten = new Banknote(CAD,banknoteDenominations[1]);
 	  	twenty = new Banknote(CAD,banknoteDenominations[2]);
 	  	fifty = new Banknote(CAD,banknoteDenominations[3]);
-	  	//hundred = new Banknote(CAD,banknoteDenominations[4]);
+	  	hundred = new Banknote(CAD,banknoteDenominations[4]);
 	}
 
 	private void selectSCS(int i) {
@@ -186,16 +183,19 @@ public class SupervisionDataPasser {
 		//hundredDisp = stationInUse.station.banknoteDispensers.get(hundred.getValue());
 
 		while(fiveDisp.size() < fiveDisp.getCapacity()) {
-			attendantRefillsDispensers.RefillBanknoteDispenser(fiveDisp,five,1);
+			attendentRefillsDispensers.RefillBanknoteDispenser(fiveDisp,five,1);
 		}
 		while(tenDisp.size() < tenDisp.getCapacity()) {
-			attendantRefillsDispensers.RefillBanknoteDispenser(tenDisp,ten,1);
+			attendentRefillsDispensers.RefillBanknoteDispenser(tenDisp,ten,1);
 		}
 		while(twentyDisp.size() < twentyDisp.getCapacity()) {
-			attendantRefillsDispensers.RefillBanknoteDispenser(twentyDisp,twenty,1);
+			attendentRefillsDispensers.RefillBanknoteDispenser(twentyDisp,twenty,1);
 		}
 		while(fiftyDisp.size() < fiftyDisp.getCapacity()) {
-			attendantRefillsDispensers.RefillBanknoteDispenser(fiftyDisp,fifty,1);
+			attendentRefillsDispensers.RefillBanknoteDispenser(fiftyDisp,fifty,1);
+		}
+		while(hundredDisp.size() < hundredDisp.getCapacity()) {
+			attendentRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
 		}
 		//while(hundredDisp.size() < hundredDisp.getCapacity()) {
 			//attendantRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
@@ -220,19 +220,19 @@ public class SupervisionDataPasser {
         coinDispenserToonie = stationInUse.station.coinDispensers.get(toonie.getValue());
 
         while (coinDispenserNickel.hasSpace()) {
-        	attendantRefillsDispensers.RefillCoinDispenser(coinDispenserNickel, nickel, 1);
+        	attendentRefillsDispensers.RefillCoinDispenser(coinDispenserNickel, nickel, 1);
         }
         while(coinDispenserDime.hasSpace()) {
-        	attendantRefillsDispensers.RefillCoinDispenser(coinDispenserDime, dime, 1);
+        	attendentRefillsDispensers.RefillCoinDispenser(coinDispenserDime, dime, 1);
         }
         while(coinDispenserQuarter.hasSpace()) {
-        	attendantRefillsDispensers.RefillCoinDispenser(coinDispenserQuarter, quarter, 1);
+        	attendentRefillsDispensers.RefillCoinDispenser(coinDispenserQuarter, quarter, 1);
         }
         while(coinDispenserLoonie.hasSpace()) {
-        	attendantRefillsDispensers.RefillCoinDispenser(coinDispenserLoonie, loonie, 1);
+        	attendentRefillsDispensers.RefillCoinDispenser(coinDispenserLoonie, loonie, 1);
         }
         while(coinDispenserToonie.hasSpace()) {
-        	attendantRefillsDispensers.RefillCoinDispenser(coinDispenserToonie, toonie, 1);
+        	attendentRefillsDispensers.RefillCoinDispenser(coinDispenserToonie, toonie, 1);
         }
 
 	}

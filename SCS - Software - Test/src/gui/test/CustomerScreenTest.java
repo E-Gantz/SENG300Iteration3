@@ -78,13 +78,13 @@ public class CustomerScreenTest {
         screen.enable();
     }
     
-    @Test
-    public void testStart() {
-    	StartScreen builtWindow = new StartScreen(dataPass);
-        frame = builtWindow;
-        builtWindow.btnStartButton.doClick();
-        assertEquals(1, dataPass.getFound());
-    }
+//    @Test
+//    public void testStart() {
+//    	StartScreen builtWindow = new StartScreen(dataPass);
+//        frame = builtWindow;
+//        builtWindow.btnStartButton.doClick();
+//        assertEquals(1, dataPass.getFound());
+//    }
 
     @Test
     public void testFrameAutomatic() {
