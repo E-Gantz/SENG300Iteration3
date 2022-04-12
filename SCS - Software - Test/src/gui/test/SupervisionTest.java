@@ -24,6 +24,7 @@ import org.lsmr.selfcheckout.devices.observers.TouchScreenObserver;
 
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
+import gui.SupervisionStation.HomeScreen;
 import gui.SupervisionStation.LoginScreen;
 import gui.SupervisionStation.SupervisionDataPasser;
 
@@ -48,6 +49,7 @@ public class SupervisionTest {
 	private SupervisionStation mySupervision;
 	private TouchScreen supervisionScreen;
 	private LoginScreen aLoginScreen;
+	private HomeScreen aHomeScreen;
 	JFrame sFrame;
 	
 // Supervision Testing Variables
@@ -139,5 +141,31 @@ public class SupervisionTest {
         }
 
         assertEquals("password", loginID);
+    }
+    
+    @Test
+    public void testFrameManual() {
+    	SwingUtilities.invokeLater(new Runnable() {
+            @Override
+         
+            public void run() {
+            	// Creating a local version and then equating them allows us to test automatically
+            	aHomeScreen = new HomeScreen(superDataPass, new LoginScreen(dataPass, superDataPass));
+            	sFrame = aHomeScreen;
+            	sFrame.setVisible(true);
+            }
+        });
+
+        // This loop is only needed to prevent the JUnit runner from closing the window
+        // before you have a chance to interact with it. If you look at FrameDemo2,
+        // which gets run as a standalone application, you will see that this is not
+        // necessary.
+    	// This loop is only needed to prevent the JUnit runner from closing the window
+        // before you have a chance to interact with it. If you look at FrameDemo2,
+        // which gets run as a standalone application, you will see that this is not
+        // necessary.
+    	while(found < 999) {
+        	found = dataPass.getFound();
+        }
     }
 }
