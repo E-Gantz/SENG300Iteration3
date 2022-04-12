@@ -64,7 +64,7 @@ public class BlockStations {
 	public ArrayList<SelfCheckoutStation> getScsList() {
 		return scsList;
 	}
-	
+
 	public ArrayList<SelfCheckoutStation> getBlockList() {
 		return blockList;
 	}

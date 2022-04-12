@@ -11,25 +11,30 @@ import SCSSoftware.CoinRunner;
 
 public class CValidatorObserver implements CoinValidatorObserver {
 	CoinRunner coinrunner;
-	
-	
-	public CValidatorObserver(CoinRunner coinrunner)
-	{
+
+	public CValidatorObserver(CoinRunner coinrunner) {
 		this.coinrunner = coinrunner;
 	}
 
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void disabled(AbstractDevice<? extends AbstractDeviceObserver> device) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/**
+	 * This class overwrites validCoinDetected to verify that Coin is of the value
+	 * with the validator hardware everytime the observer is called
+	 * 
+	 * @param validator
+	 * @param value
+	 */
 	@Override
 	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
 		coinrunner.validCoin(value);
@@ -39,7 +44,7 @@ public class CValidatorObserver implements CoinValidatorObserver {
 	@Override
 	public void invalidCoinDetected(CoinValidator validator) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
