@@ -14,17 +14,13 @@ import org.lsmr.selfcheckout.devices.ReceiptPrinter;
 import org.lsmr.selfcheckout.devices.SelfCheckoutStation;
 import org.lsmr.selfcheckout.devices.SupervisionStation;
 
+import SCSSoftware.AttendantBlocksStation;
 import SCSSoftware.AttendantRefillsDispensers;
 import SCSSoftware.AttendantShutDownStartupStation;
 import SCSSoftware.SelfCheckoutRunner;
 
 
 public class SupervisionDataPasser {
-
-//	private SelfCheckoutStation scs1;
-//	private SelfCheckoutStation scs2;
-//	private SelfCheckoutStation scs3;
-//	private SelfCheckoutStation scs4;
 
 	private SelfCheckoutRunner scs1;
 	private SelfCheckoutRunner scs2;
@@ -38,6 +34,7 @@ public class SupervisionDataPasser {
 	private SelfCheckoutRunner stationInUse;
 
 	private AttendantShutDownStartupStation shutdownstartup;
+	private AttendantBlocksStation attendantBlocksStations;
 
 	public SupervisionDataPasser() {}
 	private AttendantRefillsDispensers attendentRefillsDispensers;
@@ -75,10 +72,10 @@ public class SupervisionDataPasser {
     private final int MAXWEIGHT = 1000;
     private final int SCALESENSITIVITY = 1;
 
-	public SupervisionDataPasser(SelfCheckoutStation s1,
-								 SelfCheckoutStation s2,
-								 SelfCheckoutStation s3,
-								 SelfCheckoutStation s4,
+	public SupervisionDataPasser(SelfCheckoutRunner s1,
+								SelfCheckoutRunner s2,
+								SelfCheckoutRunner s3,
+								SelfCheckoutRunner s4,
 								 SupervisionStation svs) {
 
 		this.scs1 = s1;
@@ -87,7 +84,6 @@ public class SupervisionDataPasser {
 		this.scs4 = s4;
 		this.superstation = svs;
 
-		currency = c;
 //		this.defaultWeight = defaultWeight;
 //		this.defaultSens = defaultSens;
 
@@ -154,12 +150,10 @@ public class SupervisionDataPasser {
 
 		// if true then the ink is empty
 		if(stationInUse.printerMaintainer.getInkStatus()) {
-			attendantRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
+			attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
 			int maxInk = ReceiptPrinter.MAXIMUM_INK;
-			attendantRefillsDispensers.addInk(maxInk);
+			attendentRefillsDispensers.addInk(maxInk);
 		}
-
-
 	}
 
 	public void addPaper(int stationId) throws OverloadException {
@@ -167,15 +161,15 @@ public class SupervisionDataPasser {
 
 		// if true then the paper is empty
 		if(stationInUse.printerMaintainer.getPaperStatus()) {
-			attendantRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
+			attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
 			int maxPaper = ReceiptPrinter.MAXIMUM_PAPER;
-			attendantRefillsDispensers.addInk(maxPaper);
+			attendentRefillsDispensers.addInk(maxPaper);
 		}
 	}
 
 	public void refillBankNote(int stationId) throws OverloadException{
 		selectSCS(stationId);
-		attendantRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
+		attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
 		fiveDisp = stationInUse.station.banknoteDispensers.get(five.getValue());
 		tenDisp = stationInUse.station.banknoteDispensers.get(ten.getValue());
 		twentyDisp = stationInUse.station.banknoteDispensers.get(twenty.getValue());
@@ -245,12 +239,12 @@ public class SupervisionDataPasser {
 	public void emptiesCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
 
-        attendantRefillsDispensers.emptyCoinStorageUnit(this.stationInUse.station.coinStorage);
+        attendentRefillsDispensers.emptyCoinStorageUnit(this.stationInUse.station.coinStorage);
 	}
 
 	public void emptiesBanknote(int stationID) throws OverloadException {
 		selectSCS(stationID);
 
-        attendantRefillsDispensers.emptyBanknoteStorageUnit(this.stationInUse.station.banknoteStorage);
+        attendentRefillsDispensers.emptyBanknoteStorageUnit(this.stationInUse.station.banknoteStorage);
 	}
 }

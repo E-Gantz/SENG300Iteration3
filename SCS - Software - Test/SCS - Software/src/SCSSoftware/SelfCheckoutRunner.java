@@ -25,7 +25,7 @@ public class SelfCheckoutRunner {
 	
 	private BigDecimal checkoutTotal;
 	private Currency currency; 
-	private int[] banknoteDenominations; 
+	public int[] banknoteDenominations; 
 	private BigDecimal[] coinDenominations; 
 	private int weight;
 	private int scaleSens;
