@@ -114,7 +114,11 @@ public class DataPasser {
 	Coin loonie = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(1.00));
 	Coin dime = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.1));
 	Coin nickel = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.05));
+	Banknote fiveBill = new Banknote(Currency.getInstance("CAD"), 5);
+	Banknote tenBill = new Banknote(Currency.getInstance("CAD"), 10);
 	Banknote twentyBill = new Banknote(Currency.getInstance("CAD"), 20);
+	Banknote fiftyBill = new Banknote(Currency.getInstance("CAD"), 50);
+	Banknote hundredBill = new Banknote(Currency.getInstance("CAD"), 100);
 
 	private PaysWithCard pwc;
 	private GiftCardDatabase giftDB;
@@ -203,12 +207,41 @@ public class DataPasser {
 		paidString = totalPaid.toString();
 	}
 
+	public void addFive() throws DisabledException, OverloadException {
+		bSlot.accept(fiveBill);
+		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
+		totalPaid = addedTotal;
+		paidString = totalPaid.toString();
+	}
+	
+	public void addTen() throws DisabledException, OverloadException {
+		bSlot.accept(tenBill);
+		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
+		totalPaid = addedTotal;
+		paidString = totalPaid.toString();
+	}
+	
 	public void addTwenty() throws DisabledException, OverloadException {
 		bSlot.accept(twentyBill);
 		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
 		totalPaid = addedTotal;
 		paidString = totalPaid.toString();
 	}
+	
+	public void addFifty() throws DisabledException, OverloadException {
+		bSlot.accept(fiftyBill);
+		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
+		totalPaid = addedTotal;
+		paidString = totalPaid.toString();
+	}
+	
+	public void addHundred() throws DisabledException, OverloadException {
+		bSlot.accept(hundredBill);
+		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
+		totalPaid = addedTotal;
+		paidString = totalPaid.toString();
+	}
+	
 
 	public void makeTapPayment(HashMap<String,HashMap<String,String>> result) throws IOException {
 

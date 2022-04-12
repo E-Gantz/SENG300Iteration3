@@ -30,6 +30,7 @@ public class CheckoutScreen extends JFrame {
 	public JLabel lblTotal;
 	public CardScanScreen cardScreen;
 	public CoinSelection coinScreen;
+	public BanknoteSelection banknoteScreen;
 	public JButton btnGoToScanning;
 	public JButton btnGoToAddBags;
 	public JButton btnGoToMembership;
@@ -120,22 +121,15 @@ public class CheckoutScreen extends JFrame {
 		});
 		panel_payment.add(btnEnterCoin);
 		
-		btnAddBanknote = new JButton("Add20Banknote");
+		btnAddBanknote = new JButton("Add Banknotes");
 		btnAddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					dataPass.addTwenty();
-				} catch (DisabledException | OverloadException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				String total = "Paid: $" + dataPass.paidString;
-				lblPaid.setText(total);
-				
-				
+				banknoteScreen = new BanknoteSelection(dataPass, me);
+				banknoteScreen.setVisible(true);				
 			}
 		});
 		panel_payment.add(btnAddBanknote);
+		
 		HashMap<String,HashMap<String,String>>paymentResult = new HashMap<String,HashMap<String,String>>();
 		btnPayWithCard = new JButton("Card");
 		btnPayWithCard.addActionListener(new ActionListener() {
