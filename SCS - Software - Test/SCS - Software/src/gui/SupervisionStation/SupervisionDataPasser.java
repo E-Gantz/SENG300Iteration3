@@ -94,14 +94,13 @@ public class SupervisionDataPasser {
 		quarter = new Coin(CAD, coinDenominations.get(2));
 	 	loonie = new Coin(CAD, coinDenominations.get(3));
 	  	toonie = new Coin(CAD, coinDenominations.get(4));
-	  	coinDemons =(BigDecimal[])coinDenominations.toArray();
+	  	coinDemons = coinDenominations.toArray(new BigDecimal[coinDenominations.size()]);
 
 	  	banknoteDenominations = scs1.banknoteDenominations;
 	  	five = new Banknote(CAD,banknoteDenominations[0]);
 	  	ten = new Banknote(CAD,banknoteDenominations[1]);
 	  	twenty = new Banknote(CAD,banknoteDenominations[2]);
 	  	fifty = new Banknote(CAD,banknoteDenominations[3]);
-	  	hundred = new Banknote(CAD,banknoteDenominations[4]);
 	}
 
 	private void selectSCS(int i) {

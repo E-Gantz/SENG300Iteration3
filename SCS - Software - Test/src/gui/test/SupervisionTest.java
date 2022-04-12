@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.lsmr.selfcheckout.devices.observers.AbstractDeviceObserver;
 import org.lsmr.selfcheckout.devices.observers.TouchScreenObserver;
 
+import SCSSoftware.SelfCheckoutRunner;
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
 import gui.SupervisionStation.HomeScreen;
@@ -40,6 +41,10 @@ public class SupervisionTest {
 	private int sensitivity;
 	private DataPasser dataPass;
 	private SupervisionDataPasser superDataPass;
+	private SelfCheckoutRunner s1;
+	private SelfCheckoutRunner s2;
+	private SelfCheckoutRunner s3;
+	private SelfCheckoutRunner s4;
 
 // Supervision Setup Variables
 	private SupervisionStation mySupervision;
@@ -59,7 +64,10 @@ public class SupervisionTest {
 		maxWeight = 99999;
 		sensitivity = 10;
 		scs = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
-    	
+    	s1 = new SelfCheckoutRunner(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	s2 = new SelfCheckoutRunner(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	s3 = new SelfCheckoutRunner(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
+    	s4 = new SelfCheckoutRunner(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
         screen = scs.screen;
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +79,7 @@ public class SupervisionTest {
 
 
         dataPass = new DataPasser();
-        superDataPass = new SupervisionDataPasser();
+        superDataPass = new SupervisionDataPasser(s1, s2, s3, s4, mySupervision);
 
     }
 
