@@ -157,7 +157,7 @@ public class CheckoutScreen extends JFrame {
 
 	public void checkPaid(){
 		if (dataPasse.thankMode == true) {
-			if (Double.parseDouble(dataPasse.paidString) >= Double.parseDouble(dataPasse.totalAmount)) {
+			if (Double.parseDouble(dataPasse.paidString.substring(2)) >= Double.parseDouble(dataPasse.totalAmount)) {
 				thankYou = new ThanksScreen(dataPasse);
 				thankYou.setVisible(true);
 				setVisible(false);

@@ -127,7 +127,7 @@ public class ProductCart {
 	 * @return the total price of everything in the cart
 	 */
 	public BigDecimal getTotalPrice() {
-		return this.totalPrice;
+		return this.totalPrice.setScale(2, BigDecimal.ROUND_CEILING);
 	}
 
 	/**
