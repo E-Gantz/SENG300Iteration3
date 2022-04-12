@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
+import org.lsmr.selfcheckout.devices.OverloadException;
+
 import gui.CheckoutStation.DataPasser;
 
 public class HomeScreen extends JFrame {
@@ -64,6 +66,7 @@ public class HomeScreen extends JFrame {
 		Station1.add(btnStation1Start);
 		btnStation1Start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.startStation(stationId);
 			}
 		});
 		
@@ -71,6 +74,12 @@ public class HomeScreen extends JFrame {
 		Station1.add(btnStation1AddInk);
 		btnStation1AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addInk(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -78,6 +87,12 @@ public class HomeScreen extends JFrame {
 		Station1.add(btnStation1AddCoin);
 		btnStation1AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillCoin(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -93,7 +108,6 @@ public class HomeScreen extends JFrame {
 		btnStation1Shutdown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dataPass.shutdownStation(stationId);
-
 			}
 		});
 		
@@ -101,6 +115,12 @@ public class HomeScreen extends JFrame {
 		Station1.add(btnStation1AddPaper);
 		btnStation1AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addPaper(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -108,6 +128,12 @@ public class HomeScreen extends JFrame {
 		Station1.add(btnStation1AddBanknote);
 		btnStation1AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillBankNote(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -130,6 +156,7 @@ public class HomeScreen extends JFrame {
 		Station2.add(btnStation2Start);
 		btnStation2Start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.startStation(stationId);
 			}
 		});
 		
@@ -137,6 +164,12 @@ public class HomeScreen extends JFrame {
 		Station2.add(btnStation2AddInk);
 		btnStation2AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addInk(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -144,6 +177,12 @@ public class HomeScreen extends JFrame {
 		Station2.add(btnStation2AddCoin);
 		btnStation2AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillCoin(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -159,7 +198,6 @@ public class HomeScreen extends JFrame {
 		btnStation2Shutdown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dataPass.shutdownStation(stationId);
-
 			}
 		});
 		
@@ -167,6 +205,12 @@ public class HomeScreen extends JFrame {
 		Station2.add(btnStation2AddPaper);
 		btnStation2AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addPaper(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -174,6 +218,12 @@ public class HomeScreen extends JFrame {
 		Station2.add(btnStation2AddBanknote);
 		btnStation2AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillBankNote(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -182,6 +232,7 @@ public class HomeScreen extends JFrame {
 		Station2.add(btnStation2BlockStation);
 		btnStation2BlockStation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.blockStation(stationId);
 			}
 		});
 		
@@ -193,6 +244,7 @@ public class HomeScreen extends JFrame {
 		Station3.add(btnStation3Start);
 		btnStation3Start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.startStation(stationId);
 			}
 		});
 		
@@ -200,6 +252,12 @@ public class HomeScreen extends JFrame {
 		Station3.add(btnStation3AddInk);
 		btnStation3AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addInk(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -207,6 +265,12 @@ public class HomeScreen extends JFrame {
 		Station3.add(btnStation3AddCoin);
 		btnStation3AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillCoin(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -222,7 +286,6 @@ public class HomeScreen extends JFrame {
 		btnStation3Shutdown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dataPass.shutdownStation(stationId);
-
 			}
 		});
 		
@@ -230,6 +293,12 @@ public class HomeScreen extends JFrame {
 		Station3.add(btnStation3AddPaper);
 		btnStation3AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addPaper(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -237,6 +306,12 @@ public class HomeScreen extends JFrame {
 		Station3.add(btnStation3AddBanknote);
 		btnStation3AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillBankNote(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -245,6 +320,7 @@ public class HomeScreen extends JFrame {
 		Station3.add(btnStation3BlockStation);
 		btnStation3BlockStation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.blockStation(stationId);
 			}
 		});
 		
@@ -256,6 +332,7 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4Start);
 		btnStation4Start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.startStation(stationId);
 			}
 		});
 		
@@ -263,6 +340,12 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4AddInk);
 		btnStation4AddInk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addInk(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -270,6 +353,12 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4AddCoin);
 		btnStation4AddCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillCoin(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -292,6 +381,12 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4AddPaper);
 		btnStation4AddPaper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.addPaper(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -299,6 +394,12 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4AddBanknote);
 		btnStation4AddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					dataPass.refillBankNote(stationId);
+				} catch (OverloadException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -307,6 +408,7 @@ public class HomeScreen extends JFrame {
 		Station4.add(btnStation4BlockStation);
 		btnStation4BlockStation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataPass.blockStation(stationId);
 			}
 		});
 
