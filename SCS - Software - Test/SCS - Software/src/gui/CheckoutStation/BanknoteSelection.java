@@ -24,7 +24,6 @@ public class BanknoteSelection extends JFrame{
 	public JButton btnTen;
 	public JButton btnTwenty;
 	public JButton btnFifty;
-	public JButton btnHundred;
 	
 	/**
 	 * Launch the application.
@@ -133,24 +132,7 @@ public class BanknoteSelection extends JFrame{
 			}
 		});
 		panel_1.add(btnFifty);
-		
-		btnHundred = new JButton("100");
-		btnHundred.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					dataPass.addHundred();
-				} catch (DisabledException | OverloadException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("Please remove the note from the slot and re-insert");
-					dataPass.removeDangling();
-				}
-				String total = "Paid: $" + dataPass.paidString;
-				checkout.lblPaid.setText(total);
-				dispose();	
-			}
-		});
-		panel_1.add(btnHundred);
-		
+			
 	}
 
 }

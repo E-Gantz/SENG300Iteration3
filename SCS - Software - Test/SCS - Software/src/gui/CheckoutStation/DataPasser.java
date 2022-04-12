@@ -100,7 +100,7 @@ public class DataPasser {
 	private CoinTray cTray;
 	private CoinValidator cValidator;
 	private CoinSlot cSlot;
-	private int[] banknoteDenom = { 5, 10, 20, 50, 100 };
+	private int[] banknoteDenom = { 5, 10, 20, 50};
 	private BigDecimal[] coinDenom = { BigDecimal.valueOf(0.05), BigDecimal.valueOf(0.10), BigDecimal.valueOf(0.25),
 			BigDecimal.valueOf(1.00), BigDecimal.valueOf(2.00) };
 	private Currency currency = Currency.getInstance("CAD");
@@ -118,7 +118,6 @@ public class DataPasser {
 	Banknote tenBill = new Banknote(Currency.getInstance("CAD"), 10);
 	Banknote twentyBill = new Banknote(Currency.getInstance("CAD"), 20);
 	Banknote fiftyBill = new Banknote(Currency.getInstance("CAD"), 50);
-	Banknote hundredBill = new Banknote(Currency.getInstance("CAD"), 100);
 
 	private PaysWithCard pwc;
 	private GiftCardDatabase giftDB;
@@ -235,14 +234,6 @@ public class DataPasser {
 		paidString = totalPaid.toString();
 	}
 	
-	public void addHundred() throws DisabledException, OverloadException {
-		bSlot.accept(hundredBill);
-		BigDecimal addedTotal = paysWithCash.sumCoinBanknote();
-		totalPaid = addedTotal;
-		paidString = totalPaid.toString();
-	}
-	
-
 	public void makeTapPayment(HashMap<String,HashMap<String,String>> result) throws IOException {
 
 		creader.tap(payCard);
