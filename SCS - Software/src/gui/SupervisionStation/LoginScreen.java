@@ -30,7 +30,8 @@ public class LoginScreen extends JFrame {
 			public void run() {
 				try {
 					DataPasser basic = new DataPasser();
-					LoginScreen frame = new LoginScreen(basic);
+					SupervisionDataPasser basic2 = new SupervisionDataPasser();
+					LoginScreen frame = new LoginScreen(basic, basic2);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +43,7 @@ public class LoginScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public LoginScreen(DataPasser dataPass) {
+	public LoginScreen(DataPasser dataPass, SupervisionDataPasser superDataPass) {
 		setTitle("SupervisionStation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 450);
@@ -67,7 +68,7 @@ public class LoginScreen extends JFrame {
 				// Insert login class here
 				dataPass.setEmployeeIDLogin(employeeId);
 				loginID.setText("");
-				loggedIn = new HomeScreen(dataPass, me);
+				loggedIn = new HomeScreen(superDataPass, me);
 				
 				
 				loggedIn.setVisible(true);
