@@ -30,6 +30,8 @@ public class SupervisionDataPasser {
 	private SelfCheckoutRunner scs2;
 	private SelfCheckoutRunner scs3;
 	private SelfCheckoutRunner scs4;
+	
+	private SelfCheckoutStation vanilla;
 
 
 
@@ -54,7 +56,6 @@ public class SupervisionDataPasser {
     private Banknote ten;
     private Banknote twenty;
     private Banknote fifty;
-    private Banknote hundred;
 
 
     private CoinDispenser coinDispenserNickel;
@@ -67,9 +68,9 @@ public class SupervisionDataPasser {
     private BanknoteDispenser tenDisp;
     private BanknoteDispenser twentyDisp;
     private BanknoteDispenser fiftyDisp;
-    private BanknoteDispenser hundredDisp;
 
-    private Currency currency;
+
+    private Currency currency = Currency.getInstance("CAD");
     private int[] banknoteDenominations;
     private BigDecimal[] coinDemons;
     private String PLUEntered;
@@ -88,6 +89,7 @@ public class SupervisionDataPasser {
 		this.scs3 = s3;
 		this.scs4 = s4;
 		this.superstation = svs;
+		vanilla = s1.station;
 
 //		this.defaultWeight = defaultWeight;
 //		this.defaultSens = defaultSens;
@@ -99,8 +101,9 @@ public class SupervisionDataPasser {
 		quarter = new Coin(CAD, coinDenominations.get(2));
 	 	loonie = new Coin(CAD, coinDenominations.get(3));
 	  	toonie = new Coin(CAD, coinDenominations.get(4));
-	  	coinDemons = coinDenominations.toArray(new BigDecimal[coinDenominations.size()]);
-
+	  	BigDecimal[] car = new BigDecimal[coinDenominations.size()];
+	  	coinDemons = coinDenominations.toArray(car);
+	  		  	
 	  	banknoteDenominations = scs1.banknoteDenominations;
 	  	five = new Banknote(CAD,banknoteDenominations[0]);
 	  	ten = new Banknote(CAD,banknoteDenominations[1]);
@@ -135,10 +138,20 @@ public class SupervisionDataPasser {
 
 	public void startStation(int stationId) {
 
-		shutdownstartup = new AttendantShutDownStartupStation(this.superstation);
-		shutdownstartup.startupAttendantStation();
-		shutdownstartup.startupStation(currency,banknoteDenominations,coinDemons,MAXWEIGHT,SCALESENSITIVITY);
-		SelfCheckoutRunner scsn = new SelfCheckoutRunner(stationInUse.station,CAD);
+//		SelfCheckoutStation scs = new SelfCheckoutStation(currency,banknoteDenominations,coinDemons,100,1); 
+//		shutdownstartup = new AttendantShutDownStartupStation(this.superstation);
+//		shutdownstartup.startupAttendantStation();
+//		shutdownstartup.startupStation(currency,banknoteDenominations,coinDemons,MAXWEIGHT,SCALESENSITIVITY);
+//		SelfCheckoutStation scs = shutdownstartup.getStationStartedUp();
+//		System.out.println("before hello there");
+//		Currency c = Currency.getInstance("CAD");
+//		BigDecimal[] coinArray = { new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00) };
+//		int[] bankNoteDenom = { 5, 10, 20, 50};
+//		System.out.println("before hello there");
+//		SelfCheckoutStation scs = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
+		SelfCheckoutStation scs = this.vanilla;
+		System.out.println("hello there");
+		SelfCheckoutRunner scsn = new SelfCheckoutRunner(scs,currency);
 		setSCS(stationId, scsn);
 	}
 
@@ -146,7 +159,7 @@ public class SupervisionDataPasser {
 		selectSCS(stationId);
 		shutdownstartup = new AttendantShutDownStartupStation(this.stationInUse.station,this.superstation);
 		shutdownstartup.shutDownStation();
-	}
+	} 
 
 	public void addInk(int stationId) throws OverloadException {
 		selectSCS(stationId);
