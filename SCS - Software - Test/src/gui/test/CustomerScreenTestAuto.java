@@ -170,6 +170,8 @@ public class CustomerScreenTestAuto {
     	builtWindow.btnStartButton.doClick();
     	builtWindow.scanScreen.btnFinishScan.doClick();
     	builtWindow.scanScreen.checkoutScreen.btnAddBanknote.doClick();
+    	builtWindow.scanScreen.checkoutScreen.banknoteScreen.btnTwenty.doClick();
+    	
     	assertEquals("20", dataPass.paidString);
     }
     
@@ -178,7 +180,8 @@ public class CustomerScreenTestAuto {
     	builtWindow.btnStartButton.doClick();
     	builtWindow.scanScreen.btnFinishScan.doClick();
     	builtWindow.scanScreen.checkoutScreen.btnAddBanknote.doClick();
-    	builtWindow.scanScreen.checkoutScreen.btnAddBanknote.doClick();
+    	builtWindow.scanScreen.checkoutScreen.banknoteScreen.btnTwenty.doClick();
+    	builtWindow.scanScreen.checkoutScreen.banknoteScreen.btnTwenty.doClick();
     	assertEquals("40", dataPass.paidString);
     }
     
