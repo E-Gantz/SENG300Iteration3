@@ -19,33 +19,21 @@ import javax.swing.JSplitPane;
 import java.awt.GridLayout;
 
 public class DebitPin extends JFrame {
-
+ 
 	private JPanel contentPane;
 	private JTextField textFieldPinEntry;
 	private String pinBuilder;
+	public DebitSelection debitScreen;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DataPasser basic = new DataPasser();
-					ScanningScreen sTest = new ScanningScreen(basic);
-					EnterPLU frame = new EnterPLU(basic, sTest);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
 	public DebitPin(DataPasser dataPass, DebitSelection debitSelection) {
+		debitScreen = debitSelection;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
@@ -90,6 +78,8 @@ public class DebitPin extends JFrame {
 					dataPass.makeInsertPayment(new HashMap<String, HashMap<String, String>>(), textFieldPinEntry.getText());
 					setVisible(false);
 					debitSelection.setVisible(true);
+					debitScreen.checkout.checkPaid();
+					
 				} catch (Exception e1) {}
 			}
 		});

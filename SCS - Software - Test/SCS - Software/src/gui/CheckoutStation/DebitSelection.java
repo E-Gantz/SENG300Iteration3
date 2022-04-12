@@ -16,27 +16,11 @@ public class DebitSelection extends JFrame {
 
 	private JPanel contentPane;
 	public DebitPin debitScreen;
-
+	public CheckoutScreen checkout;
+ 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HashMap<String,HashMap<String,String>> res = new HashMap<String,HashMap<String,String>>();
-					DataPasser basic = new DataPasser();
-					ScanningScreen ssTest = new ScanningScreen(basic);
-					CheckoutScreen cTest = new CheckoutScreen(basic, ssTest);
-					CardScanScreen css = new CardScanScreen(basic, cTest, res);
-					DebitSelection frame = new DebitSelection(basic, css,res,cTest);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -46,6 +30,7 @@ public class DebitSelection extends JFrame {
 						  HashMap<String,HashMap<String,String>> result,
 						  CheckoutScreen checkoutScreen) {
 		DebitSelection me = this;
+		checkout = checkoutScreen;
 		setTitle("GiftSelection");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -73,8 +58,11 @@ public class DebitSelection extends JFrame {
 					e1.printStackTrace();
 				}
 				checkoutScreen.setVisible(true);
-				dispose();
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
+				checkoutScreen.checkPaid();
+				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				checkoutScreen.checkPaid();
+				dispose();
 			}
 		});
 		contentPane.add(btnTap);
@@ -88,8 +76,11 @@ public class DebitSelection extends JFrame {
 					e1.printStackTrace();
 				}
 				checkoutScreen.setVisible(true);
-				dispose();
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
+				checkoutScreen.checkPaid();
+				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				checkoutScreen.checkPaid();
+				dispose();
 			}
 		});
 		contentPane.add(btnSwipe);

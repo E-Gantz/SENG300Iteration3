@@ -39,12 +39,12 @@ public class CreditPin extends JFrame {
 					EnterPLU frame = new EnterPLU(basic, sTest);
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace(); 
 				}
 			}
 		});
 	}
-
+   
 	/**
 	 * Create the frame.
 	 */
@@ -93,6 +93,8 @@ public class CreditPin extends JFrame {
 					dataPass.makeInsertPayment(new HashMap<String, HashMap<String, String>>(), textFieldPinEntry.getText());
 					setVisible(false);
 					creditSelection.setVisible(true);
+					creditSelection.cardScan.checkoutScreen.checkPaid();
+					
 				} catch (Exception e1) {}
 			}
 		});
@@ -157,7 +159,7 @@ public class CreditPin extends JFrame {
 		btnTouch6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pinBuilder = pinBuilder + "6";
-				textFieldPinEntry.setText(pinBuilder);
+				textFieldPinEntry.setText(pinBuilder); 
 			}
 		});
 		panelTenKey.add(btnTouch6);

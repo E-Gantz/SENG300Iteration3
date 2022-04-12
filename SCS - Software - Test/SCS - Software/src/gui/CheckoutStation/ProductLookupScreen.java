@@ -43,11 +43,11 @@ public class ProductLookupScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				scanScreen.setVisible(true);
 				setVisible(false);
-				dispose();
+				dispose(); 
 			}
 		});
 		btnBackToScanning.setForeground(Color.YELLOW);
-		btnBackToScanning.setBackground(Color.RED);
+		btnBackToScanning.setBackground(Color.RED); 
 		contentPane.add(btnBackToScanning, BorderLayout.NORTH);
 		
 		btnAddPockyApple = new JButton("Picture of PockyFlavouredApple");

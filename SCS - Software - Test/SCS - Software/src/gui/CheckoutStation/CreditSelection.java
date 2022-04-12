@@ -17,7 +17,7 @@ public class CreditSelection extends JFrame {
 
 	private JPanel contentPane;
 	public CreditPin creditPin;
-
+	public CardScanScreen cardScan;
 	/**
 	 * Launch the application.
 	 */
@@ -31,13 +31,13 @@ public class CreditSelection extends JFrame {
 					CardScanScreen css = new CardScanScreen(basic, cTest, new HashMap<String, HashMap<String, String>>());
 					CreditSelection frame = new CreditSelection(basic, css, new HashMap<String, HashMap<String, String>>(), cTest);
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} catch (Exception e) { 
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-
+ 
 	/**
 	 * Create the frame.
 	 */
@@ -45,6 +45,7 @@ public class CreditSelection extends JFrame {
 			  CardScanScreen css, 
 			  HashMap<String,HashMap<String,String>> result,
 			  CheckoutScreen checkoutScreen) {
+		cardScan = css;
 		setTitle("CreditSelection");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -72,8 +73,10 @@ public class CreditSelection extends JFrame {
 					e1.printStackTrace();
 				}
 				checkoutScreen.setVisible(true);
-				dispose();
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
+				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				checkoutScreen.checkPaid();
+				dispose();
 			}
 		});
 		
@@ -88,8 +91,12 @@ public class CreditSelection extends JFrame {
 					e1.printStackTrace();
 				}
 				checkoutScreen.setVisible(true);
-				dispose();
+
+				
 				checkoutScreen.updateLblPaid(checkoutScreen.lblTotal.getText().substring(6));
+				dataPass.paidString = checkoutScreen.lblTotal.getText().substring(6);
+				checkoutScreen.checkPaid();
+				dispose();
 			}
 		});
 		contentPane.add(btnSwipe);
