@@ -25,13 +25,16 @@ import SCSSoftware.BanknoteRunner;
 import SCSSoftware.Checkout;
 import SCSSoftware.ProductCart;
 
+/**
+ * Tests for the CoinRunner class
+ */
 public class BanknoteRunnerTest {
 	private BarcodeScanner scanner;
 	public BanknoteRunner banknoteRunner;
 	private ProductCart pcart;
 	private Checkout checkout;
-	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
-	public Barcode bc1 = new Barcode(code1); //001
+	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
+	public Barcode bc1 = new Barcode(code1); // 001
 	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
 	private BanknoteSlot bSlot;
 	private BanknoteStorageUnit bStorage;
@@ -40,30 +43,37 @@ public class BanknoteRunnerTest {
 	private BidirectionalChannel<Banknote> validatorSource;
 	public SelfCheckoutStation station;
 	public Currency c;
-	
+
+	/**
+	 * Loads SelfCheckoutStation, prepares hardware and all currency denominations
+	 * for testing
+	 */
 	@Before
 	public void setup() {
 		c = Currency.getInstance("CAD");
-		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
-						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
-		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		BigDecimal[] coinArray = { new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+				new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00) };
+		int[] bankNoteDenom = { 5, 10, 20, 50, 100 };
 		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 50, 1);
 		scanner = station.mainScanner;
 		pcart = new ProductCart();
-		checkout = new Checkout(scanner, pcart);
+		checkout = new Checkout(scanner, station.handheldScanner, pcart);
 		bSlot = station.banknoteInput;
 		bStorage = station.banknoteStorage;
 		bValidator = station.banknoteValidator;
 		banknoteRunner = new BanknoteRunner(checkout.getTotalPrice(), bSlot, bStorage, bValidator);
 	}
-	
-	
+
+	/**
+	 * Tests to see if value of item added in cart matches with the value of the
+	 * checkout total, passes if true
+	 */
 	@Test
 	public void testGetCheckoutTotal() {
 		scanner.scan(item1);
 		assertEquals(banknoteRunner.getCheckoutTotal(), checkout.getTotalPrice());
 	}
-	
+
 	@Test
 	public void testGetPaidTotal() throws DisabledException, OverloadException {
 		Banknote note = new Banknote(Currency.getInstance("CAD"), 5);
@@ -71,6 +81,10 @@ public class BanknoteRunnerTest {
 		assertEquals(banknoteRunner.getPaidTotal(), BigDecimal.valueOf(note.getValue()));
 	}
 
+	/**
+	 * Tests to see if the value inserted banknotes matches with what is recorded in
+	 * the checkout machine
+	 */
 	@Test
 	public void testBanknoteCart() throws DisabledException, OverloadException {
 		Banknote note = new Banknote(Currency.getInstance("CAD"), 5);
@@ -79,14 +93,17 @@ public class BanknoteRunnerTest {
 		bSlot.accept(note);
 		assertEquals(banknoteRunner.getBanknoteCart().get(0).getValue(), banknoteCart.get(0).getValue());
 	}
-	
+
+	/**
+	 * Tests to see if the value of all banknotes inserted into the checkout machine
+	 * is equal to 10 when summed
+	 */
 	@Test
 	public void testSumBanknotes() throws DisabledException, OverloadException {
 		Banknote note = new Banknote(Currency.getInstance("CAD"), 5);
 		bSlot.accept(note);
 		bSlot.accept(note);
-		assert(banknoteRunner.sumBanknotes().doubleValue() == 10.0);
+		assert (banknoteRunner.sumBanknotes().doubleValue() == 10.0);
 	}
-	
-	
+
 }

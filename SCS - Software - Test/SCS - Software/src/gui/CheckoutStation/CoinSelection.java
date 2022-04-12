@@ -30,7 +30,7 @@ public class CoinSelection extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
+
 	}
 
 	/**
@@ -44,14 +44,14 @@ public class CoinSelection extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		contentPane.add(splitPane);
-		
+
 		JPanel panel = new JPanel();
 		splitPane.setLeftComponent(panel);
-		
+
 		btnClose = new JButton("Close");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -61,11 +61,11 @@ public class CoinSelection extends JFrame {
 			}
 		});
 		panel.add(btnClose);
-		
+
 		JPanel panel_1 = new JPanel();
 		splitPane.setRightComponent(panel_1);
 		panel_1.setLayout(new GridLayout(0, 5, 0, 0));
-		
+
 		btnNickel = new JButton("Nickel");
 		btnNickel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -81,7 +81,7 @@ public class CoinSelection extends JFrame {
 			}
 		});
 		panel_1.add(btnNickel);
-		
+
 		btnDime = new JButton("Dime");
 		btnDime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,10 +97,10 @@ public class CoinSelection extends JFrame {
 			}
 		});
 		panel_1.add(btnDime);
-		
+
 		btnQuarters = new JButton("Quarter");
 		panel_1.add(btnQuarters);
-		
+
 		btnLoonie = new JButton("Loonie");
 		btnLoonie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -116,7 +116,7 @@ public class CoinSelection extends JFrame {
 			}
 		});
 		panel_1.add(btnLoonie);
-		
+
 		btnToonie = new JButton("Toonie");
 		btnToonie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,7 +128,7 @@ public class CoinSelection extends JFrame {
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
-				dispose();	
+				dispose();
 			}
 		});
 		panel_1.add(btnToonie);

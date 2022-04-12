@@ -30,13 +30,12 @@ public class PLUAdderTest {
 	private PLUCodedProduct prod2 = new PLUCodedProduct(plu1, "Cocaine", new BigDecimal(110000));
 	private ItemPlacer placer;
 	private PLUAdder adder;
-	
 
 	@Before
 	public void setUp() {
-		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
-						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
-		int [] bankNoteDenom = {5, 10, 20, 50, 100};
+		BigDecimal[] coinArray = { new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+				new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00) };
+		int[] bankNoteDenom = { 5, 10, 20, 50, 100 };
 		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 5000, 1);
 		pinv = new ProductInventory();
 		pinv.addPLUinventory(plu1, prod1);
@@ -46,7 +45,7 @@ public class PLUAdderTest {
 		station.baggingArea.attach(placer);
 		adder = new PLUAdder(pinv, station.scanningArea, pcart, placer);
 	}
-	
+
 	@After
 	public void TearDown() {
 		adder = null;
@@ -55,7 +54,7 @@ public class PLUAdderTest {
 		pinv = null;
 		station = null;
 	}
-	
+
 	@Test
 	public void itemPriceAddedToCart() throws OverloadException {
 		station.scanningArea.add(item1);
@@ -63,14 +62,15 @@ public class PLUAdderTest {
 		double price = pcart.getTotalPrice().doubleValue();
 		assertEquals(price, 7500, 15);
 	}
-	
+
 	@Test
 	public void attendantItemNameAddedToCart() throws OverloadException {
 		station.scanningArea.add(item1);
 		adder.addItem("0001");
-		assertTrue(pcart.getItemNames().contains(prod1.getDescription() + " " + "$" + (pcart.getTotalPrice().toPlainString())));
+		assertTrue(pcart.getItemNames()
+				.contains(prod1.getDescription() + " " + "$" + (pcart.getTotalPrice().toPlainString())));
 	}
-	
+
 	@Test
 	public void attendantItemPriceAddedToCart() throws OverloadException {
 		station.scanningArea.add(item1);
@@ -78,25 +78,27 @@ public class PLUAdderTest {
 		double price = pcart.getTotalPrice().doubleValue();
 		assertEquals(price, 7500, 15);
 	}
-	
+
 	@Test
 	public void itemNameAddedToCart() throws OverloadException {
 		station.scanningArea.add(item1);
 		adder.attendantAddItem("0001");
-		assertTrue(pcart.getItemNames().contains(prod1.getDescription() + " " + "$" + (pcart.getTotalPrice().toPlainString())));
+		assertTrue(pcart.getItemNames()
+				.contains(prod1.getDescription() + " " + "$" + (pcart.getTotalPrice().toPlainString())));
 	}
-	
+
 	@Test
 	public void scannerDisabledAfterScan() throws OverloadException {
 		station.scanningArea.add(item1);
 		adder.addItem("0001");
 		assertTrue(placer.handScanner.isDisabled());
-	} 
+	}
+
 	@Test
 	public void handheldScannerDisabledAfterScan() throws OverloadException {
 		station.scanningArea.add(item1);
 		adder.addItem("0001");
 		assertTrue(placer.handScanner.isDisabled());
 	}
-	
+
 }

@@ -32,7 +32,7 @@ import SCSSoftware.ProductInventory;
 import gui.CheckoutStation.DataPasser;
 import gui.CheckoutStation.StartScreen;
 
-public class CustomerScreenTest {
+public class CustomerScreenTestManual {
     private TouchScreen screen;
     JFrame frame;
     private volatile int found;
@@ -61,6 +61,7 @@ public class CustomerScreenTest {
         testCard = new Card("4040111177778888","","","","", false,false);
 
         dataPass = new DataPasser(scs, testCard, giftcardDB);
+        dataPass.thankMode= true;
     }
 
     @Test
@@ -77,7 +78,7 @@ public class CustomerScreenTest {
         screen.disable();
         screen.enable();
     }
-    
+
 //    @Test
 //    public void testStart() {
 //    	StartScreen builtWindow = new StartScreen(dataPass);

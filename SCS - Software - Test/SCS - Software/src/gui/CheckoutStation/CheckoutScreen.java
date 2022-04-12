@@ -37,8 +37,10 @@ public class CheckoutScreen extends JFrame {
 	public JButton btnEnterCoin;
 	public JButton btnAddBanknote;
 	public JButton btnPayWithCard;
-	
-	
+	public DataPasser dataPasse;
+	public ThanksScreen thankYou;
+
+
 	/**
 	 * Launch the application.
 	 */
@@ -48,6 +50,7 @@ public class CheckoutScreen extends JFrame {
 	 */
 	public CheckoutScreen(DataPasser dataPass, ScanningScreen scanScreen) {
 		CheckoutScreen me = this;
+		dataPasse = dataPass;
 		setTitle("CartMart Checkout");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 450);
@@ -55,11 +58,11 @@ public class CheckoutScreen extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.WEST);
 		panel.setLayout(new GridLayout(3, 0, 0, 0));
-		
+
 		btnGoToScanning = new JButton("Go Back");
 		btnGoToScanning.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -72,7 +75,7 @@ public class CheckoutScreen extends JFrame {
 		btnGoToScanning.setBackground(Color.RED);
 		btnGoToScanning.setForeground(Color.YELLOW);
 		panel.add(btnGoToScanning);
-		
+
 		btnGoToAddBags = new JButton("Add Plastic Bags");
 		btnGoToAddBags.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,60 +86,61 @@ public class CheckoutScreen extends JFrame {
 			}
 		});
 		panel.add(btnGoToAddBags);
-		
+
 		btnGoToMembership = new JButton("Enter Membership");
 		btnGoToMembership.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				memberScreen = new MembershipCardScreen(dataPass, me);
 				setVisible(false);
 				memberScreen.setVisible(true);
-				
+
 			}
 		});
 		panel.add(btnGoToMembership);
-		
+
 		JPanel panel_payment = new JPanel();
 		contentPane.add(panel_payment, BorderLayout.CENTER);
 		panel_payment.setLayout(new GridLayout(2, 3, 0, 0));
-		
+
 		lblTotal = new JLabel("Total: $0");
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_payment.add(lblTotal);
-		
+
 		lblTotal.setText("Total: $" + dataPass.pcart.getTotalPrice().toString());
-		
+		dataPass.totalAmount = dataPass.pcart.getTotalPrice().toString();
+
 		lblPaid = new JLabel("Paid: $0");
 		panel_payment.add(lblPaid);
-		
+
 		JLabel lblPaymentMethod = new JLabel("<html>Choose a payment<br> method or insert coins:</html>");
 		panel_payment.add(lblPaymentMethod);
-		
+
 		btnEnterCoin = new JButton("Add Coins");
 		btnEnterCoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				coinScreen = new CoinSelection(dataPass, me);
 				coinScreen.setVisible(true);
-				
+
 			}
 		});
 		panel_payment.add(btnEnterCoin);
-		
+
 		btnAddBanknote = new JButton("Add Banknotes");
 		btnAddBanknote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				banknoteScreen = new BanknoteSelection(dataPass, me);
-				banknoteScreen.setVisible(true);				
+				banknoteScreen.setVisible(true);
 			}
 		});
 		panel_payment.add(btnAddBanknote);
-		
+
 		HashMap<String,HashMap<String,String>>paymentResult = new HashMap<String,HashMap<String,String>>();
 		btnPayWithCard = new JButton("Card");
 		btnPayWithCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 
+
 				cardScreen = new CardScanScreen(dataPass, me, paymentResult);
-				cardScreen.setVisible(true);				
+				cardScreen.setVisible(true);
 				setVisible(false);
 			}
 		});
@@ -146,9 +150,21 @@ public class CheckoutScreen extends JFrame {
 	public void updateLblPaid(String paid){
 		lblPaid.setText("Paid:" + paid);
 	}
-	
+
 	public void updateLblTotal(String paid){
 		lblTotal.setText("Total:" + paid);
 	}
-	
+
+	public void checkPaid(){
+		if (dataPasse.thankMode == true) {
+			if (Double.parseDouble(dataPasse.paidString) >= Double.parseDouble(dataPasse.totalAmount)) {
+				thankYou = new ThanksScreen(dataPasse);
+				thankYou.setVisible(true);
+				setVisible(false);
+				dispose();
+			}
+
+		}
+	}
+
 }

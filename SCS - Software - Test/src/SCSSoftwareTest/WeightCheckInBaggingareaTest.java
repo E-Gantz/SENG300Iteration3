@@ -15,7 +15,6 @@ import org.lsmr.selfcheckout.BarcodedItem;
 import java.math.BigDecimal;
 import SCSSoftware.AttendantData;
 
-
 public class WeightCheckInBaggingareaTest {
 
 	WeightCheckInBaggingarea weightCheckInBaggingarea;
@@ -24,17 +23,17 @@ public class WeightCheckInBaggingareaTest {
 	BarcodedProduct barcodedItem2;
 	BarcodedProduct barcodedItem3;
 	AttendantData attendantData;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		pcart = new ProductCart();
-		Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
-		Numeral[] code2 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.two};
-		Numeral[] code3 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.three};
-		Barcode bc1 = new Barcode(code1); //001
-		Barcode bc2 = new Barcode(code2); //002
-		Barcode bc3 = new Barcode(code3); //003
-		barcodedItem1 = new BarcodedProduct(bc1, "Milk", new BigDecimal(2.5), 4.0 );
+		Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
+		Numeral[] code2 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.two };
+		Numeral[] code3 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.three };
+		Barcode bc1 = new Barcode(code1); // 001
+		Barcode bc2 = new Barcode(code2); // 002
+		Barcode bc3 = new Barcode(code3); // 003
+		barcodedItem1 = new BarcodedProduct(bc1, "Milk", new BigDecimal(2.5), 4.0);
 		barcodedItem2 = new BarcodedProduct(bc2, "Bread", new BigDecimal(3.0), 5.5);
 		barcodedItem3 = new BarcodedProduct(bc3, "Cofffeeee!", new BigDecimal(3.5), 6.67);
 
@@ -54,20 +53,20 @@ public class WeightCheckInBaggingareaTest {
 	}
 
 	@Test
-	public void addNewItem(){
+	public void addNewItem() {
 		pcart.addToCart(barcodedItem1);
 		weightCheckInBaggingarea = new WeightCheckInBaggingarea(pcart);
 		assertTrue(weightCheckInBaggingarea.isWeightAsExpect(4.0));
 	}
 
 	@Test
-	public void addItemFail(){
+	public void addItemFail() {
 		pcart.addToCart(barcodedItem1);
 		assertFalse(weightCheckInBaggingarea.isWeightAsExpect(2.5));
 	}
 
 	@Test
-	public void approveDiscrepency(){
+	public void approveDiscrepency() {
 		pcart.addToCart(barcodedItem1);
 		assertFalse(weightCheckInBaggingarea.isWeightAsExpect(10.0));
 		assertTrue(weightCheckInBaggingarea.approveWeight(attendantData, 10.0));
@@ -77,7 +76,7 @@ public class WeightCheckInBaggingareaTest {
 	}
 
 	@Test
-	public void discrepencyWrongWeight(){
+	public void discrepencyWrongWeight() {
 		pcart.addToCart(barcodedItem1);
 		assertFalse(weightCheckInBaggingarea.isWeightAsExpect(10.0));
 		assertTrue(weightCheckInBaggingarea.approveWeight(attendantData, 8.0));
@@ -86,7 +85,7 @@ public class WeightCheckInBaggingareaTest {
 	}
 
 	@Test
-	public void discrepencyNotLogIn(){
+	public void discrepencyNotLogIn() {
 		attendantData.logOut();
 		pcart.addToCart(barcodedItem1);
 		assertFalse(weightCheckInBaggingarea.isWeightAsExpect(10.0));
@@ -95,4 +94,3 @@ public class WeightCheckInBaggingareaTest {
 	}
 
 }
-

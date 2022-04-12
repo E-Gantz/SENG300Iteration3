@@ -30,6 +30,10 @@ import SCSSoftware.PaysWithCash;
 import SCSSoftware.CoinRunner;
 import SCSSoftware.ProductCart;
 
+/**
+ * Tests for all events involving cash paymets (coin/banknote) within the
+ * selfcheckout machine
+ */
 public class PaysWithCashTest {
 
 	private BarcodeScanner scanner;
@@ -71,15 +75,19 @@ public class PaysWithCashTest {
 		this.bValidator = station.banknoteValidator;
 		this.coinDispensers = station.coinDispensers;
 
-		checkout = new Checkout(scanner, pcart);
+		checkout = new Checkout(scanner, station.handheldScanner, pcart);
 
-        coinrunner = new CoinRunner(currency, banknoteDenom, coinDenom, checkout.getTotalPrice(), cSlot,
-                cStorage, cValidator);
+		coinrunner = new CoinRunner(currency, banknoteDenom, coinDenom, checkout.getTotalPrice(), cSlot, cStorage,
+				cValidator);
 		banknoteRunner = new BanknoteRunner(checkout.getTotalPrice(), bSlot, bStorage, bValidator);
 		paysWithCash = new PaysWithCash(coinrunner, banknoteRunner, station.banknoteDispensers, station.coinDispensers,
 				bOutput, cTray);
 	}
 
+	/**
+	 * Test to see if the sum of all coins and banknotes inserted match with
+	 * expected value
+	 */
 	@Test
 	public void testSumCoinBanknote() throws DisabledException, OverloadException {
 		Banknote note = new Banknote(Currency.getInstance("CAD"), 5);
@@ -90,6 +98,9 @@ public class PaysWithCashTest {
 		assert (paysWithCash.sumCoinBanknote().doubleValue() == (testSet.add(BigDecimal.valueOf(5)).doubleValue()));
 	}
 
+	/**
+	 * Test to see if inserted change matches with expected value
+	 */
 	@Test
 	public void testChange() throws DisabledException, OverloadException {
 		scanner.scan(item1);
@@ -102,6 +113,10 @@ public class PaysWithCashTest {
 		assert (paysWithCash.getChange().doubleValue() == BigDecimal.valueOf(6).doubleValue());
 	}
 
+	/**
+	 * Test to see change is given back properly based on total inserted coin &
+	 * banknotes and the checkout total value from the checkout classes
+	 */
 	@Test
 	public void testEmitChange() throws DisabledException, OverloadException {
 		scanner.scan(item1);
@@ -136,6 +151,9 @@ public class PaysWithCashTest {
 		assert (expectedChange.doubleValue() == change.doubleValue());
 	}
 
+	/**
+	 * Test to cover cases where if a nickel can be emitted
+	 */
 	@Test
 	public void testEmitNickel() throws DisabledException, OverloadException {
 		Coin coin4 = new Coin(Currency.getInstance("CAD"), BigDecimal.valueOf(0.10));

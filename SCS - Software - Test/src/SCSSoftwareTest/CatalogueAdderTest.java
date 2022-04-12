@@ -25,16 +25,15 @@ import SCSSoftware.PLUAdder;
 import SCSSoftware.ProductCart;
 import SCSSoftware.ProductInventory;
 
-
 public class CatalogueAdderTest {
 	public BarcodeScanner scanner;
 	public ItemAdder adder;
 	public ProductInventory inventory;
 	public ProductCart cart;
-	public Numeral[] code1 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.one};
-	public Numeral[] code2 = new Numeral[] {Numeral.zero, Numeral.zero, Numeral.two};
-	public Barcode bc1 = new Barcode(code1); //001
-	public Barcode bc2 = new Barcode(code2); //002
+	public Numeral[] code1 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.one };
+	public Numeral[] code2 = new Numeral[] { Numeral.zero, Numeral.zero, Numeral.two };
+	public Barcode bc1 = new Barcode(code1); // 001
+	public Barcode bc2 = new Barcode(code2); // 002
 	public BarcodedItem item1 = new BarcodedItem(bc1, 3);
 	public BarcodedItem item2 = new BarcodedItem(bc2, 4);
 	public BarcodedProduct prod1 = new BarcodedProduct(bc1, "Bread", new BigDecimal(5), 3);
@@ -56,10 +55,10 @@ public class CatalogueAdderTest {
 	@Before
 	public void setUp() {
 		c = Currency.getInstance("CAD");
-		BigDecimal[] coinArray = {new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
-						  new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00)};
-		int [] bankNoteDenom = {5, 10, 20, 50, 100};
-		
+		BigDecimal[] coinArray = { new BigDecimal(0.05), new BigDecimal(0.10), new BigDecimal(0.25),
+				new BigDecimal(0.50), new BigDecimal(1.00), new BigDecimal(2.00) };
+		int[] bankNoteDenom = { 5, 10, 20, 50, 100 };
+
 		station = new SelfCheckoutStation(c, bankNoteDenom, coinArray, 5000, 1);
 		scanner = station.mainScanner;
 		inventory = new ProductInventory();
@@ -93,7 +92,7 @@ public class CatalogueAdderTest {
 		cartSize = 0;
 		c = null;
 		station = null;
-		pluadder=null;
+		pluadder = null;
 		station = null;
 		cAdder = null;
 	}
@@ -101,9 +100,9 @@ public class CatalogueAdderTest {
 	@Test
 	public void itemPriceAddedToCart() {
 		cAdder.addItem(bc1);
-		assertTrue(prod1.getPrice().equals(cart.getTotalPrice()));
+		assertTrue(prod1.getPrice().compareTo(cart.getTotalPrice()) == 0);
 	}
-	
+
 	@Test
 	public void itemPriceAddedToCartPLU() throws OverloadException {
 		station.scanningArea.add(item3);
@@ -111,13 +110,13 @@ public class CatalogueAdderTest {
 		double price = cart.getTotalPrice().doubleValue();
 		assertEquals(price, 7500, 15);
 	}
-	
+
 	@Test
 	public void attendantItemPriceAddedToCart() {
 		cAdder.attendantAddItem(bc1);
-		assertTrue(prod1.getPrice().equals(cart.getTotalPrice()));
+		assertTrue(prod1.getPrice().compareTo(cart.getTotalPrice()) == 0);
 	}
-	
+
 	@Test
 	public void attendantItemPriceAddedToCartPLU() throws OverloadException {
 		station.scanningArea.add(item3);

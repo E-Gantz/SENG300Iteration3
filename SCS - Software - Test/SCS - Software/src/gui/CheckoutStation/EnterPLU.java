@@ -38,7 +38,7 @@ public class EnterPLU extends JFrame {
 	public JButton btnTouch8;
 	public JButton btnTouch9;
 	public JButton btnTouchClear;
-
+ 
 	/**
 	 * Launch the application.
 	 */
@@ -47,7 +47,7 @@ public class EnterPLU extends JFrame {
 	 * Create the frame.
 	 */
 	public EnterPLU(DataPasser dataPass, ScanningScreen scanScreen) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
