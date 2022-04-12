@@ -122,6 +122,10 @@ private boolean attendantStationStartup = false;
 		attendantStation.add(station);
 	}
 	
+	public SelfCheckoutStation getStationStartedUp() {
+		return this.station;
+	}
+	
 	public void startupAttendantStation() {
 		
 		attendantStation.keyboard.enable();

@@ -40,18 +40,14 @@ public class SupervisionTest {
 	private int sensitivity;
 	private DataPasser dataPass;
 	private SupervisionDataPasser superDataPass;
-	private SelfCheckoutStation s1;
-	private SelfCheckoutStation s2;
-	private SelfCheckoutStation s3;
-	private SelfCheckoutStation s4;
-	
+
 // Supervision Setup Variables
 	private SupervisionStation mySupervision;
 	private TouchScreen supervisionScreen;
 	private LoginScreen aLoginScreen;
 	private HomeScreen aHomeScreen;
 	JFrame sFrame;
-	
+
 // Supervision Testing Variables
 	private String loginID;
 
@@ -67,19 +63,20 @@ public class SupervisionTest {
     	s2 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
     	s3 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
     	s4 = new SelfCheckoutStation(CAD, banknote_denominations, coin_denominations, maxWeight, sensitivity);
-    	
+
         screen = scs.screen;
         frame = screen.getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         found = 0;
-        
+
         mySupervision = new SupervisionStation();
         supervisionScreen = mySupervision.screen;
         sFrame = mySupervision.screen.getFrame();
-        
-               
+
+
         dataPass = new DataPasser();
-        superDataPass = new SupervisionDataPasser(s1, s2, s3, s4, mySupervision);
+        superDataPass = new SupervisionDataPasser();
+
     }
 
     @Test
@@ -93,7 +90,7 @@ public class SupervisionTest {
         });
 
     }
-    
+
 /*
     @Test
     public void testFrameAutomatic() {
@@ -114,7 +111,7 @@ public class SupervisionTest {
         assertEquals(1, found);
     }
 */
-    
+
     // Note that this is not a proper automated test. An automated test does not
     // force user interaction. Trust me: clicking repeatedly on buttons is tedious
     // and error-prone. When you suddenly discover a bug on your hundredth attempt,
@@ -123,10 +120,10 @@ public class SupervisionTest {
     public void loginManual() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
-         
+
             public void run() {
             	// Creating a local version and then equating them allows us to test automatically
-            	aLoginScreen = new LoginScreen(dataPass, superDataPass);
+            	aLoginScreen = new LoginScreen(dataPass,superDataPass);
             	sFrame = aLoginScreen;
             	sFrame.setVisible(true);
             }
@@ -142,12 +139,12 @@ public class SupervisionTest {
 
         assertEquals("password", loginID);
     }
-    
+
     @Test
     public void testFrameManual() {
     	SwingUtilities.invokeLater(new Runnable() {
             @Override
-         
+
             public void run() {
             	// Creating a local version and then equating them allows us to test automatically
             	aHomeScreen = new HomeScreen(superDataPass, new LoginScreen(dataPass, superDataPass));
