@@ -163,7 +163,7 @@ public class SupervisionDataPasser {
 		if(stationInUse.printerMaintainer.getPaperStatus()) {
 			attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
 			int maxPaper = ReceiptPrinter.MAXIMUM_PAPER;
-			attendentRefillsDispensers.addInk(maxPaper);
+			attendentRefillsDispensers.addPaper(maxPaper);
 		}
 	}
 
@@ -191,9 +191,6 @@ public class SupervisionDataPasser {
 		while(hundredDisp.size() < hundredDisp.getCapacity()) {
 			attendentRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
 		}
-		//while(hundredDisp.size() < hundredDisp.getCapacity()) {
-			//attendantRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
-		//}
 
 	}
 
@@ -228,7 +225,6 @@ public class SupervisionDataPasser {
         while(coinDispenserToonie.hasSpace()) {
         	attendentRefillsDispensers.RefillCoinDispenser(coinDispenserToonie, toonie, 1);
         }
-
 	}
 	
 	public void attendantAddsItem(int stationID) {
@@ -237,6 +233,7 @@ public class SupervisionDataPasser {
 
 	public void approveWeight(int stationID) {
 		selectSCS(stationID);
+		stationInUse.itemPlacer.currentWeightDiscrepency = false; // resolve the issue at that station
 
 	}
 
