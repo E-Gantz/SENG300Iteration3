@@ -17,15 +17,15 @@ public class AttendantShutDownStartupTest {
 
 	SelfCheckoutStation station;
 	SupervisionStation attendantStation;
+	Currency curr = Currency.getInstance(Locale.CANADA);
+	int[] bankNoteDenom = { 5, 10, 20, 50, 100 };
+	BigDecimal[] coinDenom = { BigDecimal.valueOf(0.05), BigDecimal.valueOf(0.10), BigDecimal.valueOf(0.25),
+			BigDecimal.valueOf(1.00), BigDecimal.valueOf(2.00) };
+	int maxWeight = 1000000;
+	int sensitivity = 10;
 
 	@Before
 	public void setup() {
-		Currency curr = Currency.getInstance(Locale.CANADA);
-		int[] bankNoteDenom = { 5, 10, 20, 50, 100 };
-		BigDecimal[] coinDenom = { BigDecimal.valueOf(0.05), BigDecimal.valueOf(0.10), BigDecimal.valueOf(0.25),
-				BigDecimal.valueOf(1.00), BigDecimal.valueOf(2.00) };
-		int maxWeight = 1000000;
-		int sensitivity = 10;
 
 		station = new SelfCheckoutStation(curr, bankNoteDenom, coinDenom, maxWeight, sensitivity);
 		attendantStation = new SupervisionStation();
@@ -77,7 +77,7 @@ public class AttendantShutDownStartupTest {
 	public void startupStation() {
 
 		AttendantShutDownStartupStation startup = new AttendantShutDownStartupStation(station, attendantStation);
-		startup.startupStation();
+		startup.startupStation(curr, bankNoteDenom, coinDenom, 1000, 1);
 
 		assertTrue(startup.getStationStartup());
 
@@ -87,7 +87,7 @@ public class AttendantShutDownStartupTest {
 	public void startupStationAdded() {
 
 		AttendantShutDownStartupStation startup = new AttendantShutDownStartupStation(station, attendantStation);
-		startup.startupStation();
+		startup.startupStation(curr, bankNoteDenom, coinDenom, 1000, 1);
 
 		assertTrue(attendantStation.supervisedStations().contains(station));
 
