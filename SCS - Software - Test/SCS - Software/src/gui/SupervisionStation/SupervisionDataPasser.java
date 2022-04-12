@@ -167,7 +167,7 @@ public class SupervisionDataPasser {
 		if(stationInUse.printerMaintainer.getPaperStatus()) {
 			attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
 			int maxPaper = ReceiptPrinter.MAXIMUM_PAPER;
-			attendentRefillsDispensers.addInk(maxPaper);
+			attendentRefillsDispensers.addPaper(maxPaper);
 		}
 	}
 
@@ -195,9 +195,6 @@ public class SupervisionDataPasser {
 		while(hundredDisp.size() < hundredDisp.getCapacity()) {
 			attendentRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
 		}
-		//while(hundredDisp.size() < hundredDisp.getCapacity()) {
-			//attendantRefillsDispensers.RefillBanknoteDispenser(hundredDisp,hundred,1);
-		//}
 
 	}
 
@@ -213,7 +210,7 @@ public class SupervisionDataPasser {
 
 	public void refillCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
-
+		attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
         coinDispenserNickel = stationInUse.station.coinDispensers.get(nickel.getValue());
         coinDispenserDime = stationInUse.station.coinDispensers.get(dime.getValue());
         coinDispenserQuarter = stationInUse.station.coinDispensers.get(quarter.getValue());
@@ -235,23 +232,27 @@ public class SupervisionDataPasser {
         while(coinDispenserToonie.hasSpace()) {
         	attendentRefillsDispensers.RefillCoinDispenser(coinDispenserToonie, toonie, 1);
         }
-
+	}
+	
+	public void attendantAddsItem(int stationID) {
+		selectSCS(stationID);
 	}
 
 	public void approveWeight(int stationID) {
 		selectSCS(stationID);
+		stationInUse.itemPlacer.currentWeightDiscrepency = false; // resolve the issue at that station
 
 	}
 
 	public void emptiesCoin(int stationID) throws OverloadException {
 		selectSCS(stationID);
-
+		attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
         attendentRefillsDispensers.emptyCoinStorageUnit(this.stationInUse.station.coinStorage);
 	}
 
 	public void emptiesBanknote(int stationID) throws OverloadException {
 		selectSCS(stationID);
-
+		attendentRefillsDispensers = new AttendantRefillsDispensers(stationInUse.station);
         attendentRefillsDispensers.emptyBanknoteStorageUnit(this.stationInUse.station.banknoteStorage);
 	}
 	

@@ -25,18 +25,9 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	private Timer timer;
 	private CustomerOwnBag ownbag;
 	private boolean timerRunning;
+	public boolean currentWeightDiscrepency;
 
-	/**
-	 * Constructs an Item Placer
-	 * 
-	 * @param mainScanner The main scanner of the self checkout station
-	 * @param pcart       The user's virtual cart
-	 * @param handScanner The handheld scanner of the self checkout station
-	 */
-	public ItemPlacer(BarcodeScanner mainScanner, ProductCart pcart, BarcodeScanner handScanner) { // need both scanners
-																									// to enable them
-																									// after the item is
-																									// placed.
+	public ItemPlacer(BarcodeScanner mainScanner, ProductCart pcart, BarcodeScanner handScanner) { //need both scanners to enable them after the item is placed.
 		this.scanner = mainScanner;
 		this.pcart = pcart;
 		this.handScanner = handScanner;
@@ -45,6 +36,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 		this.NotInBags = false;
 		this.timer = new Timer();
 		this.timerRunning = false;
+		this.currentWeightDiscrepency= false;
 	}
 
 	@Override
@@ -62,7 +54,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	/**
 	 * An event announcing that something has been added to the observed scale. If
 	 * the item is the expected placeable object then scanners are re-enabled
-	 * 
+	 *
 	 * @Override
 	 * @param scale         The observed scale
 	 * @param weightInGrams The current total weight sitting on the scale
@@ -93,14 +85,23 @@ public class ItemPlacer implements ElectronicScaleObserver {
 				throw new InvalidArgumentSimulationException("Wrong item placed on scale!");
 			}
 		} else {
-			// Attendant approval required to enable + continue checkout
-//			throw new InvalidArgumentSimulationException("Talk to attendatnt to continue");h
+			this.currentWeightDiscrepency = true;
+			while (this.currentWeightDiscrepency) {
+				// busy loop to wait for the attendant to do something
+				// once the attendant sets currentWeightDiscrepency to false then the weight issue is approved
+			}
+
 		}
 	}
 
+	public boolean getCheckWeightDiscrepency() {
+		return this.currentWeightDiscrepency;
+	}
+
+
 	/**
 	 * An event announcing that the scale has been overloaded
-	 * 
+	 *
 	 * @Override
 	 * @param scale the observed scale.
 	 */
@@ -114,7 +115,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 
 	/**
 	 * An event announcing that the scale is no longer overloaded
-	 * 
+	 *
 	 * @Override
 	 * @param scale the observed scale.
 	 */
@@ -149,7 +150,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the weight on the scale as of last update
 	 */
 	public double getBagWeight() {
@@ -166,7 +167,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 
 	/**
 	 * sets the timer running flag to false after the 5 second timer
-	 * 
+	 *
 	 * @throws InvalidArgumentSimulationException If the user has still not added
 	 *                                            their items to the bagging area
 	 *                                            after 5 seconds.
@@ -179,7 +180,7 @@ public class ItemPlacer implements ElectronicScaleObserver {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return current setting of the not in bags flag
 	 */
 	public Boolean getTimeoutStatus() {
