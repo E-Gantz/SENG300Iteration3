@@ -74,6 +74,7 @@ public class BanknoteSelection extends JFrame{
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Please remove the note from the slot and re-insert");
+					dataPass.removeDangling();
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -90,6 +91,7 @@ public class BanknoteSelection extends JFrame{
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Please remove the note from the slot and re-insert");
+					dataPass.removeDangling();
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -106,6 +108,7 @@ public class BanknoteSelection extends JFrame{
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Please remove the note from the slot and re-insert");
+					dataPass.removeDangling();
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -122,6 +125,7 @@ public class BanknoteSelection extends JFrame{
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Please remove the note from the slot and re-insert");
+					dataPass.removeDangling();
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);
@@ -138,6 +142,7 @@ public class BanknoteSelection extends JFrame{
 				} catch (DisabledException | OverloadException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Please remove the note from the slot and re-insert");
+					dataPass.removeDangling();
 				}
 				String total = "Paid: $" + dataPass.paidString;
 				checkout.lblPaid.setText(total);

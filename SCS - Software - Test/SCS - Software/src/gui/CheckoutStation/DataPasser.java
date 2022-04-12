@@ -350,4 +350,9 @@ public class DataPasser {
 		checkoutInterface.addFromCatalogue(barcode);
 	}
 
+	public void removeDangling() {
+		bSlot.removeDanglingBanknotes();
+		
+	}
+
 }
